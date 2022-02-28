@@ -41,5 +41,5 @@ out
 out/*
 gen
 logs/
-*.txt
+upMap.txt
 META-INF

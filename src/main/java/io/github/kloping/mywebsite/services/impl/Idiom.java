@@ -18,7 +18,7 @@ public abstract class Idiom {
     private String path;
     private int maxFail = 5;
     public static Map<Character, List<String>> idiom = new ConcurrentHashMap<>();
-    public static final Idiom INSTANCE = new Idiom("./files_/idiom.txt") {};
+    public static final Idiom INSTANCE = new Idiom("./files/idiom.txt") {};
 
     public Idiom(String path) {
         this.path = path;
