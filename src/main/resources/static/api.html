@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="./js/lib/axios.js"></script>
+    <script src="./js/lib/vue.js"></script>
+    <script src="./js/lib/jq3.6.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    <title>API 列表</title>
+    <link rel="stylesheet" href="css/main.css">
+
+</head>
+<body>
+<script src="js/bg.js"></script>
+<center><h1 style=" font-weight: bold;color: black;background: rgba(254,253,255,0.3)">API 列表</h1></center>
+<center><h3 style="background: rgba(254,253,255,0.3)"> 接口仅用于娱乐 禁止用于非法用途 </h3></center>
+<center><h5 style="background: rgba(254,253,255,0.3)"> 最近更新于 2022/2/3 若出现不可用的情况请各位开发者自行调整代码 </h5></center>
+<script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"
+        integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+        integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
+        crossorigin="anonymous"></script>
+<div class="row" id="api_list">
+    <div style="margin-left: 20px; margin-top: 10px;border: 1px solid #361cab;border-radius: 10px"
+         class="col-xs-4 col-sm-3 apiE"
+         v-for="(e,i) in list">
+        <div>
+            <h4 style="padding: 0;font-weight: bold" v-text="e.name"></h4>
+            <hr>
+            <p style="font-weight: bold;color: black" v-text="e.desc"></p>
+            <input style="margin-bottom: 10px" v-on:click="mDetail(i)" :class="'btn'+' btn-'+e.state" type="button"
+                   value="去看看">
+        </div>
+    </div>
+</div>
+
+<audio style="display: none;" autoplay="autoplay" loop="loop" preload="auto" controls="controls">
+    <source src="https://api.uomg.com/api/rand.music?sort=热歌榜" type="audio/mpeg">
+</audio>
+<script src="js/main.js"></script>
+<script src="js/api.js"></script>
+<script src="//api.dzzui.com/api/yinghua"></script>
+</body>
+</html>
