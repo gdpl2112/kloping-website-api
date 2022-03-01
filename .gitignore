@@ -43,3 +43,4 @@ gen
 logs/
 upMap.txt
 META-INF
+*.xz
