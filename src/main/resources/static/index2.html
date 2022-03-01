@@ -31,10 +31,6 @@
             border: crimson solid 1px;
         }
 
-        audio {
-            display: none;
-        }
-
         header {
             width: 100%;
             height: 10%;
@@ -186,9 +182,6 @@
         </div>
     </div>
 </div>
-<audio autoplay="autoplay" loop="loop" preload="auto" controls="controls">
-    <source src="https://api.uomg.com/api/rand.music?sort=热歌榜" type="audio/mpeg">
-</audio>
 <script>
 
     let s = null;
@@ -263,11 +256,12 @@
                 })
                 setTimeout(function () {
                     vm1.updateTime();
-                }, 4500);
+                }, 10000);
             }
         }
     });
 </script>
+<script src="js/player.js"></script>
 <script src="js/main.js"></script>
 <script src="//api.dzzui.com/api/yinghua"></script>
 </body>
