@@ -24,7 +24,6 @@ public class LogInterceptor extends HandlerInterceptorAdapter {
         ip = "0:0:0:0:0:0:0:1".equals(ip) ? "127.0.0.1" : ip.trim();
         System.out.println(String.format("[%s]: %s 访问了 Path:%s",
                 df2.format(new Date(System.currentTimeMillis())), ip, request.getRequestURL()));
-
         request.getParameterMap().forEach((k, v) -> {
             System.out.print(", ");
             System.out.print(k + "=>" + Arrays.toString(v));

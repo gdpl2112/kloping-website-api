@@ -1,6 +1,6 @@
 package io.github.kloping.mywebsite.plugins.detail;
 
-import io.github.kloping.mywebsite.plugins.entity.douyPic.DouyPic;
+import io.github.kloping.mywebsite.entitys.webApi.douyPic.DouyPic;
 
 import java.io.IOException;
 
@@ -18,7 +18,7 @@ public class DouyinPic0Detail {
         int i2 = s.indexOf("/?");
         String id = s.substring(i1 + 13, i2);
         DouyPic douyPic = douyinPic0.pic(id);
-        io.github.kloping.mywebsite.plugins.entity.douyPic.Images[] images = douyPic.getItem_list()[0].getImages();
+        io.github.kloping.mywebsite.entitys.webApi.douyPic.Images[] images = douyPic.getItem_list()[0].getImages();
         String[] sss = new String[images.length];
         for (int i = 0; i < images.length; i++) {
             sss[i] = images[i].getUrl_list()[images[i].getUrl_list().length - 1];

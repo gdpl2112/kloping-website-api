@@ -3,10 +3,7 @@ package io.github.kloping.mywebsite.plugins;
 import io.github.kloping.MySpringTool.StarterApplication;
 import io.github.kloping.MySpringTool.annotations.AutoStand;
 import io.github.kloping.MySpringTool.annotations.CommentScan;
-import io.github.kloping.mywebsite.plugins.interfaces.DouyinPic0;
-import io.github.kloping.mywebsite.plugins.interfaces.KugouMusic;
-import io.github.kloping.mywebsite.plugins.interfaces.NetEaseMusic;
-import io.github.kloping.mywebsite.plugins.interfaces.QQMusic;
+import io.github.kloping.mywebsite.plugins.interfaces.*;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
@@ -41,6 +38,15 @@ public class Source {
 
     @AutoStand
     public static QQMusic qqMusic;
+
+    @AutoStand
+    public static BaiduMap baiduMap;
+
+    @AutoStand
+    public static BaiduImage baiduImage;
+
+    @AutoStand
+    public static DuiTangImage duiTangImage;
 
     /**
      * sun.misc方式Base64编码
@@ -86,23 +92,23 @@ public class Source {
 
     public static <K, V> Map.Entry<K, V> getEntry(K k, V v) {
         return new Map.Entry<K, V>() {
-            K k_ = k;
-            V v_ = v;
+            K ko = k;
+            V vo = v;
 
             @Override
             public K getKey() {
-                return k_;
+                return ko;
             }
 
             @Override
             public V getValue() {
-                return v_;
+                return vo;
             }
 
             @Override
             public V setValue(V value) {
-                V v1 = v_;
-                v_ = value;
+                V v1 = vo;
+                vo = value;
                 return v1;
             }
         };

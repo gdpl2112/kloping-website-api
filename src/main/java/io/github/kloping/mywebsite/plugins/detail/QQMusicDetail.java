@@ -4,14 +4,13 @@ import com.alibaba.fastjson.JSON;
 import io.github.kloping.mywebsite.entitys.medias.Song;
 import io.github.kloping.mywebsite.entitys.medias.Songs;
 import io.github.kloping.mywebsite.plugins.Source;
-import io.github.kloping.mywebsite.plugins.entity.QqLyric.QQLyric;
-import io.github.kloping.mywebsite.plugins.entity.qqDetail.QQMusicDataList;
-import io.github.kloping.mywebsite.plugins.entity.qqDetail.QQSongDetail;
-import io.github.kloping.mywebsite.plugins.entity.qqDetail.Singer;
-import io.github.kloping.mywebsite.plugins.entity.qqOneSong.Data;
-import io.github.kloping.mywebsite.plugins.entity.qqOneSong.QQOneSong;
+import io.github.kloping.mywebsite.entitys.webApi.qqLyric.QQLyric;
+import io.github.kloping.mywebsite.entitys.webApi.qqDetail.QQMusicDataList;
+import io.github.kloping.mywebsite.entitys.webApi.qqDetail.QQSongDetail;
+import io.github.kloping.mywebsite.entitys.webApi.qqDetail.Singer;
+import io.github.kloping.mywebsite.entitys.webApi.qqOneSong.Data;
+import io.github.kloping.mywebsite.entitys.webApi.qqOneSong.QQOneSong;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -69,7 +68,7 @@ public class QQMusicDetail {
         for (QQMusicDataList list : songDetail.getData().getSong().getList()) {
             Song song = new Song();
             QQOneSong qqOneSong = qqMusic.oneDetail(null, list, HEADERS);
-            io.github.kloping.mywebsite.plugins.entity.qqOneSong.Data data = qqOneSong.getReq_0().getData();
+            io.github.kloping.mywebsite.entitys.webApi.qqOneSong.Data data = qqOneSong.getReq_0().getData();
             String urlEnd = data.getMidurlinfo()[0].getPurl();
             String lyric = qqMusic.getLyric(null, null, null, null, null, null, null, null, null, null, null, null,
                     list.getSongmid(),

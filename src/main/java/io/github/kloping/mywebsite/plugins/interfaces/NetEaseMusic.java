@@ -1,8 +1,8 @@
 package io.github.kloping.mywebsite.plugins.interfaces;
 
 import io.github.kloping.MySpringTool.annotations.http.*;
-import io.github.kloping.mywebsite.plugins.entity.NetEaseSongs.NetEaseSongLyric;
-import io.github.kloping.mywebsite.plugins.entity.NetEaseSongs.NetEaseSongs;
+import io.github.kloping.mywebsite.entitys.webApi.netEaseSongs.NetEaseSongLyric;
+import io.github.kloping.mywebsite.entitys.webApi.netEaseSongs.NetEaseSongs;
 
 import java.util.Map;
 

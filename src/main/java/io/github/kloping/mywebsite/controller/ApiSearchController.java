@@ -24,16 +24,16 @@ import java.util.List;
 @RequestMapping("/api/search")
 public class ApiSearchController {
 
-    @Qualifier("searchPic_Baidu")
+    @Qualifier("searchPicBaidu")
     @Autowired
-    ISearchPic searchPic_Baidu;
+    ISearchPic searchPicBaidu;
 
     @Qualifier("searchPicMany")
     @Autowired
-    ISearchPic searchPic_Many;
-    @Qualifier("searchPic_DuiT")
+    ISearchPic searchPicMany;
+    @Qualifier("searchPicDuiT")
     @Autowired
-    ISearchPic searchPic_Dt;
+    ISearchPic searchPicDt;
 
     @Qualifier("searchSongNetEase")
     @Autowired
@@ -47,13 +47,13 @@ public class ApiSearchController {
     @Autowired
     ISearchSong searchSongQQ;
 
-    @Qualifier("searchVideo_Giftshow")
+    @Qualifier("searchVideoGiftshow")
     @Autowired
-    ISearchVideo searchVideo_giftshow;
+    ISearchVideo searchVideoGiftshow;
 
-    @Qualifier("searchVideo_Bili")
+    @Qualifier("searchVideoBili")
     @Autowired
-    ISearchVideo searchVideo_bili;
+    ISearchVideo searchVideoBili;
 
     @Autowired
     @Qualifier("parseGifImgImpl")
@@ -64,7 +64,7 @@ public class ApiSearchController {
     IParseImg parseImgDy;
 
     @RequestMapping("/pic")
-    public Result search_pic(HttpServletRequest request, String keyword, @RequestParam(required = false) Integer num, @RequestParam(required = false, value = "type") String type) {
+    public Result searchPic(HttpServletRequest request, @RequestParam("keyword") String keyword, @RequestParam(required = false) Integer num, @RequestParam(required = false, value = "type") String type) {
         Result result = new Result();
         result.setTime(System.currentTimeMillis());
         result.setKeyword(keyword);
@@ -74,20 +74,21 @@ public class ApiSearchController {
             num = num == null ? 16 : num > 480 ? 480 : num;
             switch (type) {
                 case "baidu":
-                    strings = searchPic_Many.searchPics(keyword, num);
+                    strings = searchPicMany.searchPics(keyword, num);
                     break;
                 case "duit":
-                    strings = searchPic_Dt.searchPics(keyword, num);
+                    strings = searchPicDt.searchPics(keyword, num);
                     break;
+                default:
+                    result.setState(-1);
+                    result.setNum(0);
+                    result.setData(null);
             }
             result.setNum(strings.length);
             result.setData(strings);
             result.setState(1);
         } catch (Exception e) {
             e.printStackTrace();
-            result.setState(-1);
-            result.setNum(0);
-            result.setData(null);
         }
         return result;
     }
@@ -111,6 +112,8 @@ public class ApiSearchController {
                     return searchSongKugou.searchSong(keyword, num);
                 case "qq":
                     return searchSongQQ.searchSong(keyword, num);
+                default:
+                    return new Songs(-1, 0, System.currentTimeMillis(), keyword, null, "err");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -124,10 +127,12 @@ public class ApiSearchController {
         try {
             switch (type.toLowerCase()) {
                 case "ks":
-                    return searchVideo_giftshow.search(keyword);
+                    return searchVideoGiftshow.search(keyword);
                 case "bili":
                 case "bilibili":
-                    return searchVideo_bili.search(keyword);
+                    return searchVideoBili.search(keyword);
+                default:
+                    return new VideoSource(-1, keyword, null, System.currentTimeMillis(), type, -1);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -144,6 +149,8 @@ public class ApiSearchController {
                     return Arrays.asList(parseImgKs.parse(url.trim()));
                 case "dy":
                     return Arrays.asList(parseImgDy.parse(url.trim()));
+                default:
+                    return null;
             }
         } catch (Exception e) {
             e.printStackTrace();

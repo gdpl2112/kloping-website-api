@@ -1,8 +1,8 @@
 package io.github.kloping.mywebsite.plugins.interfaces;
 
 import io.github.kloping.MySpringTool.annotations.http.*;
-import io.github.kloping.mywebsite.plugins.entity.kugouDetail.KugouSongDetail;
-import io.github.kloping.mywebsite.plugins.entity.kugouSong.KugouSong;
+import io.github.kloping.mywebsite.entitys.webApi.kugouDetail.KugouSongDetail;
+import io.github.kloping.mywebsite.entitys.webApi.kugouSong.KugouSong;
 
 /**
  * @author github kloping

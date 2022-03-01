@@ -2,8 +2,8 @@ package io.github.kloping.mywebsite.plugins.detail;
 
 import io.github.kloping.mywebsite.entitys.medias.Song;
 import io.github.kloping.mywebsite.entitys.medias.Songs;
-import io.github.kloping.mywebsite.plugins.entity.NetEaseSongs.Artists;
-import io.github.kloping.mywebsite.plugins.entity.NetEaseSongs.NetEaseSongs;
+import io.github.kloping.mywebsite.entitys.webApi.netEaseSongs.Artists;
+import io.github.kloping.mywebsite.entitys.webApi.netEaseSongs.NetEaseSongs;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,7 @@ public class NetEaseDetail {
                 NMTID_ENTRY
         );
         List<Song> songs = new ArrayList<>();
-        for (io.github.kloping.mywebsite.plugins.entity.NetEaseSongs.Songs song : netEaseSongs.getResult().getSongs()) {
+        for (io.github.kloping.mywebsite.entitys.webApi.netEaseSongs.Songs song : netEaseSongs.getResult().getSongs()) {
             songs.add(new Song()
                     .setSongUrl("http://music.163.com/song/media/outer/url?id=" + song.getId() + ".mp3")
                     .setLyric(netEaseMusic.getLyric(song.getId().intValue()).getLyric())

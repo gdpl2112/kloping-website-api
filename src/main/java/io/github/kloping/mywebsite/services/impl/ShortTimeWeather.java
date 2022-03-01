@@ -10,12 +10,15 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
+/**
+ * @author github-kloping
+ */
 @Service
 public class ShortTimeWeather implements IShortTimeWeather {
     @Override
     public WeatherM getWeather(String lng, String lat) {
         try {
-            String urlStr = String.format(baseU1, lng, lat);
+            String urlStr = String.format(BASEU1, lng, lat);
             Connection connection = Jsoup.connect(urlStr)
                     .ignoreContentType(true)
                     .header("Accept", "*/*")
@@ -35,7 +38,6 @@ public class ShortTimeWeather implements IShortTimeWeather {
 
             WeatherM weatherM = new WeatherM();
             String[] strings = jsonObject.getJSONObject("data").getJSONObject("weatherCloud").getJSONArray("imgArr").toArray(new String[0]);
-//            weatherM.setImgs(strings);
             weatherM.setIntro(jsonObject.getJSONObject("data").getJSONObject("nowcasting").getString("description"));
             weatherM.setName(jsonObject.getJSONObject("data").getJSONObject("nowcasting").getString("showCounty"));
             weatherM.setLng(lng);
@@ -48,7 +50,7 @@ public class ShortTimeWeather implements IShortTimeWeather {
         return null;
     }
 
-    private static final String baseU1 =
+    private static final String BASEU1 =
             "https://m.baidu.com/sf?pd=life_compare_weather&openapi=1&dspName=iphone&from_sf=1&resource_id=5135&weatherId=101220704&lng=%s&lat=%s&word=短时预报&title=短时预报&lid=9186109434066578388&referlid=9186109434066578388&ms=1&frsrcid=4982&frorder=1";
 
 }

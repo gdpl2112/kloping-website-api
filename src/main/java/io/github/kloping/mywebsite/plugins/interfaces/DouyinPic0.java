@@ -1,10 +1,7 @@
 package io.github.kloping.mywebsite.plugins.interfaces;
 
-import io.github.kloping.MySpringTool.annotations.Param;
 import io.github.kloping.MySpringTool.annotations.http.*;
-import io.github.kloping.mywebsite.plugins.entity.douyPic.DouyPic;
-
-import java.util.Map;
+import io.github.kloping.mywebsite.entitys.webApi.douyPic.DouyPic;
 
 /**
  * @author github kloping

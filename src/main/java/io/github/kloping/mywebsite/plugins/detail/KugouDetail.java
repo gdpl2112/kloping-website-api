@@ -2,9 +2,9 @@ package io.github.kloping.mywebsite.plugins.detail;
 
 import io.github.kloping.mywebsite.entitys.medias.Song;
 import io.github.kloping.mywebsite.entitys.medias.Songs;
-import io.github.kloping.mywebsite.plugins.entity.kugouDetail.Info;
-import io.github.kloping.mywebsite.plugins.entity.kugouDetail.KugouSongDetail;
-import io.github.kloping.mywebsite.plugins.entity.kugouSong.KugouSong;
+import io.github.kloping.mywebsite.entitys.webApi.kugouDetail.Info;
+import io.github.kloping.mywebsite.entitys.webApi.kugouDetail.KugouSongDetail;
+import io.github.kloping.mywebsite.entitys.webApi.kugouSong.KugouSong;
 
 import java.util.ArrayList;
 import java.util.List;

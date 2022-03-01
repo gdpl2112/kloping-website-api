@@ -1,10 +1,10 @@
 package io.github.kloping.mywebsite.plugins.interfaces;
 
 import io.github.kloping.MySpringTool.annotations.http.*;
-import io.github.kloping.mywebsite.plugins.entity.QqLyric.QQLyric;
-import io.github.kloping.mywebsite.plugins.entity.qqDetail.QQMusicDataList;
-import io.github.kloping.mywebsite.plugins.entity.qqDetail.QQSongDetail;
-import io.github.kloping.mywebsite.plugins.entity.qqOneSong.QQOneSong;
+import io.github.kloping.mywebsite.entitys.webApi.qqLyric.QQLyric;
+import io.github.kloping.mywebsite.entitys.webApi.qqDetail.QQMusicDataList;
+import io.github.kloping.mywebsite.entitys.webApi.qqDetail.QQSongDetail;
+import io.github.kloping.mywebsite.entitys.webApi.qqOneSong.QQOneSong;
 
 import java.util.Map;
 
