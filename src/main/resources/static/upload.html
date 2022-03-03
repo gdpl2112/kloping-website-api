@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>发布公告</title>
+    <!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">-->
+    <!--    <script src="https://unpkg.com/popper.js@1.14.7/dist/umd/popper.min.js"></script>-->
+    <!--    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>-->
+    <!--    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>-->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+
+    <link href="css/summernote-bs4.css" rel="stylesheet">
+    <script src="js/summernote-bs4.min.js"></script>
+</head>
+<body>
+<div id="summernote"></div>
+<center>
+    <form>
+        <div class="form-group">
+            <label for="title">标题</label>
+            <input type="text" class="form-control" id="title"
+                   placeholder="标题" name="title">
+            <small id="titleHelp" class="form-text text-muted">公告标题</small>
+        </div>
+        <div class="form-group">
+            <label for="input_name">作者名:</label>
+            <input type="text" class="form-control" id="input_name"
+                   placeholder="名字" name="name">
+            <small id="nameHelp" class="form-text text-muted">输入你的昵称</small>
+        </div>
+        <div class="form-group">
+            <label for="input_id">作者id:</label>
+            <input type="text" class="form-control" id="input_id"
+                   placeholder="id" name="id">
+            <small id="idHelp" class="form-text text-muted">输入你的ID</small>
+        </div>
+        <div class="form-group">
+            <label for="input_icon">公告图标</label>
+            <input type="text" class="form-control" id="input_icon"
+                   placeholder="http://...jpg" name="id">
+            <small id="iconHelp" class="form-text text-muted">输入网络的图片地址</small>
+        </div>
+        <div class="form-group">
+            <label for="passwd">上传密码</label>
+            <input type="password" name="passwd" class="form-control" id="passwd" placeholder="Password">
+        </div>
+        <button type="button" onclick="upLoad()" class="btn btn-primary">上传</button>
+    </form>
+</center>
+<script>
+    let sm = $('#summernote');
+    sm.summernote({
+        tabsize: 2,
+        height: 200
+    });
+
+    function upLoad() {
+        console.log("clicked")
+        let body = {};
+        body.title = $("#title").val()
+        body.name = $("#input_name").val()
+        body.passwd = $("#passwd").val()
+        body.id = $("#input_id").val()
+        body.code = sm.summernote('code');
+        body.icon = $("#input_icon").val()
+        axios.post("/upload", body).then(function (response) {
+            alert(response.data)
+        }).catch(function (err) {
+            alert(err);
+        })
+    }
+</script>
+</body>
+</html>

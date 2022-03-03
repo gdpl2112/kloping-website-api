@@ -19,7 +19,6 @@ import java.util.Map;
 import static io.github.kloping.mywebsite.Source.onCreate;
 
 @SpringBootApplication
-@PropertySource("classpath:application.properties")
 @Import({TomcatUtil.class})
 @CrossOrigin
 public class MyWebSiteApplication implements WebServerFactoryCustomizer<ConfigurableWebServerFactory> {

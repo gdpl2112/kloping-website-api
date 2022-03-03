@@ -22,9 +22,6 @@ public class SystemController {
 
     @GetMapping({"/", "/#"})
     public String index(@RequestHeader(value = "User-Agent") String userAgent) {
-        if (userAgent.contains("Android") || userAgent.contains("iPhone")) {
-            return "redirect:index2.html";
-        }
         return "redirect:index.html";
     }
 

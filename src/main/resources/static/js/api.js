@@ -3,7 +3,7 @@ let vm1 = new Vue({
     created: function () {
         axios.get("/api/getApiList").then(function (response) {
             vm1.list = response.data;
-
+            load()
         }).catch(function (err) {
             alert(err);
         })

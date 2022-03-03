@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>若生er,WebSite</title>
+    <script src="./js/lib/axios.js"></script>
+    <script src="./js/lib/vue.js"></script>
+    <script src="./js/lib/jq3.6.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+            integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
+            crossorigin="anonymous"></script>
+
+    <style>
+        * div {
+            /*border: crimson 1px solid;*/
+        }
+
+        body {
+            position: fixed;
+            z-index: -1;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: center 0 no-repeat;
+            background-size: cover;
+            height: 100%;
+        }
+
+        header * {
+            display: inline-block;
+        }
+
+        .logo {
+            height: 50px;
+            width: 50px;
+            background-image: url("https://q1.qlogo.cn/g?b=qq&nk=3474006766&s=640");
+            border-radius: 999px;
+            background-size: cover;
+            overflow: hidden;
+            border: crimson solid 1px;
+        }
+
+        .logo:hover {
+
+        }
+
+        audio {
+            display: none;
+        }
+
+        .bodyDiv1 {
+            text-align: center;
+            background: rgba(90, 176, 169, 0.75);
+            border-radius: 5px;
+            height: 100%;
+            color: black;
+            font-family: 新宋体;
+            font-weight: bolder;
+            font-size: 20px;
+        }
+
+        .bodyDiv1 > #Fdp1 {
+            color: rgba(24, 63, 105, 0.91);
+        }
+
+        .bodyDiv1 > #Fdp2 {
+            color: rgba(65, 24, 105, 0.91);
+        }
+
+        .bodyDivF {
+            /*border: crimson solid 1px;*/
+            margin-top: 5%;
+            height: 80%
+        }
+
+        .bodyDiv {
+            height: 20%;
+            /*border: blue solid 1px;*/
+        }
+
+        .bodyDiv2 {
+            height: 80%;
+            position: absolute;
+            top: 33%;
+            width: 100%;
+        }
+
+        .bodyDiv2d1 {
+            width: 40%;
+            height: 80%;
+            display: inline-block;
+            background-image: url('join.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            opacity: 0.6;
+        }
+
+        .bodyDiv2d2 {
+            width: 40%;
+            height: 80%;
+            background-color: rgba(222, 196, 144, 0.75);
+            align-items: center;
+        }
+
+        #shower img {
+            height: 50px;
+            width: 50px;
+            border-radius: 999px;
+            background-size: cover;
+            overflow: hidden;
+            border: crimson solid 1px;
+            position: absolute;
+        }
+
+        .td1 {
+            color: black;
+            font-size: 18px;
+        }
+
+        canvas {
+            display: block;
+        }
+
+        .tou:hover {
+            transform: scale(1.2, 1.2);
+        }
+    </style>
+</head>
+<body class="container">
+<script src="js/bg.js"></script>
+<!--<canvas style="position: absolute;width: 100%;height: 100%" id="canvas"></canvas>-->
+<!--<input style="position: absolute;top: 90%;left: -10%;" onclick="dow()" type="button" value="背景图"/>-->
+<header class="row" style="background-color: rgba(197,237,255,0.45)">
+    <div class="col-sm-2"></div>
+    <a id="tou" class="col-sm-2 logo tou" href="http://wpa.qq.com/msgrd?v=3&uin=3474006766&site=qq&menu=yes"
+       title="点我联系作者"></a>
+    <div class="col-sm-1"></div>
+    <div class="col-sm-2" style="margin-top: 10px"> 作者QQ:3474006766</div>
+    <div class="col-sm-2" style="margin-top: 10px">Q:0号机器人开发者</div>
+    <div class="col-sm-3" style="margin-top: 10px">已存在机器人:001号,017号</div>
+</header>
+<div class="bodyDivF">
+    <div class="row bodyDiv">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-1"></div>
+        <div class="col-sm-6 bodyDiv1">
+            <br>
+            <p1 id="Fdp1">据不完全统计:总计记录用户3000余人</p1>
+            <br>
+            <p2 id="Fdp2">据不完全统计:总计记录游戏用户500余人</p2>
+            <br>
+            <p2 id="Fdp3">==</p2>
+        </div>
+    </div>
+    <div class="bodyDiv2 row">
+        <a href="https://jq.qq.com/?_wv=1027&k=clP6D5ih" class="bodyDiv2d1 col-sm-5" title="点我加入群聊,参与机器人互动"></a>
+        <div class="col-sm-2"></div>
+        <div class="bodyDiv2d2 col-sm-5">
+            <div id="shower" style="margin-left: 5%;margin-top: 8%">
+                <div id="showerD1" v-for="e in en">
+                    <img class="td1 tou" :src="'https://q1.qlogo.cn/g?b=qq&nk='+e.id+'&s=640'" alt="">
+                    <br>
+                    <br>
+                    <br>
+                    <p2 class="td1" v-text="e.times"></p2>
+                    <br>
+                    =======================================
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    alert("<<使用程序声明>>\n" +
+            "在未经过允许的情况下，任何人都不可以使用本程序的,形象图和图标，用于商业用途或其他未许可的行为\n" +
+            "本程序一切功能,仅用于娱乐,且在使用本程序时的所产生的所有消费概不退还\n" +
+            "任何情况下,任何人因本程序造成的所有违法行为,概不负责\n" +
+            "\t\t使用程序,即视为已阅读此声明")
+    let s = null;
+
+    // function dow() {
+    //     window.open(s)
+    // }
+
+    axios({
+        url: "/getNum",
+        method: "get"
+    }).then(function (response) {
+        $("#Fdp3").text(response.data);
+    });
+
+    let t = 100;
+    let vm1 = new Vue({
+        el: "#shower",
+        created: function () {
+            axios.get("/getAllInfo").then(function (response) {
+                vm1.en = response.data;
+                vm1.finalE = JSON.parse(JSON.stringify(vm1.en));
+                vm1.timer1();
+                vm1.updateTime();
+            }).catch(function (err) {
+                alert(err);
+            })
+        }, data: {
+
+            en: [],
+            finalE: [],
+        }, methods: {
+
+            timer1: function () {
+                setTimeout(function () {
+                    t = vm1.eve();
+                    vm1.timer1();
+                }, t);
+            },
+            eve: function () {
+                let t = 50;
+                let i = vm1.en.length;
+                for (let n = 0; n < i; n++) {
+                    let e = vm1.en[n].times;
+                    let f = vm1.finalE[n].times;
+                    if (e.startsWith("^")) {
+                        if (e.length === 1) {
+                            e = "";
+                        } else {
+                            e = e.substring(0, e.length - 1);
+                        }
+                    } else {
+                        if (e.length === f.length) {
+                            e = "^" + e;
+                            t = 1500;
+                        } else
+                            e = f.substring(0, e.length + 1);
+                    }
+                    vm1.en[n].times = e;
+                }
+                return t;
+            }, updateTime: function () {
+                axios.get("/getAllInfo").then(function (response) {
+                    vm1.en = response.data;
+                    vm1.finalE = JSON.parse(JSON.stringify(vm1.en));
+                }).catch(function (err) {
+                    console.log(err)
+                })
+                setTimeout(function () {
+                    vm1.updateTime();
+                }, 10000);
+            }
+        }
+    });
+</script>
+<script src="js/player.js"></script>
+<link href="css/main.css">
+<script src="js/main.js"></script>
+<script src="//api.dzzui.com/api/yinghua"></script>
+</body>
+</html>
