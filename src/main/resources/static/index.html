@@ -5,9 +5,9 @@
     <meta name="referrer" content="no-referrer"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="./js/lib/axios.js"></script>
+    <script src="./js/lib/vue.js"></script>
+    <script src="./js/lib/jq3.6.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://unpkg.com/popper.js@1.14.7/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
@@ -40,6 +40,9 @@
         created: function () {
             axios.get("/getNotice").then(function (response) {
                 vm1.data = response.data
+                let sc1 = document.createElement("script")
+                sc1.src = "/js/lib/dzzui.js"
+                document.getElementsByTagName("body")[0].appendChild(sc1)
             }).catch(function (err) {
                 alert(err);
             })
@@ -52,11 +55,6 @@
                 window.open("/notice.html?id=" + id)
             }
         }
-    });
-    $(document).ready(function () {
-        let sc1 = document.createElement("script")
-        sc1.src = "/js/lib/dzzui.js"
-        document.getElementsByTagName("body")[0].appendChild(sc1)
     });
 </script>
 </body>

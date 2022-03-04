@@ -36,5 +36,8 @@ function load() {
             e.css("background-color", colors[n])
             e.css("color", "#000000");
         }
+        let sc1 = document.createElement("script")
+        sc1.src = "/js/lib/dzzui.js"
+        document.getElementsByTagName("body")[0].appendChild(sc1)
     }, 1000)
 }
