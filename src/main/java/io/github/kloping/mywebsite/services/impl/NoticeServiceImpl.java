@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -37,6 +38,7 @@ public class NoticeServiceImpl implements INoticeService {
             list0.add(list.get(i));
             i++;
         }
+        Collections.reverse(list0);
         return list0;
     }
 
