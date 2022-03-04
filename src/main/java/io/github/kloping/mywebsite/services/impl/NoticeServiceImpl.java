@@ -52,6 +52,7 @@ public class NoticeServiceImpl implements INoticeService {
             String title = j.getString("title");
             Long id = Long.valueOf(j.get("id").toString());
             String html = j.get("code").toString();
+            html = filterCode(html);
             String icon = j.get("icon").toString();
             Notice notice = new Notice()
                     .setId(null)
@@ -63,6 +64,12 @@ public class NoticeServiceImpl implements INoticeService {
             return true;
         }
         return false;
+    }
+
+    private String filterCode(String html) {
+        html = html.replaceAll("&lt;del&gt;", "<del>");
+        html = html.replaceAll("&lt;/del&gt;", "</del>");
+        return html;
     }
 
     @Override
