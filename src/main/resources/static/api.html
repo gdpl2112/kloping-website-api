@@ -19,16 +19,18 @@
 <center><h1 style=" font-weight: bold;color: black;background: rgba(254,253,255,0.3)">API 列表</h1></center>
 <center><h3 style="background: rgba(254,253,255,0.3)"> 接口仅用于娱乐 禁止用于非法用途 </h3></center>
 <center><h5 style="background: rgba(254,253,255,0.3)"> 最近更新于 2022/2/3 若出现不可用的情况请各位开发者自行调整代码 </h5></center>
-<div class="row" id="api_list">
-    <div style="margin-left: 20px; margin-top: 10px;border: 1px solid #361cab;border-radius: 10px"
-         class="col-xs-4 col-sm-3 apiE"
-         v-for="(e,i) in list">
-        <div>
-            <h4 style="padding: 0;font-weight: bold" v-text="e.name"></h4>
-            <hr>
-            <p style="font-weight: bold;color: black" v-text="e.desc"></p>
-            <input style="margin-bottom: 10px" v-on:click="mDetail(i)" :class="'btn'+' btn-'+e.state" type="button"
-                   value="去看看">
+<div class="container">
+    <div class="row" id="api_list">
+        <div style="margin-left: 20px; margin-top: 10px;border: 1px solid #361cab;border-radius: 10px"
+             class="col-sm-3 apiE"
+             v-for="(e,i) in list">
+            <div>
+                <h4 style="padding: 0;font-weight: bold" v-text="e.name"></h4>
+                <hr>
+                <p style="font-weight: bold;color: black" v-text="e.desc"></p>
+                <input style="margin-bottom: 10px" v-on:click="mDetail(i)" :class="'btn'+' btn-'+e.state" type="button"
+                       value="去看看">
+            </div>
         </div>
     </div>
 </div>
