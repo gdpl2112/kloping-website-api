@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.github.kloping.mywebsite.entitys.Notice;
+import io.github.kloping.mywebsite.entitys.NoticePack;
 import io.github.kloping.mywebsite.mapper.NoticeMapper;
 import io.github.kloping.mywebsite.services.INoticeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,8 @@ public class NoticeServiceImpl implements INoticeService {
     private static final int MAX = 5;
 
     @Override
-    public List<Notice> get(int pn) {
+    public NoticePack get(int pn) {
+        pn--;
         QueryWrapper<Notice> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("state", 0);
         List<Notice> list = mapper.selectList(queryWrapper);
@@ -38,8 +40,12 @@ public class NoticeServiceImpl implements INoticeService {
             list0.add(list.get(i));
             i++;
         }
+        NoticePack noticePack = new NoticePack();
         Collections.reverse(list0);
-        return list0;
+        noticePack.setNotices(list0);
+        noticePack.setPn(++pn);
+        noticePack.setMax(list.size() / 5 + (list.size() % 5 > 0 ? 1 : 0));
+        return noticePack;
     }
 
     @Value("${upload.passwd:123456}")

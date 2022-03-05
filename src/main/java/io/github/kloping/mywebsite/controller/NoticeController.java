@@ -1,6 +1,7 @@
 package io.github.kloping.mywebsite.controller;
 
 import io.github.kloping.mywebsite.entitys.Notice;
+import io.github.kloping.mywebsite.entitys.NoticePack;
 import io.github.kloping.mywebsite.services.INoticeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
@@ -17,8 +18,8 @@ public class NoticeController {
     INoticeService service;
 
     @GetMapping("/getNotice")
-    public List<Notice> get0(@RequestParam @Nullable Integer pn) {
-        if (pn == null) pn = 0;
+    public NoticePack get0(@RequestParam @Nullable Integer pn) {
+        if (pn == null) pn = 1;
         return service.get(pn);
     }
 

@@ -1,8 +1,7 @@
 package io.github.kloping.mywebsite.services;
 
 import io.github.kloping.mywebsite.entitys.Notice;
-
-import java.util.List;
+import io.github.kloping.mywebsite.entitys.NoticePack;
 
 /**
  * @author github.kloping
@@ -14,7 +13,7 @@ public interface INoticeService {
      * @param pn
      * @return
      */
-    List<Notice> get(int pn);
+    NoticePack get(int pn);
 
     /**
      * save a notice
