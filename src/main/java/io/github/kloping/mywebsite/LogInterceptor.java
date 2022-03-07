@@ -31,8 +31,9 @@ public class LogInterceptor extends HandlerInterceptorAdapter {
         System.out.println();
         String url = request.getRequestURL().toString();
         if (url != null) {
-            if (url.endsWith("abo"))
+            if (url.endsWith("abo")) {
                 return true;
+            }
             if (url.contains("/api")) {
                 if (whiteListIp.contains(ip)) return true;
                 Integer i = maps.get(ip);

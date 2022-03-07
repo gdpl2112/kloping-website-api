@@ -35,15 +35,63 @@
     <div v-html="data.html">
     </div>
 </div>
+<br>
+<div id="comment_q" class="container">
+    <div class="row">
+    </div>
+    <div class="input-group">
+        <input type="text" placeholder="评论." id="comment_input" class="form-control" aria-label="Dollar amount ">
+        <div class="input-group-append">
+            <button class="btn btn-outline-info" type="button" id="comment_but">评论</button>
+        </div>
+    </div>
+    <br>
+    <div style="margin-top: 5px" class="row" v-for="d in cs">
+        <div class="col-1"></div>
+        <div style="background-color: rgba(119,119,119,0.8);border-radius: 10px;vertical-align: middle;"
+             class="media col-10">
+            <img style="max-width: 40px; border-radius: 10px" :src="d.icon" class="mr-3 align-self-center mx-auto "
+                 alt=".">
+            <div style="margin-left: 8px" class="media-body">
+                <h5 class="mt-0" v-text="d.nickName"></h5>
+                <p v-text="d.content"></p>
+            </div>
+        </div>
+        <div class="col-1"></div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal0">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">提示</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <p class="text-secondary" id="tips0"></p>
+
+            <div class="modal-body">
+                <input id="tips-input" type="text" class="form-control" aria-label="Sizing example input"
+                       aria-describedby="inputGroup-sizing-default">
+            </div>
+            <div class="modal-footer">
+                <button id="tips_but" type="button" class="btn btn-info" data-dismiss="modal">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="js/utils.js"></script>
 <script src="js/lib/dzzui.js"></script>
 <script>
+    let input0 = null
     const paramsStr = window.location.search
     const params = new URLSearchParams(paramsStr)
     let id = params.get('id')
     let vm1 = new Vue({
         el: "#box",
         created: function () {
+            input0 = $("#tips-input")
             axios.get("/getNoticeById?id=" + id).then(function (response) {
                 vm1.data = response.data
                 document.getElementsByTagName("title")[0].innerText = vm1.data.title
@@ -58,6 +106,62 @@
             }
         }
     });
+
+    let vm2 = new Vue({
+        el: "#comment_q",
+        created: function () {
+            axios.get("/getComment?nid=" + id).then(function (response) {
+                vm2.cs = response.data
+            }).catch(function (err) {
+                alert(err);
+            })
+        }, data: {
+            cs: []
+        }, methods: {}
+    });
+
+
+    let qid = -1
+    reqInputQid();
+
+    function reqInputQid() {
+        input0.val("")
+        $("#tips0").html("请确保该QQ号已加入<a href='https://jq.qq.com/?_wv=1027&k=clP6D5ih'>群</a>否则将无法接收验证码")
+        input0.placeholder = "QQ号"
+        $("#modal0").modal(`show`)
+        $("#tips_but").unbind('click').click(function () {
+            let s0 = input0.val();
+            qid = parseInt(s0)
+        })
+    }
+
+    $("#comment_but").click(function () {
+        if (qid === -1) {
+            reqInputQid();
+            return
+        }
+        let d = $("#comment_input")
+        reqAuth(d.val());
+    })
+
+    function reqAuth(body) {
+        axios.get("/reqAuth?qid=" + qid).then(function (response) {
+            input0.val("")
+            $("#tips0").html("请输入接受到的验证码")
+            input0.placeholder = "验证码"
+            $("#modal0").modal(`show`)
+            $("#tips_but").unbind('click').click(function () {
+                let s0 = input0.val();
+                axios.post("pcm?nid=" + id + "&qid=" + qid + "&body=" + body + "&pwd=" + s0).then(function (response) {
+                    vm2.cs.push(response.data)
+                }).catch(function (err) {
+                    alert(err);
+                })
+            })
+        }).catch(function (err) {
+            alert(err);
+        })
+    }
 </script>
 </body>
 </html>

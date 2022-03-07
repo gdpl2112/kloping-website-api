@@ -12,3 +12,7 @@ server:
 
 upload:
   passwd: 443212
+
+auth:
+  url: http://localhost:20049
+  pwd: 123456
