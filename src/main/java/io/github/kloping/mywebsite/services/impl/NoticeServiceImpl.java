@@ -32,6 +32,7 @@ public class NoticeServiceImpl implements INoticeService {
         pn--;
         QueryWrapper<Notice> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("state", 0);
+        queryWrapper.orderByDesc("time");
         List<Notice> list = mapper.selectList(queryWrapper);
         List<Notice> list0 = new LinkedList<>();
         int i = pn * 5;
