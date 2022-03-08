@@ -42,7 +42,6 @@ public class NoticeServiceImpl implements INoticeService {
             i++;
         }
         NoticePack noticePack = new NoticePack();
-        Collections.reverse(list0);
         noticePack.setNotices(list0);
         noticePack.setPn(++pn);
         noticePack.setMax(list.size() / 5 + (list.size() % 5 > 0 ? 1 : 0));
