@@ -16,6 +16,7 @@ public class Notice {
     @TableId(type = IdType.AUTO)
     private Long id;
     private Integer state;
+    private Integer views;
     private String title;
     private String icon;
     private String date;

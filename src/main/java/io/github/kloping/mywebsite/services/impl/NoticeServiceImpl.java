@@ -85,6 +85,8 @@ public class NoticeServiceImpl implements INoticeService {
         QueryWrapper<Notice> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("id", id);
         Notice notice = mapper.selectOne(queryWrapper);
+        notice.setViews(notice.getViews() + 1);
+        mapper.updateById(notice);
         return notice;
     }
 }
