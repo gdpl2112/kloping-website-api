@@ -23,6 +23,12 @@ public class NoticeController {
         return service.get(pn);
     }
 
+    @GetMapping("/getNotice0")
+    public NoticePack get2(@RequestParam @Nullable Integer pn) {
+        if (pn == null) pn = 1;
+        return service.get1(pn);
+    }
+
     @GetMapping("/getNoticeById")
     public Notice get1(@RequestParam Integer id) {
         return service.get0(id);

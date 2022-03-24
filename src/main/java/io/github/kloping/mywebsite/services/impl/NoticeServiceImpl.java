@@ -48,6 +48,15 @@ public class NoticeServiceImpl implements INoticeService {
         return noticePack;
     }
 
+    @Override
+    public NoticePack get1(Integer pn) {
+        NoticePack pack = get(pn);
+        for (Notice notice : pack.getNotices()) {
+            notice.setHtml("");
+        }
+        return pack;
+    }
+
     @Value("${upload.passwd:123456}")
     String passwd;
     final SimpleDateFormat sf_0 = new SimpleDateFormat("yyyy-MM-dd:HH:mm:ss");

@@ -31,4 +31,11 @@ public interface INoticeService {
      * @return
      */
     Notice get0(Integer id);
+
+    /**
+     * simple
+     * @param pn
+     * @return
+     */
+    NoticePack get1(Integer pn);
 }

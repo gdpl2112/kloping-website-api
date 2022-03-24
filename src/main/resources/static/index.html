@@ -71,7 +71,7 @@
     let vm1 = new Vue({
         el: "#con0",
         created: function () {
-            axios.get("/getNotice?pn=" + page).then(function (response) {
+            axios.get("/getNotice0?pn=" + page).then(function (response) {
                 vm1.data = response.data
                 vm1.pn = page
                 let sc1 = document.createElement("script")
