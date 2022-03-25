@@ -34,8 +34,19 @@ public interface INoticeService {
 
     /**
      * simple
+     *
      * @param pn
      * @return
      */
     NoticePack get1(Integer pn);
+
+    /**
+     * 修改内容
+     *
+     * @param id
+     * @param passwd
+     * @param body
+     * @return
+     */
+    boolean modify(Integer id, String passwd, String body);
 }

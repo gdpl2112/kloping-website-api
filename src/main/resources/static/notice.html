@@ -26,9 +26,9 @@
         <div class="col-3">
             <p class="text-secondary" v-text="formatMsgTime(data.time)"></p>
         </div>
-        <div class="col-5">
+        <div class="col-4">
         </div>
-        <div class="col-2">
+        <div class="col-3">
             <p class="text-secondary" v-text="data.authorName"></p>
         </div>
         <span class="text-success col-2 bi-eye" v-text="data.views"> </span>
@@ -36,10 +36,8 @@
     <br>
     <br>
     <div class="row">
-        <div class="col-1"></div>
-        <div class="col-10" v-html="data.html">
+        <div class="col-12" v-html="data.html">
         </div>
-        <div class="col-1"></div>
     </div>
 </div>
 <br>

@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -69,7 +68,6 @@ public class NoticeServiceImpl implements INoticeService {
             String title = j.getString("title");
             Long id = Long.valueOf(j.get("id").toString());
             String html = j.get("code").toString();
-            html = filterCode(html);
             String icon = j.get("icon").toString();
             Notice notice = new Notice()
                     .setId(null)
@@ -83,12 +81,6 @@ public class NoticeServiceImpl implements INoticeService {
         return false;
     }
 
-    private String filterCode(String html) {
-        html = html.replaceAll("&lt;del&gt;", "<del>");
-        html = html.replaceAll("&lt;/del&gt;", "</del>");
-        return html;
-    }
-
     @Override
     public Notice get0(Integer id) {
         QueryWrapper<Notice> queryWrapper = new QueryWrapper<>();
@@ -97,5 +89,15 @@ public class NoticeServiceImpl implements INoticeService {
         notice.setViews(notice.getViews() + 1);
         mapper.updateById(notice);
         return notice;
+    }
+
+    @Override
+    public boolean modify(Integer id, String passwd, String body) {
+        if (this.passwd.equals(passwd)) {
+            Notice notice = mapper.selectById(id);
+            notice.setHtml(body);
+            return mapper.updateById(notice) > 0;
+        }
+        return false;
     }
 }
