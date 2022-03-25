@@ -33,8 +33,13 @@
         </div>
         <span class="text-success col-2 bi-eye" v-text="data.views"> </span>
     </div>
-    <br><br>
-    <div v-html="data.html">
+    <br>
+    <br>
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col-10" v-html="data.html">
+        </div>
+        <div class="col-1"></div>
     </div>
 </div>
 <br>
