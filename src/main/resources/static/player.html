@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge，chrome=1">
+    <script src="js/player/dplayer.js"></script>
+    <script src="js/player/hls.js"></script>
+    <meta name="referrer" content="never">
+    <title>kloping播放站</title>
+</head>
+<body>
+<div id="dplayer"></div>
+<script>
+    let ss = location.href.split("=")
+    let u0 = ss[1]
+    const dp = new DPlayer({
+        container: document.getElementById('dplayer'),
+        video: {
+            url: u0,
+            type: 'hls',
+        },
+        pluginOptions: {
+            hls: {},
+        },
+    });
+</script>
+</body>
+</html>
