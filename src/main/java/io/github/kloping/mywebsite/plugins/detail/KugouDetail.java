@@ -42,7 +42,7 @@ public class KugouDetail {
                     .setId(kugouSong.getData().getHash() + "-" + info.getAlbum_id());
             list.add(song);
         }
-        Songs songs = new Songs(0, detail.getData().getInfo().length, System.currentTimeMillis(), "", list.toArray(new Song[0]), "wy");
+        Songs songs = new Songs(0, detail.getData().getInfo().length, System.currentTimeMillis(), "", list.toArray(new Song[0]), "kugou");
         return songs;
     }
 
