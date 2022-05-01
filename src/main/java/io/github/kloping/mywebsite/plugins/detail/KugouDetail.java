@@ -53,6 +53,7 @@ public class KugouDetail {
 
     public static KugouSong getOne(String hash, String id) {
         KugouSong kugouSong = kugou.getSong(null, null, null, null, null, null, hash, id, System.currentTimeMillis());
+        System.out.println(kugouSong);
         return kugouSong;
     }
 }
