@@ -22,7 +22,6 @@ public class KugouDetail {
         int i = callbackJson.indexOf("(");
         int i1 = callbackJson.lastIndexOf(")");
         String js = callbackJson.substring(i + 1, i1);
-        System.out.println(js);
         return js;
     }
 
