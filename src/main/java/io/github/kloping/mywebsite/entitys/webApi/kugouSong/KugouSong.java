@@ -34,4 +34,13 @@ public class KugouSong {
         this.status = status;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "KugouSong{" +
+                "data=" + data +
+                ", err_code=" + err_code +
+                ", status=" + status +
+                '}';
+    }
 }

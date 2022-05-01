@@ -1,5 +1,10 @@
 package io.github.kloping.mywebsite.entitys.webApi.kugouSong;
 
+import java.util.Arrays;
+
+/**
+ * @author github-kloping
+ */
 public class Data {
 	private String author_name;
 	private String audio_name;
@@ -240,5 +245,35 @@ public class Data {
 	public Data setAuthors(Authors[] authors) {
 		this.authors = authors;
 		return this;
+	}
+
+	@Override
+	public String toString() {
+		return "Data{" +
+				"author_name='" + author_name + '\'' +
+				", audio_name='" + audio_name + '\'' +
+				", img='" + img + '\'' +
+				", privilege2='" + privilege2 + '\'' +
+				", play_url='" + play_url + '\'' +
+				", song_name='" + song_name + '\'' +
+				", bitrate=" + bitrate +
+				", filesize=" + filesize +
+				", privilege=" + privilege +
+				", has_privilege=" + has_privilege +
+				", timelength=" + timelength +
+				", recommend_album_id='" + recommend_album_id + '\'' +
+				", audio_id='" + audio_id + '\'' +
+				", have_album=" + have_album +
+				", is_free_part=" + is_free_part +
+				", album_name='" + album_name + '\'' +
+				", album_id=" + album_id +
+				", have_mv=" + have_mv +
+				", author_id='" + author_id + '\'' +
+				", lyrics='" + lyrics + '\'' +
+				", hash='" + hash + '\'' +
+				", play_backup_url='" + play_backup_url + '\'' +
+				", video_id=" + video_id +
+				", authors=" + Arrays.toString(authors) +
+				'}';
 	}
 }
