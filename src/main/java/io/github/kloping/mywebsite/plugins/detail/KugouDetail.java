@@ -19,7 +19,9 @@ public class KugouDetail {
     public static String doc0(String callbackJson) {
         int i = callbackJson.indexOf("(");
         int i1 = callbackJson.lastIndexOf(")");
-        return callbackJson.substring(i + 1, i1);
+        String js = callbackJson.substring(i + 1, i1);
+        System.out.println(js);
+        return js;
     }
 
     public static KugouSongDetail search(Integer pageSize, Integer page, String keyword) {
@@ -53,7 +55,6 @@ public class KugouDetail {
 
     public static KugouSong getOne(String hash, String id) {
         KugouSong kugouSong = kugou.getSong(null, null, null, null, null, null, hash, id, System.currentTimeMillis());
-        System.out.println(kugouSong);
         return kugouSong;
     }
 }
