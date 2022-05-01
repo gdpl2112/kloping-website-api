@@ -6,8 +6,10 @@ import io.github.kloping.mywebsite.entitys.webApi.kugouDetail.Info;
 import io.github.kloping.mywebsite.entitys.webApi.kugouDetail.KugouSongDetail;
 import io.github.kloping.mywebsite.entitys.webApi.kugouSong.KugouSong;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 
 import static io.github.kloping.mywebsite.plugins.Source.kugou;
 
@@ -53,8 +55,12 @@ public class KugouDetail {
         return getOne(ss[0], ss.length > 1 ? ss[1] : "").getData().getPlay_url();
     }
 
+    public static final Entry<String, String> E0 = new AbstractMap.SimpleEntry<>("kg_mid", "2333");
+
     public static KugouSong getOne(String hash, String id) {
-        KugouSong kugouSong = kugou.getSong(null, null, null, null, null, null, hash, id, System.currentTimeMillis());
+        KugouSong kugouSong = kugou.getSong(null, null, null, null, null, null,
+                hash, id, System.currentTimeMillis(), E0
+        );
         return kugouSong;
     }
 }

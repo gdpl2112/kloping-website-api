@@ -4,6 +4,8 @@ import io.github.kloping.MySpringTool.annotations.http.*;
 import io.github.kloping.mywebsite.entitys.webApi.kugouDetail.KugouSongDetail;
 import io.github.kloping.mywebsite.entitys.webApi.kugouSong.KugouSong;
 
+import java.util.Map;
+
 /**
  * @author github kloping
  * @version 1.0
@@ -84,6 +86,7 @@ public interface KugouMusic {
      * @param hash
      * @param album_id
      * @param t0
+     * @param co0
      * @return
      */
     @GetPath("https://wwwapi.kugou.com/yy/index.php")
@@ -112,7 +115,9 @@ public interface KugouMusic {
             @ParamName("album_id")
                     String album_id,
             @ParamName("_")
-                    Long t0
+                    Long t0,
+            @CookieValue
+                    Map.Entry<String, String> co0
     );
 
 }
