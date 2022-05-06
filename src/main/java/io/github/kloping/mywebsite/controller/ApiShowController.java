@@ -1,18 +1,9 @@
 package io.github.kloping.mywebsite.controller;
 
 import io.github.kloping.mywebsite.entitys.ApiDetailM;
-import io.github.kloping.mywebsite.entitys.medias.PositionM;
-import io.github.kloping.mywebsite.entitys.medias.WeatherDetail;
-import io.github.kloping.mywebsite.entitys.medias.WeatherM;
-import io.github.kloping.mywebsite.services.IGetVideo;
-import io.github.kloping.mywebsite.services.IShortTimeWeather;
-import io.github.kloping.mywebsite.services.IWeather;
-import io.github.kloping.mywebsite.services.IgetLngLat;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.List;
@@ -61,9 +52,9 @@ public class ApiShowController {
                 .setAddress("")
         );
         LIST.add(new ApiDetailM()
-                .setName("短视频搜索 (不稳定)")
-                .setState("debug")
-                .setDesc("搜索 快手或 哔哩的短视频")
+                .setName("视频搜索")
+                .setState("success")
+                .setDesc("搜索腾讯爱奇艺视频")
                 .setAddress("")
         );
     }

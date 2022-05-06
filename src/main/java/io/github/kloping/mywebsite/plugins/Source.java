@@ -3,6 +3,8 @@ package io.github.kloping.mywebsite.plugins;
 import io.github.kloping.MySpringTool.StarterApplication;
 import io.github.kloping.MySpringTool.annotations.AutoStand;
 import io.github.kloping.MySpringTool.annotations.CommentScan;
+import io.github.kloping.MySpringTool.annotations.Schedule;
+import io.github.kloping.MySpringTool.annotations.TimeEve;
 import io.github.kloping.mywebsite.plugins.interfaces.*;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
@@ -47,6 +49,21 @@ public class Source {
 
     @AutoStand
     public static DuiTangImage duiTangImage;
+
+    @AutoStand
+    public static Iqiyi iqiyi;
+
+    @AutoStand
+    public static Iqiyi0 iqiyi0;
+
+    @AutoStand
+    public static TencentVideo tencentVideo;
+
+    @AutoStand
+    public static TencentVideo0 tencentVideo0;
+
+    @AutoStand
+    public static Empty empty;
 
     /**
      * sun.misc方式Base64编码
@@ -113,4 +130,7 @@ public class Source {
             }
         };
     }
+
+    @Schedule
+    public static final void m0(){}
 }

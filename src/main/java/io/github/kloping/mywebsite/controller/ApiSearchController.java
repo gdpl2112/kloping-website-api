@@ -1,12 +1,9 @@
 package io.github.kloping.mywebsite.controller;
 
+import io.github.kloping.mywebsite.entitys.VideoAnimeSource;
 import io.github.kloping.mywebsite.entitys.medias.Result;
 import io.github.kloping.mywebsite.entitys.medias.Songs;
-import io.github.kloping.mywebsite.entitys.medias.VideoSource;
-import io.github.kloping.mywebsite.services.IParseImg;
-import io.github.kloping.mywebsite.services.ISearchPic;
-import io.github.kloping.mywebsite.services.ISearchSong;
-import io.github.kloping.mywebsite.services.ISearchVideo;
+import io.github.kloping.mywebsite.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -120,25 +118,25 @@ public class ApiSearchController {
         }
         return new Songs(-1, 0, System.currentTimeMillis(), keyword, null, "err");
     }
-
-    @RequestMapping("/video")
-    public VideoSource searchVideo(HttpServletRequest request, String keyword, @RequestParam(required = false) String type) {
-        if (type == null || type.isEmpty()) type = "ks";
-        try {
-            switch (type.toLowerCase()) {
-                case "ks":
-                    return searchVideoGiftshow.search(keyword);
-                case "bili":
-                case "bilibili":
-                    return searchVideoBili.search(keyword);
-                default:
-                    return new VideoSource(-1, keyword, null, System.currentTimeMillis(), type, -1);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new VideoSource(-1, keyword, null, System.currentTimeMillis(), type, -1);
-    }
+//
+//    @RequestMapping("/video")
+//    public VideoSource searchVideo(HttpServletRequest request, String keyword, @RequestParam(required = false) String type) {
+//        if (type == null || type.isEmpty()) type = "ks";
+//        try {
+//            switch (type.toLowerCase()) {
+//                case "ks":
+//                    return searchVideoGiftshow.search(keyword);
+//                case "bili":
+//                case "bilibili":
+//                    return searchVideoBili.search(keyword);
+//                default:
+//                    return new VideoSource(-1, keyword, null, System.currentTimeMillis(), type, -1);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return new VideoSource(-1, keyword, null, System.currentTimeMillis(), type, -1);
+//    }
 
     @RequestMapping("/parseImgs")
     public List<String> parseImg(HttpServletRequest request, String url, @RequestParam(required = false) String type) {
@@ -158,4 +156,29 @@ public class ApiSearchController {
         return null;
     }
 
+    @Autowired
+    @Qualifier("videoGetterIqiyiImpl")
+    IVideoGetter getter0;
+
+    @Autowired
+    @Qualifier("videoGetterTencentImpl")
+    IVideoGetter getter1;
+
+
+    @RequestMapping("/video")
+    public VideoAnimeSource[] searchVideo(@RequestParam("keyword") String keyword, @RequestParam(required = false, value = "type") String type) {
+        switch (type) {
+            case "iqiyi":
+                return getter0.search(keyword);
+            case "tencent":
+                return getter1.search(keyword);
+            case "all":
+                List<VideoAnimeSource> sources = new LinkedList<>();
+                sources.addAll(Arrays.asList(getter0.search(keyword)));
+                sources.addAll(Arrays.asList(getter1.search(keyword)));
+                return sources.toArray(new VideoAnimeSource[0]);
+            default:
+                return null;
+        }
+    }
 }

@@ -62,11 +62,11 @@ public class ApiShowDetailController {
                 .setDetail("地名 例如: 北京")
         );
         LIST.add(new ApiDetail()
-                .setName("短视频搜索 (不稳定)")
+                .setName("视频搜索")
                 .setState("debug")
-                .setDesc("搜索 快手或 哔哩的短视频")
-                .setDetail("类型仅可为 ks (快手) bili(哔哩)")
-                .setSimpleUrl("/api/search/video?keyword=海绵宝宝&type=bili")
+                .setDesc(" 搜索腾讯爱奇艺视频")
+                .setDetail("类型仅可为 iqiyi (爱奇艺) tencent(腾讯视频) all(合并)")
+                .setSimpleUrl("/api/search/video?keyword=斗罗大陆&type=all")
                 .setAddress("/api/search/video?keyword=关键词&type=类型")
         );
     }
