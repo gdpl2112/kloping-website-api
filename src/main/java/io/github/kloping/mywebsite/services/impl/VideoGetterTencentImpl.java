@@ -97,7 +97,7 @@ public class VideoGetterTencentImpl implements IVideoGetter {
                             .setName(params.getUnion_title()).setDesc(params.getPlay_title())
                             .setVid(params.getVid()).setSource("tencent")
                             .setOrder(Integer.valueOf(params.getC_title_output()))
-                            .setPlayUrl(String.format(FORMAT_URL, params.getVid(), params.getCid()))
+                            .setPlayUrl(String.format(FORMAT_URL, params.getCid(), params.getVid()))
                             .setIsVip(!params.getImgtag_all().isEmpty());
                     vid = params.getVid();
                     details.add(detail);
