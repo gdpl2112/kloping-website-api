@@ -4,8 +4,9 @@ import io.github.kloping.MySpringTool.StarterApplication;
 import io.github.kloping.MySpringTool.annotations.AutoStand;
 import io.github.kloping.MySpringTool.annotations.CommentScan;
 import io.github.kloping.MySpringTool.annotations.Schedule;
-import io.github.kloping.MySpringTool.annotations.TimeEve;
 import io.github.kloping.mywebsite.plugins.interfaces.*;
+import io.github.kloping.mywebsite.services.impl.VideoGetterIqiyiImpl;
+import io.github.kloping.mywebsite.services.impl.VideoGetterTencentImpl;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
@@ -131,6 +132,9 @@ public class Source {
         };
     }
 
-    @Schedule
-    public static final void m0(){}
+    @Schedule("09:59:00,11:59:00,23:59:00,13:59:00")
+    public static final void m0() {
+        VideoGetterIqiyiImpl.HIST.clear();
+        VideoGetterTencentImpl.HIST.clear();
+    }
 }

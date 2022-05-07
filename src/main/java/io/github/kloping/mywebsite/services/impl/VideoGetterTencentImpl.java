@@ -22,8 +22,12 @@ import static io.github.kloping.mywebsite.plugins.Source.*;
  */
 @Service
 public class VideoGetterTencentImpl implements IVideoGetter {
+
+    public static final Map<String, VideoAnimeSource[]> HIST = new HashMap<>();
+
     @Override
     public VideoAnimeSource[] search(String keyword) {
+        if (HIST.containsKey(keyword)) return HIST.get(keyword);
         Document doc = tencentVideo.so(keyword);
         Element e0 = doc.getElementsByClass("mix_warp").get(0);
         List<VideoAnimeSource> sources = new ArrayList<>();
@@ -41,7 +45,9 @@ public class VideoGetterTencentImpl implements IVideoGetter {
             source.setSt(details.length);
             sources.add(source);
         }
-        return sources.toArray(new VideoAnimeSource[0]);
+        VideoAnimeSource[] ss = sources.toArray(new VideoAnimeSource[0]);
+        HIST.put(keyword, ss);
+        return ss;
     }
 
     public static final Map<String, String> HEADERS = new HashMap<>();

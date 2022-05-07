@@ -10,8 +10,10 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import static io.github.kloping.mywebsite.plugins.Source.*;
 
@@ -22,6 +24,7 @@ import static io.github.kloping.mywebsite.plugins.Source.*;
 public class VideoGetterIqiyiImpl implements IVideoGetter {
     @Override
     public VideoAnimeSource[] search(String keyword) {
+        if (HIST.containsKey(keyword)) return HIST.get(keyword);
         Document document = iqiyi.so(keyword);
         Element layoutMain = document.getElementsByClass("layout-main").get(0);
         Element element = layoutMain.children().get(2);
@@ -33,8 +36,12 @@ public class VideoGetterIqiyiImpl implements IVideoGetter {
             Element e1 = e0.parent().parent().parent();
             sources.add(parse(e1, keyword));
         }
-        return sources.toArray(new VideoAnimeSource[0]);
+        VideoAnimeSource[] ss = sources.toArray(new VideoAnimeSource[0]);
+        HIST.put(keyword, ss);
+        return ss;
     }
+
+    public static final Map<String, VideoAnimeSource[]> HIST = new HashMap<>();
 
     private VideoAnimeSource parse(Element e0, String keyword) {
         VideoAnimeSource source = new VideoAnimeSource()

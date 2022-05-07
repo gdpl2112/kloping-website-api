@@ -167,7 +167,8 @@ public class ApiSearchController {
 
     @RequestMapping("/video")
     public VideoAnimeSource[] searchVideo(@RequestParam("keyword") String keyword, @RequestParam(required = false, value = "type") String type) {
-        switch (type) {
+        keyword = keyword.trim();
+        switch (type.trim()) {
             case "iqiyi":
                 return getter0.search(keyword);
             case "tencent":
