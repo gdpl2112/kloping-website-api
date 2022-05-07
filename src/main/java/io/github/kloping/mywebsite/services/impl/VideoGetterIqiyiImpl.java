@@ -33,8 +33,12 @@ public class VideoGetterIqiyiImpl implements IVideoGetter {
         Elements elements = element.getElementsByClass("item-type");
         List<VideoAnimeSource> sources = new LinkedList<>();
         for (Element e0 : elements) {
-            Element e1 = e0.parent().parent().parent();
-            sources.add(parse(e1, keyword));
+            try {
+                Element e1 = e0.parent().parent().parent();
+                sources.add(parse(e1, keyword));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         VideoAnimeSource[] ss = sources.toArray(new VideoAnimeSource[0]);
         HIST.put(keyword, ss);
@@ -43,7 +47,7 @@ public class VideoGetterIqiyiImpl implements IVideoGetter {
 
     public static final Map<String, VideoAnimeSource[]> HIST = new HashMap<>();
 
-    private VideoAnimeSource parse(Element e0, String keyword) {
+    private VideoAnimeSource parse(Element e0, String keyword)  throws Exception{
         VideoAnimeSource source = new VideoAnimeSource()
                 .setDesc(e0.getElementsByClass("multiple").get(0).getElementsByTag("span").get(0).attr("title"))
                 .setFrom("iqiyi").setKeyword(keyword);
@@ -57,7 +61,7 @@ public class VideoGetterIqiyiImpl implements IVideoGetter {
         return source;
     }
 
-    private VideoAnimeDetail[] getDetail(VideoAnimeSource source) {
+    private VideoAnimeDetail[] getDetail(VideoAnimeSource source) throws Exception {
         List<VideoAnimeDetail> details = new LinkedList<>();
         String url = source.getUrl();
         Document document = empty.empty(url);

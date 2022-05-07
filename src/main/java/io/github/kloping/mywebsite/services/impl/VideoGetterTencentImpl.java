@@ -7,6 +7,7 @@ import io.github.kloping.mywebsite.entitys.webApi.tencentVideo.DataResponse;
 import io.github.kloping.mywebsite.entitys.webApi.tencentVideo.Item_datas;
 import io.github.kloping.mywebsite.entitys.webApi.tencentVideo.Item_params;
 import io.github.kloping.mywebsite.services.IVideoGetter;
+import io.github.kloping.number.NumberUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.springframework.stereotype.Service;
@@ -32,18 +33,42 @@ public class VideoGetterTencentImpl implements IVideoGetter {
         Element e0 = doc.getElementsByClass("mix_warp").get(0);
         List<VideoAnimeSource> sources = new ArrayList<>();
         for (Element infos : e0.getElementsByClass("_infos")) {
-            String desc0 = infos.getElementsByClass("desc_text").text();
-            String name = infos.getElementsByClass("content").get(0).text();
-            String url = infos.getElementsByTag("a").get(0).attr("href");
-            String img = infos.getElementsByTag("img").get(0).attr("src");
-            VideoAnimeSource source = new VideoAnimeSource()
-                    .setDesc(desc0).setFrom("tencent")
-                    .setKeyword(keyword).setName(name)
-                    .setUrl(url).setImg(filterProtocol(img));
-            VideoAnimeDetail[] details = getDetail(source);
-            source.setDetails(details);
-            source.setSt(details.length);
-            sources.add(source);
+            try {
+                String desc0 = infos.getElementsByClass("desc_text").text();
+                String name = infos.getElementsByClass("content").get(0).text();
+                String url = infos.getElementsByTag("a").get(0).attr("href");
+                String img = infos.getElementsByTag("img").get(0).attr("src");
+                VideoAnimeSource source = new VideoAnimeSource()
+                        .setDesc(desc0).setFrom("tencent")
+                        .setKeyword(keyword).setName(name)
+                        .setUrl(url).setImg(filterProtocol(img));
+                VideoAnimeDetail[] details = getDetail(source);
+                source.setDetails(details);
+                source.setSt(details.length);
+                sources.add(source);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        Element e1 = doc.getElementsByClass("wrapper_main").get(0);
+        for (Element element0 : e1.getElementsByTag("li")) {
+            try {
+                String desc0 = element0.getElementsByClass("figure_desc").text();
+                Element a1 = element0.getElementsByTag("a").get(1);
+                String name = a1.attr("title");
+                String url = a1.attr("href");
+                String img = element0.getElementsByTag("img").get(0).attr("src");
+                VideoAnimeSource source = new VideoAnimeSource()
+                        .setDesc(desc0).setFrom("tencent")
+                        .setKeyword(keyword).setName(name)
+                        .setUrl(url).setImg(filterProtocol(img));
+                VideoAnimeDetail[] details = getDetail(source);
+                source.setDetails(details);
+                source.setSt(details.length);
+                sources.add(source);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         VideoAnimeSource[] ss = sources.toArray(new VideoAnimeSource[0]);
         HIST.put(keyword, ss);
@@ -59,7 +84,7 @@ public class VideoGetterTencentImpl implements IVideoGetter {
         HEADERS.put("content-type", "application/json");
     }
 
-    private VideoAnimeDetail[] getDetail(VideoAnimeSource source) {
+    private VideoAnimeDetail[] getDetail(VideoAnimeSource source) throws Exception {
         List<VideoAnimeDetail> details = new LinkedList<>();
         Document doc0 = empty.empty(source.url);
         String s0 = doc0.getElementsByTag("link").get(1).attr("href");
@@ -99,10 +124,14 @@ public class VideoGetterTencentImpl implements IVideoGetter {
                         [0].getModule_datas()[0].getItem_data_lists().getItem_datas();
                 for (Item_datas d0 : datas) {
                     Item_params params = d0.getItem_params();
+                    int order = 0;
+                    try {
+                        order = Integer.valueOf(NumberUtils.findNumberFromString(params.getC_title_output()));
+                    } catch (NumberFormatException e) {}
                     VideoAnimeDetail detail = new VideoAnimeDetail()
                             .setName(params.getUnion_title()).setDesc(params.getPlay_title())
                             .setVid(params.getVid()).setSource("tencent")
-                            .setOrder(Integer.valueOf(params.getC_title_output()))
+                            .setOrder(order)
                             .setPlayUrl(String.format(FORMAT_URL, params.getCid(), params.getVid()))
                             .setIsVip(!params.getImgtag_all().isEmpty());
                     vid = params.getVid();
