@@ -44,3 +44,4 @@ logs/
 upMap.txt
 META-INF
 *.xz
+*.jar
