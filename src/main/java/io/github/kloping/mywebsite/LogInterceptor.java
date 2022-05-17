@@ -31,7 +31,6 @@ public class LogInterceptor extends HandlerInterceptorAdapter {
             System.out.print(", ");
             System.out.print(k + "=>" + Arrays.toString(v));
         });
-        InterceptorBroadcast.INSTANCE.broadcast(ip, url, request.getParameterMap(),request);
         System.out.println();
         if (url != null) {
             if (url.contains(IMPORTANT_WORD)) {
@@ -83,6 +82,11 @@ public class LogInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+        String ip = request.getHeader("x-forwarded-for");
+        if (ip == null) ip = request.getRemoteAddr();
+        ip = "0:0:0:0:0:0:0:1".equals(ip) ? "127.0.0.1" : ip.trim();
+        String url = request.getRequestURL().toString();
+        InterceptorBroadcast.INSTANCE.broadcast(ip, url, request.getParameterMap(),request);
     }
 
 }
