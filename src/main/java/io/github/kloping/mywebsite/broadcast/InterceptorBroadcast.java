@@ -19,9 +19,13 @@ public class InterceptorBroadcast extends Broadcast {
     public synchronized void broadcast(String ip, String url, Map<String, String[]> map, HttpServletRequest request) {
         Iterator<InterceptorReceiver> iterator = receivers.iterator();
         while (iterator.hasNext()) {
-            InterceptorReceiver receiver = iterator.next();
-            if (receiver.onReceive(ip, url, map, request) && receiver instanceof OnceInterceptorReceiver) {
-                iterator.remove();
+            try {
+                InterceptorReceiver receiver = iterator.next();
+                if (receiver.onReceive(ip, url, map, request) && receiver instanceof OnceInterceptorReceiver) {
+                    iterator.remove();
+                }
+            } catch (Throwable throwable) {
+                throwable.printStackTrace();
             }
         }
     }

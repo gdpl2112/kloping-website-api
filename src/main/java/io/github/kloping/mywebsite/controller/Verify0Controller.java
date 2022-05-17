@@ -2,6 +2,7 @@ package io.github.kloping.mywebsite.controller;
 
 import io.github.kloping.mywebsite.broadcast.InterceptorBroadcast;
 import io.github.kloping.mywebsite.entitys.Verify0Entity;
+import io.github.kloping.mywebsite.entitys.VerifyFile;
 import io.github.kloping.mywebsite.mapper.Verify0Mapper;
 import io.github.kloping.mywebsite.utils.MyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,15 +31,6 @@ public class Verify0Controller implements InterceptorBroadcast.InterceptorReceiv
     public synchronized boolean onReceive(String ip, String url, Map<String, String[]> map, HttpServletRequest request) {
         if (url.endsWith(".jar")) {
             String fn = url.substring(url.lastIndexOf("/") + 1).trim();
-            if (FN2NUM.containsKey(fn)) {
-                FN2NUM.put(fn, FN2NUM.get(fn) + 1);
-            }
-            if (FN2NUM.get(fn) >= 3) {
-                new File(SOURCE_DIR, fn).delete();
-                FN2NUM.remove(fn);
-                CODE2FN.remove(FN2CODE.get(fn));
-                FN2CODE.remove(fn);
-            }
         }
         return false;
     }
@@ -57,24 +49,28 @@ public class Verify0Controller implements InterceptorBroadcast.InterceptorReceiv
 
     public static final File SOURCE_DIR = new File("./files");
 
-    public static final Map<String, Integer> FN2NUM = new HashMap<>();
-    public static final Map<String, String> FN2CODE = new HashMap<>();
-    public static final Map<String, String> CODE2FN = new HashMap<>();
+    public static final Map<String, VerifyFile> FN2FILE = new HashMap<>();
 
     @RequestMapping("/verify1")
-    public String v1(@RequestParam("code") String code) throws IOException {
+    public synchronized String v1(@RequestParam("code") String code) throws IOException {
         if (v0(code)) {
-            if (CODE2FN.containsKey(code)) {
-                return CODE2FN.get(code);
-            }
             String uuid = UUID.randomUUID().toString();
             String fn = uuid + ".jar";
+            VerifyFile file = new VerifyFile() {
+                @Override
+                public void over() {
+                    getFile().delete();
+                    FN2FILE.remove(fn);
+                }
+            };
+            file.setUuid(uuid);
             File source = new File("./M1.jar");
             File target = new File(SOURCE_DIR, fn);
+            file.setFile(target);
             MyUtils.copyFileUsingStream(source, target);
-            FN2NUM.put(fn, 0);
-            CODE2FN.put(code, fn);
-            FN2CODE.put(fn, code);
+            file.setNum(0).setCode(code);
+            file.setTime(60000L);
+            FN2FILE.put(fn, file);
             return fn;
         } else {
             return null;
