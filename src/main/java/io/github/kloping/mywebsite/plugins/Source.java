@@ -13,6 +13,7 @@ import sun.misc.BASE64Encoder;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.util.AbstractMap;
 import java.util.Map;
 
 /**
@@ -109,30 +110,31 @@ public class Source {
     }
 
     public static <K, V> Map.Entry<K, V> getEntry(K k, V v) {
-        return new Map.Entry<K, V>() {
-            K ko = k;
-            V vo = v;
-
-            @Override
-            public K getKey() {
-                return ko;
-            }
-
-            @Override
-            public V getValue() {
-                return vo;
-            }
-
-            @Override
-            public V setValue(V value) {
-                V v1 = vo;
-                vo = value;
-                return v1;
-            }
-        };
+//        return new Map.Entry<K, V>() {
+//            K ko = k;
+//            V vo = v;
+//
+//            @Override
+//            public K getKey() {
+//                return ko;
+//            }
+//
+//            @Override
+//            public V getValue() {
+//                return vo;
+//            }
+//
+//            @Override
+//            public V setValue(V value) {
+//                V v1 = vo;
+//                vo = value;
+//                return v1;
+//            }
+//        };
+        return new AbstractMap.SimpleEntry<>(k, v);
     }
 
-    @Schedule("09:59:00,11:59:00,23:59:00,13:59:00")
+    @Schedule("10:00:05,12:00:05,00:00:05,14:00:05")
     public static final void m0() {
         VideoGetterIqiyiImpl.HIST.clear();
         VideoGetterTencentImpl.HIST.clear();

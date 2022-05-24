@@ -65,7 +65,7 @@ public class ApiShowDetailController {
                 .setName("视频搜索")
                 .setState("debug")
                 .setDesc(" 搜索腾讯爱奇艺视频")
-                .setDetail("类型仅可为 iqiyi (爱奇艺) tencent(腾讯视频) all(合并)")
+                .setDetail("类型仅可为 iqiyi (爱奇艺) tencent(腾讯视频) all(合并) ,爱奇艺暂时关闭不可用")
                 .setSimpleUrl("/api/search/video?keyword=斗罗大陆&type=all")
                 .setAddress("/api/search/video?keyword=关键词&type=类型")
         );

@@ -2,12 +2,9 @@ package io.github.kloping.mywebsite.services.impl;
 
 import io.github.kloping.mywebsite.entitys.VideoAnimeDetail;
 import io.github.kloping.mywebsite.entitys.VideoAnimeSource;
-import io.github.kloping.mywebsite.entitys.webApi.pcwiqiyi.Epsodelist;
 import io.github.kloping.mywebsite.services.IVideoGetter;
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -15,7 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import static io.github.kloping.mywebsite.plugins.Source.*;
+import static io.github.kloping.mywebsite.plugins.Source.empty;
 
 /**
  * @author github.kloping
@@ -24,25 +21,26 @@ import static io.github.kloping.mywebsite.plugins.Source.*;
 public class VideoGetterIqiyiImpl implements IVideoGetter {
     @Override
     public VideoAnimeSource[] search(String keyword) {
-        if (HIST.containsKey(keyword)) return HIST.get(keyword);
-        Document document = iqiyi.so(keyword);
-        Element layoutMain = document.getElementsByClass("layout-main").get(0);
-        Element element = layoutMain.children().get(2);
-        element = Jsoup.parse(element.toString().replaceAll("data-v-[a-z0-9]+", ""));
-        element = element.getElementsByTag("body").get(0).child(0);
-        Elements elements = element.getElementsByClass("item-type");
-        List<VideoAnimeSource> sources = new LinkedList<>();
-        for (Element e0 : elements) {
-            try {
-                Element e1 = e0.parent().parent().parent();
-                sources.add(parse(e1, keyword));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        VideoAnimeSource[] ss = sources.toArray(new VideoAnimeSource[0]);
-        HIST.put(keyword, ss);
-        return ss;
+//        if (HIST.containsKey(keyword)) return HIST.get(keyword);
+//        Document document = iqiyi.so(keyword);
+//        Element layoutMain = document.getElementsByClass("layout-main").get(0);
+//        Element element = layoutMain.children().get(2);
+//        element = Jsoup.parse(element.toString().replaceAll("data-v-[a-z0-9]+", ""));
+//        element = element.getElementsByTag("body").get(0).child(0);
+//        Elements elements = element.getElementsByClass("item-type");
+//        List<VideoAnimeSource> sources = new LinkedList<>();
+//        for (Element e0 : elements) {
+//            try {
+//                Element e1 = e0.parent().parent().parent();
+//                sources.add(parse(e1, keyword));
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        VideoAnimeSource[] ss = sources.toArray(new VideoAnimeSource[0]);
+//        HIST.put(keyword, ss);
+//        return ss;
+        return new VideoAnimeSource[0];
     }
 
     public static final Map<String, VideoAnimeSource[]> HIST = new HashMap<>();
