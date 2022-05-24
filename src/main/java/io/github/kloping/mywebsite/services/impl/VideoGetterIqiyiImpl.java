@@ -47,7 +47,7 @@ public class VideoGetterIqiyiImpl implements IVideoGetter {
 
     public static final Map<String, VideoAnimeSource[]> HIST = new HashMap<>();
 
-    private VideoAnimeSource parse(Element e0, String keyword)  throws Exception{
+    private VideoAnimeSource parse(Element e0, String keyword) throws Exception {
         VideoAnimeSource source = new VideoAnimeSource()
                 .setDesc(e0.getElementsByClass("multiple").get(0).getElementsByTag("span").get(0).attr("title"))
                 .setFrom("iqiyi").setKeyword(keyword);
@@ -65,23 +65,20 @@ public class VideoGetterIqiyiImpl implements IVideoGetter {
         List<VideoAnimeDetail> details = new LinkedList<>();
         String url = source.getUrl();
         Document document = empty.empty(url);
-        String aid = document.getElementsByTag("meta").get(1).attr("content");
-        int i = aid.indexOf("aid");
-        aid = aid.substring(i);
-        i = aid.indexOf("&");
-        aid = aid.substring(4, i);
-        for (Epsodelist epsodelist : iqiyi0.method(aid, 1, 2000, null).getData().getEpsodelist()) {
-            details.add(new VideoAnimeDetail()
-                    .setVid(epsodelist.getVid())
-                    .setPlayUrl(epsodelist.getPlayUrl())
-                    .setIsVip(epsodelist.getPayMark().intValue() > 0)
-                    .setSource("iqiyi")
-                    .setDesc(epsodelist.getSubtitle())
-                    .setName(epsodelist.getName())
-                    .setOrder(epsodelist.getOrder().intValue())
-            );
-        }
-        return details.toArray(new VideoAnimeDetail[0]);
+        String vid = url.substring(url.indexOf("v_") + 2, url.indexOf(".html"));
+//        for (Epsodelist epsodelist : iqiyi0.method(aid, 1, 2000, null).getData().getEpsodelist()) {
+//            details.add(new VideoAnimeDetail()
+//                    .setVid(epsodelist.getVid())
+//                    .setPlayUrl(epsodelist.getPlayUrl())
+//                    .setIsVip(epsodelist.getPayMark().intValue() > 0)
+//                    .setSource("iqiyi")
+//                    .setDesc(epsodelist.getSubtitle())
+//                    .setName(epsodelist.getName())
+//                    .setOrder(epsodelist.getOrder().intValue())
+//            );
+//        }
+//        return details.toArray(new VideoAnimeDetail[0]);
+        return new VideoAnimeDetail[0];
     }
 
     private String filterProtocol(String img) {
