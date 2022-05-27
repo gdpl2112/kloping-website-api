@@ -110,27 +110,6 @@ public class Source {
     }
 
     public static <K, V> Map.Entry<K, V> getEntry(K k, V v) {
-//        return new Map.Entry<K, V>() {
-//            K ko = k;
-//            V vo = v;
-//
-//            @Override
-//            public K getKey() {
-//                return ko;
-//            }
-//
-//            @Override
-//            public V getValue() {
-//                return vo;
-//            }
-//
-//            @Override
-//            public V setValue(V value) {
-//                V v1 = vo;
-//                vo = value;
-//                return v1;
-//            }
-//        };
         return new AbstractMap.SimpleEntry<>(k, v);
     }
 

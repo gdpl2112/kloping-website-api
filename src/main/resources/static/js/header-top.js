@@ -31,8 +31,9 @@ $("body").append("\n" +
     "            </li>\n" +
     "        </ul>\n" +
     "        <form class=\"form-inline my-2 my-lg-0\">\n" +
-    "            <input class=\"form-control mr-sm-2\" type=\"search\" placeholder=\"关键词\" aria-label=\"Search\">\n" +
-    "            <button class=\"btn btn-outline-success my-2 my-sm-0\" type=\"submit\">搜索</button>\n" +
+    "          <a href=\"./recharge.html\">" +
+    " <button class=\"btn btn-outline-success my-2 my-sm-0\" type=\"button\">积分充值</button>\n" +
+    "</a>" +
     "        </form>\n" +
     "    </div>\n" +
     "</nav>\n" +
