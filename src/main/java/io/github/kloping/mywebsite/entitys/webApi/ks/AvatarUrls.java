@@ -1,6 +1,6 @@
-package io.github.kloping.mywebsite.entitys.webApi.ks.data0;
+package io.github.kloping.mywebsite.entitys.webApi.ks;
 
-public class CoverUrls {
+public class AvatarUrls {
 	private String cdn;
 	private String url;
 
@@ -8,7 +8,7 @@ public class CoverUrls {
 		return this.cdn;
 	}
 
-	public CoverUrls setCdn(String cdn) {
+	public AvatarUrls setCdn(String cdn) {
 		this.cdn = cdn;
 		return this;
 	}
@@ -17,7 +17,7 @@ public class CoverUrls {
 		return this.url;
 	}
 
-	public CoverUrls setUrl(String url) {
+	public AvatarUrls setUrl(String url) {
 		this.url = url;
 		return this;
 	}

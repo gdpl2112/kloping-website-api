@@ -1,17 +1,18 @@
-package io.github.kloping.mywebsite.entitys.webApi.ks.data0;
+package io.github.kloping.mywebsite.entitys.webApi.ks;
 
-public class Feeds {
+public class Photos {
 	private String headUrl;
 	private String caption;
 	private Number likeCount;
 	private String exp_tag;
 	private Number type;
 	private String userEid;
-	private Number shareCount;
 	private String serverExpTag;
+	private Music music;
 	private Ext_params ext_params;
 	private Number viewCount;
-	private HeadUrls[] headUrls;
+	private Headurls[] headUrls;
+	private TagShow tagShow;
 	private Number forwardCount;
 	private Boolean singlePicture;
 	private String kwaiId;
@@ -33,7 +34,7 @@ public class Feeds {
 		return this.headUrl;
 	}
 
-	public Feeds setHeadUrl(String headUrl) {
+	public Photos setHeadUrl(String headUrl) {
 		this.headUrl = headUrl;
 		return this;
 	}
@@ -42,7 +43,7 @@ public class Feeds {
 		return this.caption;
 	}
 
-	public Feeds setCaption(String caption) {
+	public Photos setCaption(String caption) {
 		this.caption = caption;
 		return this;
 	}
@@ -51,7 +52,7 @@ public class Feeds {
 		return this.likeCount;
 	}
 
-	public Feeds setLikeCount(Number likeCount) {
+	public Photos setLikeCount(Number likeCount) {
 		this.likeCount = likeCount;
 		return this;
 	}
@@ -60,7 +61,7 @@ public class Feeds {
 		return this.exp_tag;
 	}
 
-	public Feeds setExp_tag(String exp_tag) {
+	public Photos setExp_tag(String exp_tag) {
 		this.exp_tag = exp_tag;
 		return this;
 	}
@@ -69,7 +70,7 @@ public class Feeds {
 		return this.type;
 	}
 
-	public Feeds setType(Number type) {
+	public Photos setType(Number type) {
 		this.type = type;
 		return this;
 	}
@@ -78,17 +79,8 @@ public class Feeds {
 		return this.userEid;
 	}
 
-	public Feeds setUserEid(String userEid) {
+	public Photos setUserEid(String userEid) {
 		this.userEid = userEid;
-		return this;
-	}
-
-	public Number getShareCount(){
-		return this.shareCount;
-	}
-
-	public Feeds setShareCount(Number shareCount) {
-		this.shareCount = shareCount;
 		return this;
 	}
 
@@ -96,8 +88,17 @@ public class Feeds {
 		return this.serverExpTag;
 	}
 
-	public Feeds setServerExpTag(String serverExpTag) {
+	public Photos setServerExpTag(String serverExpTag) {
 		this.serverExpTag = serverExpTag;
+		return this;
+	}
+
+	public Music getMusic(){
+		return this.music;
+	}
+
+	public Photos setMusic(Music music) {
+		this.music = music;
 		return this;
 	}
 
@@ -105,7 +106,7 @@ public class Feeds {
 		return this.ext_params;
 	}
 
-	public Feeds setExt_params(Ext_params ext_params) {
+	public Photos setExt_params(Ext_params ext_params) {
 		this.ext_params = ext_params;
 		return this;
 	}
@@ -114,17 +115,26 @@ public class Feeds {
 		return this.viewCount;
 	}
 
-	public Feeds setViewCount(Number viewCount) {
+	public Photos setViewCount(Number viewCount) {
 		this.viewCount = viewCount;
 		return this;
 	}
 
-	public HeadUrls[] getHeadUrls(){
+	public Headurls[] getHeadUrls(){
 		return this.headUrls;
 	}
 
-	public Feeds setHeadUrls(HeadUrls[] headUrls) {
+	public Photos setHeadUrls(Headurls[] headUrls) {
 		this.headUrls = headUrls;
+		return this;
+	}
+
+	public TagShow getTagShow(){
+		return this.tagShow;
+	}
+
+	public Photos setTagShow(TagShow tagShow) {
+		this.tagShow = tagShow;
 		return this;
 	}
 
@@ -132,7 +142,7 @@ public class Feeds {
 		return this.forwardCount;
 	}
 
-	public Feeds setForwardCount(Number forwardCount) {
+	public Photos setForwardCount(Number forwardCount) {
 		this.forwardCount = forwardCount;
 		return this;
 	}
@@ -141,7 +151,7 @@ public class Feeds {
 		return this.singlePicture;
 	}
 
-	public Feeds setSinglePicture(Boolean singlePicture) {
+	public Photos setSinglePicture(Boolean singlePicture) {
 		this.singlePicture = singlePicture;
 		return this;
 	}
@@ -150,7 +160,7 @@ public class Feeds {
 		return this.kwaiId;
 	}
 
-	public Feeds setKwaiId(String kwaiId) {
+	public Photos setKwaiId(String kwaiId) {
 		this.kwaiId = kwaiId;
 		return this;
 	}
@@ -159,7 +169,7 @@ public class Feeds {
 		return this.timestamp;
 	}
 
-	public Feeds setTimestamp(Number timestamp) {
+	public Photos setTimestamp(Number timestamp) {
 		this.timestamp = timestamp;
 		return this;
 	}
@@ -168,7 +178,7 @@ public class Feeds {
 		return this.height;
 	}
 
-	public Feeds setHeight(Number height) {
+	public Photos setHeight(Number height) {
 		this.height = height;
 		return this;
 	}
@@ -177,7 +187,7 @@ public class Feeds {
 		return this.webpCoverUrls;
 	}
 
-	public Feeds setWebpCoverUrls(WebpCoverUrls[] webpCoverUrls) {
+	public Photos setWebpCoverUrls(WebpCoverUrls[] webpCoverUrls) {
 		this.webpCoverUrls = webpCoverUrls;
 		return this;
 	}
@@ -186,7 +196,7 @@ public class Feeds {
 		return this.userSex;
 	}
 
-	public Feeds setUserSex(String userSex) {
+	public Photos setUserSex(String userSex) {
 		this.userSex = userSex;
 		return this;
 	}
@@ -195,7 +205,7 @@ public class Feeds {
 		return this.share_info;
 	}
 
-	public Feeds setShare_info(String share_info) {
+	public Photos setShare_info(String share_info) {
 		this.share_info = share_info;
 		return this;
 	}
@@ -204,7 +214,7 @@ public class Feeds {
 		return this.verified;
 	}
 
-	public Feeds setVerified(Boolean verified) {
+	public Photos setVerified(Boolean verified) {
 		this.verified = verified;
 		return this;
 	}
@@ -213,7 +223,7 @@ public class Feeds {
 		return this.photoId;
 	}
 
-	public Feeds setPhotoId(String photoId) {
+	public Photos setPhotoId(String photoId) {
 		this.photoId = photoId;
 		return this;
 	}
@@ -222,7 +232,7 @@ public class Feeds {
 		return this.userName;
 	}
 
-	public Feeds setUserName(String userName) {
+	public Photos setUserName(String userName) {
 		this.userName = userName;
 		return this;
 	}
@@ -231,7 +241,7 @@ public class Feeds {
 		return this.userId;
 	}
 
-	public Feeds setUserId(Number userId) {
+	public Photos setUserId(Number userId) {
 		this.userId = userId;
 		return this;
 	}
@@ -240,7 +250,7 @@ public class Feeds {
 		return this.commentCount;
 	}
 
-	public Feeds setCommentCount(Number commentCount) {
+	public Photos setCommentCount(Number commentCount) {
 		this.commentCount = commentCount;
 		return this;
 	}
@@ -249,7 +259,7 @@ public class Feeds {
 		return this.us_d;
 	}
 
-	public Feeds setUs_d(Number us_d) {
+	public Photos setUs_d(Number us_d) {
 		this.us_d = us_d;
 		return this;
 	}
@@ -258,7 +268,7 @@ public class Feeds {
 		return this.width;
 	}
 
-	public Feeds setWidth(Number width) {
+	public Photos setWidth(Number width) {
 		this.width = width;
 		return this;
 	}
@@ -267,7 +277,7 @@ public class Feeds {
 		return this.coverUrls;
 	}
 
-	public Feeds setCoverUrls(CoverUrls[] coverUrls) {
+	public Photos setCoverUrls(CoverUrls[] coverUrls) {
 		this.coverUrls = coverUrls;
 		return this;
 	}

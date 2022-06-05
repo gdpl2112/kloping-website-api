@@ -1,4 +1,4 @@
-package io.github.kloping.mywebsite.entitys.webApi.ks.data0;
+package io.github.kloping.mywebsite.entitys.webApi.ks;
 
 public class CdnList {
 	private String cdn;

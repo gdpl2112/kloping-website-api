@@ -1,4 +1,4 @@
-package io.github.kloping.mywebsite.entitys.webApi.ks.data0;
+package io.github.kloping.mywebsite.entitys.webApi.ks;
 
 public class Ext_params {
 	private Number mtype;
