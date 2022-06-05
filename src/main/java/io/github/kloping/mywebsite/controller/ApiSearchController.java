@@ -45,10 +45,6 @@ public class ApiSearchController {
     @Autowired
     ISearchSong searchSongQQ;
 
-    @Qualifier("searchVideoGiftshow")
-    @Autowired
-    ISearchVideo searchVideoGiftshow;
-
     @Qualifier("searchVideoBili")
     @Autowired
     ISearchVideo searchVideoBili;
