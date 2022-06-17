@@ -50,7 +50,6 @@ public class ApiSearchController {
     @Autowired
     ISearchVideo searchVideoBili;
 
-    IParseImg parseImgKs = new ParseGifImgImpl0();
 
     @Qualifier("parseDouyImgImpl")
     @Autowired
@@ -113,6 +112,7 @@ public class ApiSearchController {
         }
         return new Songs(-1, 0, System.currentTimeMillis(), keyword, null, "err");
     }
+
 //
 //    @RequestMapping("/video")
 //    public VideoSource searchVideo(HttpServletRequest request, String keyword, @RequestParam(required = false) String type) {
@@ -132,6 +132,8 @@ public class ApiSearchController {
 //        }
 //        return new VideoSource(-1, keyword, null, System.currentTimeMillis(), type, -1);
 //    }
+
+    IParseImg parseImgKs = new ParseGifImgImpl0();
 
     @RequestMapping("/parseImgs")
     public List<String> parseImg(HttpServletRequest request, String url, @RequestParam(required = false) String type) {
