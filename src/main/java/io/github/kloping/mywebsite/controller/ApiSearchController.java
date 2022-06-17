@@ -4,6 +4,7 @@ import io.github.kloping.mywebsite.entitys.VideoAnimeSource;
 import io.github.kloping.mywebsite.entitys.medias.Result;
 import io.github.kloping.mywebsite.entitys.medias.Songs;
 import io.github.kloping.mywebsite.services.*;
+import io.github.kloping.mywebsite.services.impl.ParseGifImgImpl0;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,9 +50,7 @@ public class ApiSearchController {
     @Autowired
     ISearchVideo searchVideoBili;
 
-    @Autowired
-    @Qualifier("parseGifImgImpl0")
-    IParseImg parseImgKs;
+    IParseImg parseImgKs = new ParseGifImgImpl0();
 
     @Qualifier("parseDouyImgImpl")
     @Autowired
