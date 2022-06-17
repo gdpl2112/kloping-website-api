@@ -50,7 +50,7 @@ public class ApiSearchController {
     ISearchVideo searchVideoBili;
 
     @Autowired
-    @Qualifier("parseGifImgImpl")
+    @Qualifier("parseGifImgImpl0")
     IParseImg parseImgKs;
 
     @Qualifier("parseDouyImgImpl")
