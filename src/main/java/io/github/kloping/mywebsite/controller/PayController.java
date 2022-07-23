@@ -31,12 +31,14 @@ public class PayController {
     public Map<String, OrderReturn> sign2or = new HashMap<>();
 
     public final long T0 = 1000L * 60 * 10;
+    public static final String PACK_NAME = "com.eg.android.AlipayGphone";
+    public static final String NAME0 = "你已成功收款";
 
     {
         UtilsController.NOTICES.add((p, t, c) -> {
-            if ("com.eg.android.AlipayGphone".equals(p)) {
-                if (t.startsWith("你已成功收款")) {
-                    String m = t.substring(7, t.length() - 1);
+            if (PACK_NAME.equals(p)) {
+                if (t.startsWith(NAME0)) {
+                    String m = t.substring(NAME0.length(), t.length() - 1);
                     Float m0 = Float.valueOf(m);
                     System.out.println(m + "=>" + m0);
                     for (OrderReturn orderReturn : orderReturns) {
