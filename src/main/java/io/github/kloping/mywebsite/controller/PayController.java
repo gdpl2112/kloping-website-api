@@ -5,6 +5,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.*;
 
 /**
@@ -23,6 +25,7 @@ public class PayController {
         Q2C.put(10, 625000);
         Q2C.put(20, 1205000);
     }
+
     public List<OrderReturn> orderReturns = new ArrayList<>();
 
     public Map<String, OrderReturn> sign2or = new HashMap<>();
@@ -35,12 +38,20 @@ public class PayController {
                 if (t.startsWith("你已成功收款")) {
                     String m = t.substring(7, t.length() - 1);
                     Float m0 = Float.valueOf(m);
+                    System.out.println(m + "=>" + m0);
                     for (OrderReturn orderReturn : orderReturns) {
                         Float f0 = Float.valueOf(orderReturn.getMoney());
+                        System.out.println(f0);
                         if (m0.intValue() == f0.intValue()) {
                             String url0 = String.format(
-                                    "http://49.232.209.180:20049/addScore?qid="+orderReturn.getQid()+"&pwd=4432120&s="
-                                            +Q2C.get(f0.intValue()));
+                                    "http://49.232.209.180:20049/addScore?qid=" + orderReturn.getQid() + "&pwd=4432120&s="
+                                            + Q2C.get(f0.intValue()));
+                            System.out.println(url0);
+                            try {
+                                new URL(url0).openStream();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                 }
