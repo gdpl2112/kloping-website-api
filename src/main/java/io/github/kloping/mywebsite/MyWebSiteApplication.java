@@ -17,7 +17,7 @@ public class MyWebSiteApplication implements WebServerFactoryCustomizer<Configur
     public static void main(String[] args) {
         onCreate();
         SpringApplication.run(MyWebSiteApplication.class, args);
-        System.out.println("start succes -v 6-17-18-19");
+        System.out.println("start succes -v 7-23");
     }
 
     @Override

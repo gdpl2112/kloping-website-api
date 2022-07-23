@@ -5,11 +5,11 @@
     <meta name="referrer" content="no-referrer"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://jsd.compc.cc/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://jsd.compc.cc/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
     <script src="./js/lib/axios.js"></script>
     <script src="./js/lib/vue.js"></script>
     <script src="./js/lib/jq3.6.js"></script>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://unpkg.com/popper.js@1.14.7/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <title>积分充值</title>
@@ -23,7 +23,7 @@
 <div class="modal fade" id="agreement-tips" tabindex="-1" role="dialog" aria-labelledby="agreement-tips-title"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <div class="modal-content">
+        <div class="modal-content" id="modal-content-id">
             <div class="modal-body">
                 1. 该系统自带了防止负能量信息传出的屏障,但不完全保证无漏洞,在未知情况下使用该系统传播负能量言论/信息/谣言 而造成的 法律责任 该系统概不负责
                 <br>
@@ -52,15 +52,65 @@
     </div>
 </div>
 
+
 <div class="row">
     <div class="col-2"></div>
     <div id="row-content-0" class="col-8" style="background-color: rgba(171,171,171,0.7)">
 
+        <form id="form0">
+            <div class="form-group">
+                <label for="qid">QQ: </label>
+                <input name="qid" type="number" class="form-control" id="qid" aria-describedby="qidHelp">
+                <small id="qidHelp" class="form-text text-muted">充值到账的QQ号</small>
+            </div>
+            <div class="form-group">
+                <label for="money">充值金额</label>
+                <select name="money" class="form-control" id="money">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>5</option>
+                    <option>10</option>
+                    <option>20</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="aid">服务区</label>
+                <select name="aid" class="form-control" id="aid">
+                    <option>001</option>
+                    <option>017</option>
+                </select>
+            </div>
+
+            <center>
+                <button onclick="order0()" type="button" class="btn btn-primary">确认下单</button>
+            </center>
+        </form>
     </div>
     <div class="col-2"></div>
 </div>
-
+<script src="js/utils.js"></script>
 <script>
+    function order0() {
+        let d0 = "?"
+        d0 = d0 + "qid=" + $("#qid").val()
+        d0 = d0 + "&money=" + $("#money").val()
+        d0 = d0 + "&aid=" + $("#aid").val()
+        axios.get("/pay/order" + d0).then(function (response) {
+            $("#modal-content-id").html("" +
+                    "<h3>请在" + formatMsgTime0(response.data.time0) + "前完成订单</h3>" +
+                    "<h1>请在备注中填写你的QQ!!!</h1>" +
+                    "<h1>请在备注中填写你的QQ!!!</h1>" +
+                    "<h1>请在备注中填写你的QQ!!!</h1>" +
+                    "<br>" +
+                    "<img style='size: 50px' alt='0' src='" + response.data.src + "'/ > " +
+                    "");
+            $("#agreement-tips").modal("show")
+        }).catch(function (err) {
+            alert(err);
+        })
+
+    }
 
     $("#agreement-tips").modal("show")
 </script>

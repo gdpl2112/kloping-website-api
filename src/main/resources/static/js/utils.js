@@ -27,6 +27,14 @@ function formatMsgTime(timespan) {
     return timeSpanStr
 }
 
+function formatMsgTime0(timespan) {
+    let dateTime = new Date(timespan)
+    let day = dateTime.getDate()
+    let hour = dateTime.getHours()
+    let minute = dateTime.getMinutes()
+    return day + "日" + hour + ":" + minute;
+}
+
 function getCookie(name) {
     let strcookie = document.cookie;
     let arrcookie = strcookie.split("; ");

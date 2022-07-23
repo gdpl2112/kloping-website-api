@@ -6,6 +6,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +15,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import static io.github.kloping.mywebsite.Source.println;
@@ -118,8 +121,28 @@ public class UtilsController {
         return url;
     }
 
-    @GetMapping("/ok")
-    public String ok() {
+
+    public static interface Notice {
+        /**
+         * on notice
+         *
+         * @param packName
+         * @param title
+         * @param text
+         */
+        void notice(String packName, String title, String text);
+    }
+
+    public static final List<Notice> NOTICES = new ArrayList<>();
+
+    @GetMapping("/notice")
+    public String notice(
+            @RequestParam String packName,
+            @RequestParam String title,
+            @RequestParam String text) {
+        for (Notice notice : NOTICES) {
+            notice.notice(packName, title, text);
+        }
         return "success";
     }
 }
