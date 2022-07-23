@@ -56,53 +56,11 @@
     <div class="col-2"></div>
     <div id="row-content-0" class="col-8" style="background-color: rgba(171,171,171,0.7)">
 
-        <form id="form0">
-            <div class="form-group">
-                <label for="qid">QQ: </label>
-                <input name="qid" type="number" class="form-control" id="qid" aria-describedby="qidHelp">
-                <small id="qidHelp" class="form-text text-muted">充值到账的QQ号</small>
-            </div>
-            <div class="form-group">
-                <label for="money">充值金额</label>
-                <select name="money" class="form-control" id="money">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>5</option>
-                    <option>10</option>
-                    <option>20</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="aid">服务区</label>
-                <select name="aid" class="form-control" id="aid">
-                    <option>001</option>
-                    <option>017</option>
-                </select>
-            </div>
-
-            <center>
-                <button onclick="order0()" type="button" class="btn btn-primary">确认下单
-                </button>
-            </center>
-        </form>
     </div>
     <div class="col-2"></div>
 </div>
 
 <script>
-    function order0() {
-        // let d0 = new FormData()
-        // d0.append("qid", $("#qid").val())
-        // d0.append("money", $("#money").val())
-        // d0.append("aid", $("#aid").val())
-        // axios.post("ali/order", d0).then(function (response) {
-        //     $("#row-content-0").html(response.data);
-        // }).catch(function (err) {
-        //     alert(err);
-        // })
-        alert("尚未开通")
-    }
 
     $("#agreement-tips").modal("show")
 </script>

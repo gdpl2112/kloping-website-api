@@ -117,4 +117,9 @@ public class UtilsController {
         String url = element.attr("src");
         return url;
     }
+
+    @GetMapping("/ok")
+    public String ok() {
+        return "success";
+    }
 }
