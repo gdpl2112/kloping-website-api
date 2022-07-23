@@ -99,9 +99,6 @@
         axios.get("/pay/order" + d0).then(function (response) {
             $("#modal-content-id").html("" +
                     "<h3>请在" + formatMsgTime0(response.data.time0) + "前完成订单</h3>" +
-                    "<h1>请在备注中填写你的QQ!!!</h1>" +
-                    "<h1>请在备注中填写你的QQ!!!</h1>" +
-                    "<h1>请在备注中填写你的QQ!!!</h1>" +
                     "<br>" +
                     "<img style='size: 50px' alt='0' src='" + response.data.src + "'/ > " +
                     "");
