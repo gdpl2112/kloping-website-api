@@ -135,6 +135,11 @@ public class UtilsController {
 
     public static final List<Notice> NOTICES = new ArrayList<>();
 
+    @GetMapping("/ok")
+    public String ok() {
+        return "ok";
+    }
+
     @GetMapping("/notice")
     public String notice(
             @RequestParam String packName,
