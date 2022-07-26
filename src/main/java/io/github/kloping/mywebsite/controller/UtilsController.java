@@ -4,6 +4,7 @@ import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,9 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import static io.github.kloping.mywebsite.Source.println;
 import static io.github.kloping.mywebsite.Source.updateMap;
@@ -139,6 +138,27 @@ public class UtilsController {
     public String ok(String a) {
         System.out.println(a);
         return "ok";
+    }
+
+    @Value("${auth.pwd}")
+    String pwd;
+
+    public Map<String, String> dataMap = new HashMap<>();
+
+    @GetMapping("/put")
+    public String put(@RequestParam("key") String key, @RequestParam("value") String value, @RequestParam("pwd") String pwd) {
+        if (this.pwd.equals(pwd)) {
+            return dataMap.put(key, value);
+        }
+        return "wrong password";
+    }
+
+    @GetMapping("/get")
+    public String get(@RequestParam("key") String key, @RequestParam("pwd") String pwd) {
+        if (this.pwd.equals(pwd)) {
+            return dataMap.get(key);
+        }
+        return "wrong password";
     }
 
     @GetMapping("/notice")
