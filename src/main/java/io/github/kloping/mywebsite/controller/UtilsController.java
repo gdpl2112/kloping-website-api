@@ -136,7 +136,8 @@ public class UtilsController {
     public static final List<Notice> NOTICES = new ArrayList<>();
 
     @GetMapping("/ok")
-    public String ok() {
+    public String ok(String a) {
+        System.out.println(a);
         return "ok";
     }
 

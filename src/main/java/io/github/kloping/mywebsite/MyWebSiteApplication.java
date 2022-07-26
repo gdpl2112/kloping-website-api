@@ -7,17 +7,31 @@ import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.context.annotation.Import;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
+import java.util.AbstractMap;
+import java.util.HashMap;
+import java.util.Map;
+
 import static io.github.kloping.mywebsite.Source.onCreate;
 
 @SpringBootApplication
 @Import({TomcatUtil.class})
 @CrossOrigin
 public class MyWebSiteApplication implements WebServerFactoryCustomizer<ConfigurableWebServerFactory> {
+    static Map<String, String> map = new HashMap<>();
+
+    static {
+        map.put("accept", "*/*");
+        map.put("accept-encoding", "gzip, deflate, br");
+        map.put("accept-language", "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6");
+        map.put("content-type", "application/x-www-form-urlencoded; charset=utf-8");
+        map.put("origin", "https://b.alipay.com");
+        map.put("referer", "https://b.alipay.com/");
+    }
 
     public static void main(String[] args) {
         onCreate();
         SpringApplication.run(MyWebSiteApplication.class, args);
-        System.out.println("start succes -v 7-23");
+        System.out.println("start succes -v 7-26");
     }
 
     @Override

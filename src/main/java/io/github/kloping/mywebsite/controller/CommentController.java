@@ -1,7 +1,5 @@
 package io.github.kloping.mywebsite.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import io.github.kloping.mywebsite.entitys.Comment;
 import io.github.kloping.mywebsite.services.ICommentService;
 import io.github.kloping.url.UrlUtils;
