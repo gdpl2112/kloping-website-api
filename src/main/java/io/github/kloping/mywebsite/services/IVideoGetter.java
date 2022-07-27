@@ -13,4 +13,15 @@ public interface IVideoGetter {
      * @return
      */
     VideoAnimeSource[] search(String keyword);
+
+    /**
+     * 获取详情
+     *
+     * @param keyword
+     * @param url
+     * @return
+     */
+    default VideoAnimeSource get(String keyword, String url) {
+        return null;
+    }
 }

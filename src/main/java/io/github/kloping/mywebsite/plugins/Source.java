@@ -65,6 +65,9 @@ public class Source {
     public static TencentVideo0 tencentVideo0;
 
     @AutoStand
+    public static Vopipi vopipi;
+
+    @AutoStand
     public static Empty empty;
 
     /**

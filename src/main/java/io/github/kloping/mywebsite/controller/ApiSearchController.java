@@ -113,26 +113,6 @@ public class ApiSearchController {
         return new Songs(-1, 0, System.currentTimeMillis(), keyword, null, "err");
     }
 
-//
-//    @RequestMapping("/video")
-//    public VideoSource searchVideo(HttpServletRequest request, String keyword, @RequestParam(required = false) String type) {
-//        if (type == null || type.isEmpty()) type = "ks";
-//        try {
-//            switch (type.toLowerCase()) {
-//                case "ks":
-//                    return searchVideoGiftshow.search(keyword);
-//                case "bili":
-//                case "bilibili":
-//                    return searchVideoBili.search(keyword);
-//                default:
-//                    return new VideoSource(-1, keyword, null, System.currentTimeMillis(), type, -1);
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return new VideoSource(-1, keyword, null, System.currentTimeMillis(), type, -1);
-//    }
-
     IParseImg parseImgKs = new ParseGifImgImpl0();
 
     @RequestMapping("/parseImgs")
@@ -161,9 +141,15 @@ public class ApiSearchController {
     @Qualifier("videoGetterTencentImpl")
     IVideoGetter getter1;
 
+    @Autowired
+    @Qualifier("videoGetterThirdPartyImpl")
+    IVideoGetter getter2;
 
     @RequestMapping("/video")
-    public VideoAnimeSource[] searchVideo(@RequestParam("keyword") String keyword, @RequestParam(required = false, value = "type") String type) {
+    public VideoAnimeSource[] searchVideo(@RequestParam("keyword") String keyword,
+                                          @RequestParam(required = false, value = "type") String type,
+                                          @RequestParam(required = false, value = "url") String url
+    ) {
         keyword = keyword.trim();
         switch (type.trim()) {
             case "iqiyi":
@@ -175,6 +161,12 @@ public class ApiSearchController {
                 sources.addAll(Arrays.asList(getter0.search(keyword)));
                 sources.addAll(Arrays.asList(getter1.search(keyword)));
                 return sources.toArray(new VideoAnimeSource[0]);
+            case "tp":
+                if (url == null) {
+                    return getter2.search(keyword);
+                } else {
+                    return new VideoAnimeSource[]{getter2.get(keyword, url)};
+                }
             default:
                 return null;
         }
