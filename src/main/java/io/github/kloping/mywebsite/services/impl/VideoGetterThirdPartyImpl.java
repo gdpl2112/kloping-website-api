@@ -49,7 +49,6 @@ public class VideoGetterThirdPartyImpl implements IVideoGetter {
 
     @Override
     public VideoAnimeSource get(String keyword, String url) {
-        List<VideoAnimeSource> sources = new ArrayList<>();
         Document doc0 = Source.vopipi.doc(keyword);
         Element p0 = doc0.getElementsByClass("stui-vodlist clearfix").get(0);
         for (Element child : p0.children()) {
@@ -68,8 +67,8 @@ public class VideoGetterThirdPartyImpl implements IVideoGetter {
             source.setUrl(url0);
             source.setImg(na.attr("data-original"));
             source.setKeyword(keyword);
-            sources.add(source);
             source.setDetails(getDetails(url0));
+            return source;
         }
         return null;
     }

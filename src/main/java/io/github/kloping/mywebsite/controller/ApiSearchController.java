@@ -162,7 +162,7 @@ public class ApiSearchController {
                 sources.addAll(Arrays.asList(getter1.search(keyword)));
                 return sources.toArray(new VideoAnimeSource[0]);
             case "tp":
-                if (url == null) {
+                if (url == null || url.isEmpty()) {
                     return getter2.search(keyword);
                 } else {
                     return new VideoAnimeSource[]{getter2.get(keyword, url)};
