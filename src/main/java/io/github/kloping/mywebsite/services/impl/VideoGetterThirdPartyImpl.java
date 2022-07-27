@@ -81,7 +81,7 @@ public class VideoGetterThirdPartyImpl implements IVideoGetter {
         Element e1 = e0.getElementsByClass("play-content").get(0);
         for (Element element : e1.getElementsByTag("li")) {
             VideoAnimeDetail detail = new VideoAnimeDetail();
-            Element a = element.getElementsByClass("a").get(0);
+            Element a = element.getElementsByTag("a").get(0);
             detail.setDesc(a.text());
             detail.setName(a.text());
             try {
