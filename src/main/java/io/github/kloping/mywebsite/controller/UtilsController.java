@@ -173,6 +173,7 @@ public class UtilsController {
 
     @PostMapping("/uploadImg")
     public String upload(@RequestParam("key") String key, @RequestBody OnlyData data, HttpServletRequest request) {
+        if (!this.pwd.equals(pwd)) return "wrong password";
         byte[] bytes = Base64.getDecoder().decode(data.getData().toString());
         String name = UUID.randomUUID().toString() + "..jpg";
         File file = new File("./files/" + name);
