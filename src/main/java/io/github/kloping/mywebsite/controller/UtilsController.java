@@ -1,5 +1,6 @@
 package io.github.kloping.mywebsite.controller;
 
+import io.github.kloping.date.DateUtils;
 import io.github.kloping.file.FileUtils;
 import io.github.kloping.mywebsite.entitys.OnlyData;
 import org.jsoup.Connection;
@@ -175,7 +176,7 @@ public class UtilsController {
     public String upload(@RequestParam("key") String key, @RequestBody OnlyData data, HttpServletRequest request) {
         if (!this.pwd.equals(pwd)) return "wrong password";
         byte[] bytes = Base64.getDecoder().decode(data.getData().toString());
-        String name = UUID.randomUUID().toString() + ".jpg";
+        String name = DateUtils.getYear() + "/" + DateUtils.getMonth() + "/" + DateUtils.getDay() + "/" + UUID.randomUUID().toString() + ".jpg";
         File file = new File("./files/" + name);
         try {
             FileUtils.writeBytesToFile(bytes, file);
