@@ -1,14 +1,13 @@
 package io.github.kloping.mywebsite.controller;
 
+import io.github.kloping.file.FileUtils;
+import io.github.kloping.mywebsite.entitys.OnlyData;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -170,5 +169,18 @@ public class UtilsController {
             notice.notice(packName, title, text);
         }
         return "success";
+    }
+
+    @PostMapping("/uploadImg")
+    public String upload(@RequestParam("key") String key, @RequestBody OnlyData data, HttpServletRequest request) {
+        byte[] bytes = Base64.getDecoder().decode(data.getData().toString());
+        String name = UUID.randomUUID().toString() + "..jpg";
+        File file = new File("./files/" + name);
+        try {
+            FileUtils.writeBytesToFile(bytes, file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return name;
     }
 }

@@ -10,7 +10,6 @@ import io.github.kloping.mywebsite.entitys.webApi.douyPic.DouyPic;
 @HttpClient("https://www.iesdouyin.com/")
 public interface DouyinPic0 {
 
-
     /**
      * 获取抖音图片实例
      *

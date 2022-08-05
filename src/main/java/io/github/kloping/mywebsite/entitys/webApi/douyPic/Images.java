@@ -1,5 +1,8 @@
 package io.github.kloping.mywebsite.entitys.webApi.douyPic;
 
+/**
+ * @author HRS-Computer
+ */
 public class Images {
 	private String[] url_list;
 	private Number width;
