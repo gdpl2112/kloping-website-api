@@ -19,15 +19,15 @@
         <kotlin.version>1.6.0-RC</kotlin.version>
     </properties>
     <dependencies>
-        <dependency>
-            <groupId>com.alipay.sdk</groupId>
-            <artifactId>alipay-sdk-java</artifactId>
-            <version>4.23.26.ALL</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.alipay.sdk</groupId>-->
+<!--            <artifactId>alipay-sdk-java</artifactId>-->
+<!--            <version>4.23.26.ALL</version>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>io.github.Kloping</groupId>
             <artifactId>SpringTool</artifactId>
-            <version>0.5.1</version>
+            <version>0.5.5</version>
         </dependency>
         <dependency>
             <groupId>io.github.wnjustdoit</groupId>
