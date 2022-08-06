@@ -18,12 +18,18 @@
         <spring-native.version>0.10.3</spring-native.version>
         <kotlin.version>1.6.0-RC</kotlin.version>
     </properties>
+    <repositories>
+        <repository>
+            <id>main</id>
+            <url>https://repo1.maven.org/maven2/</url>
+        </repository>
+    </repositories>
     <dependencies>
-<!--        <dependency>-->
-<!--            <groupId>com.alipay.sdk</groupId>-->
-<!--            <artifactId>alipay-sdk-java</artifactId>-->
-<!--            <version>4.23.26.ALL</version>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>com.alipay.sdk</groupId>-->
+        <!--            <artifactId>alipay-sdk-java</artifactId>-->
+        <!--            <version>4.23.26.ALL</version>-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>io.github.Kloping</groupId>
             <artifactId>SpringTool</artifactId>
