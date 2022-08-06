@@ -5,4 +5,4 @@ className=io.github.kloping.mywebsite.MyWebSiteApplication
 classPath=$(cat ./web-site/classpath.txt)
 calssPath=${classPath}
 classPath=${classPath//%mrp%/$mrp}
-$java -Dfile.encoding=UTF-8 -classpath ${classPath}./M1.jar $className
+$java -Dfile.encoding=UTF-8 -classpath ${classPath}./MyWebSite.jar $className
