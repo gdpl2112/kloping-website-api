@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author github-kloping
  */
 @RestController
-@RequestMapping("/api/search")
+@RequestMapping("/api/get")
 public class ApiSelectController {
 
     @Autowired
