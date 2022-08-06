@@ -5,6 +5,7 @@ import io.github.kloping.MySpringTool.annotations.AutoStand;
 import io.github.kloping.MySpringTool.annotations.CommentScan;
 import io.github.kloping.MySpringTool.annotations.Schedule;
 import io.github.kloping.mywebsite.plugins.detail.GetPvpNews;
+import io.github.kloping.mywebsite.plugins.detail.PvpQq;
 import io.github.kloping.mywebsite.plugins.detail.RunAll;
 import io.github.kloping.mywebsite.plugins.interfaces.*;
 import io.github.kloping.mywebsite.services.impl.VideoGetterIqiyiImpl;
@@ -74,6 +75,9 @@ public class Source {
 
     @AutoStand
     public static GetPvpNews getPvpNews;
+
+    @AutoStand
+    public static PvpQq pvpQq;
 
     @AutoStand
     public static RunAll runAll;
