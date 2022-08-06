@@ -137,6 +137,7 @@ public class UtilsController {
             return null;
         }
     }
+
     public static interface Notice {
         /**
          * on notice
@@ -200,5 +201,27 @@ public class UtilsController {
             e.printStackTrace();
         }
         return name;
+    }
+
+    @GetMapping("/proxy")
+    public void proxy(@RequestParam("url") String url, HttpServletRequest request, HttpServletResponse response) {
+        try {
+            Connection connection = null;
+            connection = org.jsoup.Jsoup.connect(url).ignoreContentType(true).ignoreHttpErrors(true)
+                    .header("Host", new URL(url).getHost())
+                    .header("accept-encoding", "gzip, deflate, br")
+                    .userAgent(
+                            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Safari/537.36 Edg/100.0.1185.50"
+                    ).method(Connection.Method.GET);
+            Connection.Response resp = connection.execute();
+            resp.headers().forEach((k, v) -> {
+                response.addHeader(k, v);
+            });
+            byte[] bytes = resp.bodyAsBytes();
+            response.getOutputStream().write(bytes);
+            response.getOutputStream().close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
