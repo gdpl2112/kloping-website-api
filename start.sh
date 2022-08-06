@@ -1,4 +1,4 @@
-echo y | cp ./web-site/MyWebSite.jar ./
+echo y | cp ./web-site/src/MyWebSite.jar ./
 mrp=/root/.m2/repository
 java=/software/jdk11/bin/java
 className=io.github.kloping.mywebsite.MyWebSiteApplication
