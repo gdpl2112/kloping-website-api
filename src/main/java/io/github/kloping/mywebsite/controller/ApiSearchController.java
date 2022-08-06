@@ -30,6 +30,7 @@ public class ApiSearchController {
     @Qualifier("searchPicMany")
     @Autowired
     ISearchPic searchPicMany;
+
     @Qualifier("searchPicDuiT")
     @Autowired
     ISearchPic searchPicDt;
@@ -44,12 +45,11 @@ public class ApiSearchController {
 
     @Qualifier("searchSongQQ")
     @Autowired
-    ISearchSong searchSongQQ;
+    ISearchSong searchSongQq;
 
     @Qualifier("searchVideoBili")
     @Autowired
     ISearchVideo searchVideoBili;
-
 
     @Qualifier("parseDouyImgImpl")
     @Autowired
@@ -103,7 +103,7 @@ public class ApiSearchController {
                 case "kugou":
                     return searchSongKugou.searchSong(keyword, num);
                 case "qq":
-                    return searchSongQQ.searchSong(keyword, num);
+                    return searchSongQq.searchSong(keyword, num);
                 default:
                     return new Songs(-1, 0, System.currentTimeMillis(), keyword, null, "err");
             }

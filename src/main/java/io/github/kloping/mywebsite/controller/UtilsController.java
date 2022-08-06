@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.*;
@@ -120,7 +121,22 @@ public class UtilsController {
         return url;
     }
 
-
+    @RequestMapping("/getCloudPics")
+    public List<String> getCloudPic() {
+        try {
+            String baseUrl = "http://www.nsmc.org.cn/NSMC/datalist/fy2_color.txt";
+            String mn = "http://img.nsmc.org.cn/CLOUDIMAGE/FY2/WXCL/%s";
+            byte[] bytes = io.github.kloping.url.UrlUtils.getBytesFromHttpUrl(baseUrl);
+            String[] pics = new String(bytes, "utf-8").trim().split(",");
+            System.out.println(Arrays.toString(pics).replaceAll(",", "\n"));
+            for (int i = 0; i < pics.length; i++)
+                pics[i] = String.format(mn, pics[i].trim()).trim();
+            return Arrays.asList(pics);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
     public static interface Notice {
         /**
          * on notice

@@ -4,6 +4,8 @@ import io.github.kloping.MySpringTool.StarterApplication;
 import io.github.kloping.MySpringTool.annotations.AutoStand;
 import io.github.kloping.MySpringTool.annotations.CommentScan;
 import io.github.kloping.MySpringTool.annotations.Schedule;
+import io.github.kloping.mywebsite.plugins.detail.GetPvpNews;
+import io.github.kloping.mywebsite.plugins.detail.RunAll;
 import io.github.kloping.mywebsite.plugins.interfaces.*;
 import io.github.kloping.mywebsite.services.impl.VideoGetterIqiyiImpl;
 import io.github.kloping.mywebsite.services.impl.VideoGetterTencentImpl;
@@ -69,6 +71,12 @@ public class Source {
 
     @AutoStand
     public static Empty empty;
+
+    @AutoStand
+    public static GetPvpNews getPvpNews;
+
+    @AutoStand
+    public static RunAll runAll;
 
     /**
      * sun.misc方式Base64编码

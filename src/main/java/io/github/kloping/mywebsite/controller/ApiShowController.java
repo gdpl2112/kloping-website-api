@@ -63,21 +63,4 @@ public class ApiShowController {
     public List<ApiDetailM> m1() {
         return LIST;
     }
-
-    @RequestMapping("/getCloudPics")
-    public List<String> getCloudPic() {
-        try {
-            String baseUrl = "http://www.nsmc.org.cn/NSMC/datalist/fy2_color.txt";
-            String mn = "http://img.nsmc.org.cn/CLOUDIMAGE/FY2/WXCL/%s";
-            byte[] bytes = io.github.kloping.url.UrlUtils.getBytesFromHttpUrl(baseUrl);
-            String[] pics = new String(bytes, "utf-8").trim().split(",");
-            System.out.println(Arrays.toString(pics).replaceAll(",", "\n"));
-            for (int i = 0; i < pics.length; i++)
-                pics[i] = String.format(mn, pics[i].trim()).trim();
-            return Arrays.asList(pics);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 }

@@ -26,7 +26,7 @@ import static io.github.kloping.mywebsite.services.impl.Idiom.idiom;
  */
 @RestController
 @RequestMapping("/api/get")
-public class Api2Controller {
+public class ApiIdiomController {
     static {
         ApiShowController.LIST.add(new ApiDetailM()
                 .setName("查词语")
@@ -81,64 +81,4 @@ public class Api2Controller {
         return Idiom.INSTANCE.getRandom();
     }
 
-    @Autowired
-    @Qualifier("getKugouSongById")
-    IGetSongById kugouSongGet;
-
-    @Autowired
-    @Qualifier("getQQSongById")
-    IGetSongById qqSongGet;
-
-    @Autowired
-    @Qualifier("getNetEaseSongById")
-    IGetSongById wySongGet;
-
-    @RequestMapping("/subi")
-    public String p3(@RequestParam("id") String id, @RequestParam("type") String type) {
-        switch (type.trim()) {
-            case "kugou":
-                return kugouSongGet.getUrl(id);
-            case "qq":
-                return qqSongGet.getUrl(id);
-            case "wy":
-                return wySongGet.getUrl(id);
-            default:
-                return "{\"status\":-1}";
-        }
-    }
-
-    @Autowired
-    IgetLngLat getLngLat;
-
-    @Autowired
-    IShortTimeWeather shortTimeWeather;
-
-    @Autowired
-    IWeather weather;
-
-    @RequestMapping("/shortWeather")
-    public WeatherM shortWea(HttpServletRequest request, String address) {
-        try {
-            PositionM positionM = getLngLat.get(address);
-            String lng = positionM.getResult().getLocation().getLng().toString();
-            String lat = positionM.getResult().getLocation().getLat().toString();
-            WeatherM weatherM = shortTimeWeather.getWeather(lng, lat);
-            weatherM.setLevel(positionM.getResult().getLevel());
-            return weatherM;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    @RequestMapping("/weather")
-    public WeatherDetail weather(HttpServletRequest request, String address) {
-        try {
-            WeatherDetail weatherDetail = weather.get(address);
-            return weatherDetail;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 }

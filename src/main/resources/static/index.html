@@ -4,21 +4,21 @@
     <meta charset="utf-8">
     <meta name="referrer" content="no-referrer"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://jsd.compc.cc/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
-<!--    https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css-->
+    <link rel="stylesheet" href="./css/bootstrap4.3.1.min.css">
+    <link rel="stylesheet" href="./css/bootstrap-icons1.8.1.css">
     <script src="./js/lib/axios.js"></script>
     <script src="./js/lib/vue.js"></script>
     <script src="./js/lib/jq3.6.js"></script>
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script src="https://unpkg.com/popper.js@1.14.7/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="./js/jquery-3.3.1.min.js"></script>
+    <script src="./js/jquery-3.3.1.min.js"></script>
+    <script src="./js/popper1.14.1.min.js"></script>
+    <script src="./js/bootstrap4.3.1.min.js"></script>
     <title>若生er,WebSite</title>
     <link rel="stylesheet" href="css/main.css">
 </head>
-<body id="body">
+<body id="body" class="page-header-fixed">
 <script src="js/header-top.js"></script>
-<div id="con0" class="container" style="width: 100%; opacity: 85%;margin-top: 50px">
+<div id="con0" class="container" style="width: 100%; opacity: 85%;margin-top: 150px">
     <div v-on:click="tog(d.id)" v-for="d in data.notices">
         <div class="row shadow-lg p-3 mb-5 bg-white rounded alert-info" style="margin-top: 10px">
             <div class="col-3 align-middle">
