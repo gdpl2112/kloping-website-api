@@ -193,17 +193,11 @@ public class UtilsController {
     public String upload(@RequestParam("key") String key, @RequestBody OnlyData data, HttpServletRequest request) {
         if (!this.pwd.equals(pwd)) return "wrong password";
         byte[] bytes = Base64.getDecoder().decode(data.getData().toString());
-        String name = DateUtils.getYear() + "/" + DateUtils.getMonth() + "/" + DateUtils.getDay() + "/" + UUID.randomUUID().toString() + ".jpg";
-        File file = new File("./files/" + name);
-        try {
-            FileUtils.writeBytesToFile(bytes, file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        String name = save(bytes, false);
         return name;
     }
 
-    @GetMapping("/proxy")
+    @GetMapping("/transImg")
     public void proxy(@RequestParam("url") String url, HttpServletRequest request, HttpServletResponse response) {
         try {
             Connection connection = null;
@@ -214,14 +208,24 @@ public class UtilsController {
                             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Safari/537.36 Edg/100.0.1185.50"
                     ).method(Connection.Method.GET);
             Connection.Response resp = connection.execute();
-            resp.headers().forEach((k, v) -> {
-                response.addHeader(k, v);
-            });
             byte[] bytes = resp.bodyAsBytes();
-            response.getOutputStream().write(bytes);
-            response.getOutputStream().close();
+            String name = save(bytes, true);
+            response.sendRedirect("http://kloping.top/" + name);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private String save(byte[] bytes, boolean isTemp) {
+        String name = DateUtils.getYear() + "/" + DateUtils.getMonth() + "/" + DateUtils.getDay() + "/" + UUID.randomUUID().toString() + ".jpg";
+        name = isTemp ? "temp/" + name : name;
+        File file = new File("./files/" + name);
+        try {
+            file.getParentFile().mkdirs();
+            FileUtils.writeBytesToFile(bytes, file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return name;
     }
 }
