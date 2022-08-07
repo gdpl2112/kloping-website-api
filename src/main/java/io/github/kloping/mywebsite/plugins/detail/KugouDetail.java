@@ -57,7 +57,9 @@ public class KugouDetail {
     public static final Entry<String, String> E0 = new AbstractMap.SimpleEntry<>("kg_mid", "2333");
 
     public static KugouSong getOne(String hash, String id) {
-        KugouSong kugouSong = kugou.getSong(null, null,
+        KugouSong kugouSong = kugou.getSong(
+                null, null,
+                null, null, null,
                 hash, id, System.currentTimeMillis(), E0
         );
         return kugouSong;

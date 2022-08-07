@@ -22,7 +22,7 @@ public interface PvpQq0 {
      * @return
      */
     @GetPath("zlkdatasys/data_zlk_lb.json")
-    @Callback("Project.detailPlugin.PvpQq.c1")
+    @Callback("io.github.kloping.mywebsite.plugins.detail.PvpQq.c1")
     PvpQQVoice get0(@ParamName("callback") String createList);
 
     /**
@@ -32,7 +32,7 @@ public interface PvpQq0 {
      * @return
      */
     @GetPath("webplat/info/news_version3/15592/18024/23901/24397/24398/m22352/index.shtml?callback=createHeroList")
-    @Callback("Project.detailPlugin.PvpQq.c1")
+    @Callback("io.github.kloping.mywebsite.plugins.detail.PvpQq.c1")
     PvpQQH0 get1(@ParamName("callback") String createHeroList);
 
     /**

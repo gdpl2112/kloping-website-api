@@ -7,7 +7,6 @@ import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.context.annotation.Import;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
-import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,6 +31,7 @@ public class MyWebSiteApplication implements WebServerFactoryCustomizer<Configur
         onCreate();
         SpringApplication.run(MyWebSiteApplication.class, args);
         System.out.println("start succes -v 7-26");
+        io.github.kloping.mywebsite.plugins.Source.before();
     }
 
     @Override

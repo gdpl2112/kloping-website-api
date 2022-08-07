@@ -27,11 +27,8 @@ import java.util.Map;
 public class Source {
 
     public static void before() {
+        StarterApplication.SCAN_LOADER = Source.class.getClassLoader();
         StarterApplication.run(Source.class);
-    }
-
-    static {
-        before();
     }
 
     @AutoStand

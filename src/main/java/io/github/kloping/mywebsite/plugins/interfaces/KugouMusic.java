@@ -97,15 +97,15 @@ public interface KugouMusic {
 //            @ParamName("mid")
 //            @DefaultValue("addaef6431178cfccf2780b9609cb133")
 //                    String mid,
-//            @ParamName("platid")
-//            @DefaultValue("4")
-//                    String platid,
-//            @ParamName("dfid")
-//            @DefaultValue("")
-//                    String dfid,
-//            @ParamName("appid")
-//            @DefaultValue("")
-//                    String appid,
+            @ParamName("platid")
+            @DefaultValue("4")
+                    String platid,
+            @ParamName("dfid")
+            @DefaultValue("")
+                    String dfid,
+            @ParamName("appid")
+            @DefaultValue("")
+                    String appid,
             @ParamName("hash")
                     String hash,
             @ParamName("album_id")
