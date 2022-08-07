@@ -36,6 +36,7 @@ public class KugouDetail {
         Info[] infos = detail.getData().getInfo();
         for (Info info : infos) {
             KugouSong kugouSong = getOne(info.getHash(), info.getAlbum_id());
+            if (kugouSong == null) continue;
             Song song = new Song()
                     .setSongUrl(kugouSong.getData().getPlay_url())
                     .setImgUrl(kugouSong.getData().getImg())
