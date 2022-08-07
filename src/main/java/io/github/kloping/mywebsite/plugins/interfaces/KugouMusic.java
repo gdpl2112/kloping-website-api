@@ -94,9 +94,9 @@ public interface KugouMusic {
             @ParamName("callback")
             @DefaultValue("jq")
                     String callback,
-//            @ParamName("mid")
-//            @DefaultValue("addaef6431178cfccf2780b9609cb133")
-//                    String mid,
+            @ParamName("mid")
+            @DefaultValue("addaef6431178cfccf2780b9609cb133")
+                    String mid,
             @ParamName("platid")
             @DefaultValue("4")
                     String platid,

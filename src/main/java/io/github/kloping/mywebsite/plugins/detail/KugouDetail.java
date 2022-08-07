@@ -1,11 +1,16 @@
 package io.github.kloping.mywebsite.plugins.detail;
 
+import com.alibaba.fastjson.JSONObject;
 import io.github.kloping.mywebsite.entitys.medias.Song;
 import io.github.kloping.mywebsite.entitys.medias.Songs;
 import io.github.kloping.mywebsite.entitys.webApi.kugouDetail.Info;
 import io.github.kloping.mywebsite.entitys.webApi.kugouDetail.KugouSongDetail;
 import io.github.kloping.mywebsite.entitys.webApi.kugouSong.KugouSong;
+import org.jsoup.Connection;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
+import java.io.IOException;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,11 +63,29 @@ public class KugouDetail {
     public static final Entry<String, String> E0 = new AbstractMap.SimpleEntry<>("kg_mid", "a651cd68324a2442d88bbd74c6997e29");
 
     public static KugouSong getOne(String hash, String id) {
-        KugouSong kugouSong = kugou.getSong(
-                null, null,
-                null, null, null,
-                hash, id, System.currentTimeMillis(), E0
-        );
+        KugouSong kugouSong = null;
+        Document doc = null;
+        Connection connection = null;
+        String u0 = String.format("https://wwwapi.kugou.com/yy/index.php?r=play/getdata&callback=%s&hash=%s&album_id=%s&_=%s", "jq", hash, id, System.currentTimeMillis());
+        connection = Jsoup.connect(u0).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.134 Safari/537.36 Edg/103.0.1264.77")
+                .ignoreHttpErrors(true).ignoreContentType(true).cookie(E0.getKey(), E0.getValue());
+
+        try {
+            doc = connection.get();
+            kugouSong = JSONObject.parseObject(doc0(doc.body().text()), KugouSong.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            try {
+                doc = connection.proxy("123.57.42.227", 8889).get();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+            kugouSong = JSONObject.parseObject(doc0(doc.body().text()), KugouSong.class);
+        }
+//        kugouSong = kugou.getSong(
+//                null, null, E0.getValue(), null, null, null,
+//                hash, id, System.currentTimeMillis(), E0
+//        );
         return kugouSong;
     }
 }
