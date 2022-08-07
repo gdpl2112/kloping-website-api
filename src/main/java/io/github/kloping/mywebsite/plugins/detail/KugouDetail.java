@@ -55,7 +55,7 @@ public class KugouDetail {
         return getOne(ss[0], ss.length > 1 ? ss[1] : "").getData().getPlay_url();
     }
 
-    public static final Entry<String, String> E0 = new AbstractMap.SimpleEntry<>("kg_mid", "2333");
+    public static final Entry<String, String> E0 = new AbstractMap.SimpleEntry<>("kg_mid", "a651cd68324a2442d88bbd74c6997e29");
 
     public static KugouSong getOne(String hash, String id) {
         KugouSong kugouSong = kugou.getSong(
