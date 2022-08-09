@@ -49,11 +49,12 @@ public class NoticeServiceImpl implements INoticeService {
 
     @Override
     public NoticePack get1(Integer pn) {
-        NoticePack pack = get(pn);
-        for (Notice notice : pack.getNotices()) {
-            notice.setHtml("");
-        }
-        return pack;
+        List<Notice> list = mapper.ln();
+        NoticePack noticePack = new NoticePack();
+        noticePack.setNotices(list);
+        noticePack.setPn(++pn);
+        noticePack.setMax(list.size() / 5 + (list.size() % 5 > 0 ? 1 : 0));
+        return noticePack;
     }
 
     @Value("${upload.passwd:123456}")
