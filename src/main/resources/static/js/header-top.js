@@ -1,5 +1,5 @@
 $("body").append("\n" +
-    "<nav class=\" fixed-top navbar navbar-expand-lg navbar-light bg-light\">\n" +
+    "<nav class=\"fixed-top navbar navbar-expand-lg navbar-light bg-light\">\n" +
     "    <div class=\" navbar-brand navbar-header\">\n" +
     "        <img style=\"max-width: 50px\" class=\"navbar-brand\" src=\"//q1.qlogo.cn/g?b=qq&amp;nk=3474006766&amp;s=640\" alt=\"qq\">\n" +
     "    </div>\n" +
