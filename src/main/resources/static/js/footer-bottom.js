@@ -3,7 +3,7 @@ $(function () {
 })
 
 $("body").append("\n" +
-    "<div style=\"margin-right: 10px;margin-left: 10px; margin-top: 35px;background-color: rgba(0,6,33,0.25)\" role=\"alert\" class=\"opacity-50 alert alert-dark\">\n" +
+    "<div style=\"margin-right: 10px;margin-left: 10px; margin-top: 35px;background-color: rgba(0,6,33,0.4)\" role=\"alert\" class=\"opacity-50 alert alert-dark\">\n" +
     "    <center style=\"opacity: 100%;color: white\">\n" +
     "        该网页由作者单人编写 <br>\n" +
     "        欢迎您的访问 <br>\n" +
@@ -14,10 +14,9 @@ $("body").append("\n" +
     "    </center>\n" +
     "    <br>\n" +
     "    <center>\n" +
-    "        <button type=\"button\" class=\"btn btn-secondary\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"添加友链,请联系作者\">\n" +
+    "         <h5 style='color: white' data-toggle=\"tooltip\" data-placement=\"top\" title=\"添加友链,请联系作者\">\n" +
     "            友情链接\n" +
-    "        </button>\n" +
-    "        <br>\n" +
+    "        </h5>\n" +
     "        <a style=\"color: #f2d2f6\" href=\"//kloping.top\" class=\"alert-link\">若生er,WebSite</a>&nbsp;&nbsp;\n" +
     "    </center>\n" +
     "</div>\n");
