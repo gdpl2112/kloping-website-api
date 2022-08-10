@@ -14,8 +14,9 @@ import java.util.List;
 public interface NoticeMapper extends BaseMapper<Notice> {
     /**
      * 1
+     *
      * @return
      */
-    @Select("SELECT id,state,views,title,icon,date,author_name,author_id FROM `notice` WHERE `state`=0  order by `time` desc;")
+    @Select("SELECT id,state,views,title,icon,date,author_name,author_id,time FROM `notice` WHERE `state`=0  order by `time` desc;")
     List<Notice> ln();
 }

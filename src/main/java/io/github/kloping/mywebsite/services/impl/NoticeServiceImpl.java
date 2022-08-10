@@ -34,9 +34,9 @@ public class NoticeServiceImpl implements INoticeService {
         queryWrapper.orderByDesc("time");
         List<Notice> list = mapper.selectList(queryWrapper);
         List<Notice> list0 = new LinkedList<>();
-        int i = pn * 5;
+        int i = pn * MAX;
         while (true) {
-            if (i >= list.size() || list0.size() >= 5) break;
+            if (i >= list.size() || list0.size() >= MAX) break;
             list0.add(list.get(i));
             i++;
         }
@@ -49,11 +49,12 @@ public class NoticeServiceImpl implements INoticeService {
 
     @Override
     public NoticePack get1(Integer pn) {
+        pn--;
         List<Notice> list = mapper.ln();
         List<Notice> list0 = new LinkedList<>();
-        int i = pn * 5;
+        int i = pn * MAX;
         while (true) {
-            if (i >= list.size() || list0.size() >= 5) break;
+            if (i >= list.size() || list0.size() >= MAX) break;
             list0.add(list.get(i));
             i++;
         }
