@@ -50,8 +50,15 @@ public class NoticeServiceImpl implements INoticeService {
     @Override
     public NoticePack get1(Integer pn) {
         List<Notice> list = mapper.ln();
+        List<Notice> list0 = new LinkedList<>();
+        int i = pn * 5;
+        while (true) {
+            if (i >= list.size() || list0.size() >= 5) break;
+            list0.add(list.get(i));
+            i++;
+        }
         NoticePack noticePack = new NoticePack();
-        noticePack.setNotices(list);
+        noticePack.setNotices(list0);
         noticePack.setPn(++pn);
         noticePack.setMax(list.size() / 5 + (list.size() % 5 > 0 ? 1 : 0));
         return noticePack;
