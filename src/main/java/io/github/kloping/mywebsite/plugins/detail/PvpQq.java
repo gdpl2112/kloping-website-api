@@ -1,5 +1,6 @@
 package io.github.kloping.mywebsite.plugins.detail;
 
+import com.alibaba.fastjson.parser.ParserConfig;
 import io.github.kloping.MySpringTool.annotations.AutoStand;
 import io.github.kloping.MySpringTool.annotations.Entity;
 import io.github.kloping.mywebsite.entitys.pvpQQH0.Data;
@@ -23,6 +24,10 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Entity
 public class PvpQq {
+    {
+        ParserConfig.getGlobalInstance().setAsmEnable(false);
+    }
+
     public static final Map<String, Yy_4e[]> NAME2VOICE = new ConcurrentHashMap<>();
     public static final Map<String, Data> NAME2DATA = new ConcurrentHashMap<>();
     public static final Map<String, Integer> NAME2ID = new ConcurrentHashMap<>();
@@ -71,9 +76,9 @@ public class PvpQq {
             ID2NAME.put(id, name);
             NAME2DATA.put(name, datum);
         }
-        for (Yylb_34 yylb_34 : v.getYylb_34()) {
-            int id = Integer.parseInt(yylb_34.getYxid_a7());
-            NAME2VOICE.put(ID2NAME.get(id), yylb_34.getYy_4e());
+        for (Yylb_34 yylb34 : v.getYylb_34()) {
+            int id = Integer.parseInt(yylb34.getYxid_a7());
+            NAME2VOICE.put(ID2NAME.get(id), yylb34.getYy_4e());
         }
     }
 
