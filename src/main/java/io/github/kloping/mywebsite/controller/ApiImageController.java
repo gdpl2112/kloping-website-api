@@ -45,8 +45,8 @@ public class ApiImageController {
     public String tong(@RequestParam("q1") String q1, @RequestParam("q2") String q2, HttpServletResponse response) {
         try {
             BufferedImage image = ImageIO.read(new ByteArrayInputStream(TONG_BASE_BYTES));
-            BufferedImage iq1 = ImageIO.read(new URL(String.format("https://q1.qlogo.cn/g?b=qq&nk=%s&s=640", 3474006766L)));
-            BufferedImage iq2 = ImageIO.read(new URL(String.format("https://q1.qlogo.cn/g?b=qq&nk=%s&s=640", 930204019L)));
+            BufferedImage iq1 = ImageIO.read(new URL(String.format("https://q1.qlogo.cn/g?b=qq&nk=%s&s=640", q1)));
+            BufferedImage iq2 = ImageIO.read(new URL(String.format("https://q1.qlogo.cn/g?b=qq&nk=%s&s=640", q2)));
             int size = 84;
             iq1 = (BufferedImage) ImageDrawerUtils.image2Size(iq1, size, size);
             iq2 = (BufferedImage) ImageDrawerUtils.image2Size(iq2, size+6, size+6);
