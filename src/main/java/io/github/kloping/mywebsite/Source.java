@@ -103,83 +103,8 @@ public class Source {
     }
 
     public static void onCreate() {
-        threads.submit(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    int today = Integer.parseInt(getToday());
-                    long time = -1;
-                    while ((time = getTimeFromNowTo(today + 1, 0, 0)) < 10000) {
-                    }
-                    Thread.sleep(time);
-                    save(UtilsController.t1 + ":" + UtilsController.t2);
-                    UtilsController.t1 = 1;
-                    UtilsController.t2 = 1;
-                    Source.today = null;
-                    run();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        initMap();
-        initValue();
     }
 
-    private static void initValue() {
-        if (objs.containsKey("t1"))
-            UtilsController.t1 = Integer.valueOf(objs.get("t1").toString());
-        if (objs.containsKey("t2"))
-            UtilsController.t2 = Integer.valueOf(objs.get("t2").toString());
-    }
-
-    public static synchronized void updateMap() {
-        objs.put("t1", UtilsController.t1);
-        objs.put("t2", UtilsController.t2);
-        try {
-            PrintWriter pw = new PrintWriter(new FileOutputStream(fileMap), true);
-            for (String k : objs.keySet()) {
-                String line = k + ":" + objs.get(k);
-                pw.println(line);
-            }
-            pw.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private static void initMap() {
-        try {
-            if (!fileMap.exists())
-                fileMap.createNewFile();
-            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(fileMap)));
-            String line = null;
-            while ((line = br.readLine()) != null) {
-                if (!line.contains(":") || line.isEmpty()) continue;
-                String[] ss = line.split(":");
-                objs.put(ss[0], ss[1]);
-            }
-            br.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private static void save(String s) {
-        try {
-            if (!file.exists())
-                file.createNewFile();
-            PrintWriter pw = new PrintWriter(new FileOutputStream(file, true), true);
-            pw.println(s);
-            pw.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static String getToday() {
-        return today == null ? (today = new SimpleDateFormat("dd").format(new Date())) : today;
-    }
 
     private static final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd-HH-mm");
 

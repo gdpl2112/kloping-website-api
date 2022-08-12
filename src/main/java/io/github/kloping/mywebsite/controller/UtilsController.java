@@ -19,86 +19,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.*;
 
-import static io.github.kloping.mywebsite.Source.println;
-import static io.github.kloping.mywebsite.Source.updateMap;
-
 /**
  * @author github-kloping
  */
 @RestController
 public class UtilsController {
-
-    @GetMapping("/getNum")
-    public String getAllNum() {
-        return "自上次重启 已经被访问了" + SystemController.AllNum + "次";
-    }
-
-    private static String key;
-    private static String MyKey = "hrskloping";
-
-    static {
-        key = new Random().nextInt() + "";
-        println(key);
-    }
-
-    public static int t1 = 1;
-    public static int t2 = 1;
-
-    @GetMapping("/abo")
-    public void addTimes(Long id, String key) {
-        if (key.equals(UtilsController.key) || key.equals(MyKey)) {
-            if (id == 291841860) {
-                t1++;
-                println("add t1 => " + t1);
-            } else {
-                t2++;
-                println("add t2 => " + t2);
-            }
-            updateMap();
-        } else {
-            System.err.println(key + " Error");
-        }
-    }
-
-    @GetMapping("getAllInfo")
-    public String getAllInfo() {
-        return "[{\"id\":291841860,\"times\":\"001号今天累计处理信息" + t1 + "条=\"},{\"id\":3597552450,\"times\":\"017号今天累计处理信息" + t2 + "条=\"}]";
-    }
-
-    @GetMapping("/getRandPng")
-    public String getUrl(@RequestHeader(value = "User-Agent") String userAgent, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws Exception {
-        String url;
-        if (userAgent.contains("Android") || userAgent.contains("iPhone")) {
-            url = getRedirectUrl("https://api.uomg.com/api/rand.img2?sort=%E4%BA%8C%E6%AC%A1%E5%85%83&format=images");
-        } else {
-            url = getRedirectUrl("https://api.uomg.com/api/rand.img1?sort=%E4%BA%8C%E6%AC%A1%E5%85%83&format=images");
-        }
-        httpServletResponse.sendRedirect(url);
-        return url;
-//        httpServletResponse.setContentType("image/png");
-//        OutputStream os = httpServletResponse.getOutputStream();
-//        byte[] bytes = new byte[0];
-//        BufferedImage image = ImageIO.read(getRandFile());
-//        if (userAgent.contains("Android") || userAgent.contains("iPhone")) {
-//            image = MyUtils.rotateImage(image, 90);
-//        }
-//        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//        ImageIO.write(image, "png", baos);
-//        bytes = baos.toByteArray();
-//        os.write(bytes);
-//        os.flush();
-//        os.close();
-//        return "ok";
-    }
-
-    public static File[] files = new File("./imgs").listFiles();
-    public static final Random RAND = new Random();
-
-    private File getRandFile() {
-        files = new File("./imgs").listFiles();
-        return files[RAND.nextInt(files.length)];
-    }
-
     /**
      * 获取重定向地址
      */
@@ -216,7 +141,7 @@ public class UtilsController {
         }
     }
 
-    private String save(byte[] bytes, boolean isTemp) {
+    public static String save(byte[] bytes, boolean isTemp) {
         String name = DateUtils.getYear() + "/" + DateUtils.getMonth() + "/" + DateUtils.getDay() + "/" + UUID.randomUUID().toString() + ".jpg";
         name = isTemp ? "temp/" + name : name;
         File file = new File("./files/" + name);
