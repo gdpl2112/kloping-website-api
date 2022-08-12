@@ -26,10 +26,11 @@ let vm1 = new Vue({
 function load() {
     setTimeout(function () {
         let colors = [
-            "rgba(225,162,203,0.6)",
-            // "#34D2D299",
-            // "#D95AC799",
-            // "#5AD97399"
+            "rgba(174,162,225,0.6)",
+            "rgba(223,166,232,0.6)",
+            "rgba(232,191,153,0.6)",
+            "rgba(153,232,154,0.6)",
+            "rgba(90,206,217,0.6)"
         ];
         let eee = document.getElementsByClassName("apiE");
         console.log(eee)
