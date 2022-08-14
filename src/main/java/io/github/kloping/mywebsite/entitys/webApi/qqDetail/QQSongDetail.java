@@ -1,5 +1,8 @@
 package io.github.kloping.mywebsite.entitys.webApi.qqDetail;
 
+/**
+ * @author HRS-Computer
+ */
 public class QQSongDetail {
 	private Number code;
 	private Data data;

@@ -69,7 +69,7 @@ public class Verify0Controller implements InterceptorBroadcast.InterceptorReceiv
             file.setFile(target);
             MyUtils.copyFileUsingStream(source, target);
             file.setNum(0).setCode(code);
-            file.setTime(60000L);
+            file.setTime(120000L);
             file.start();
             FN2FILE.put(fn, file);
             return fn;
