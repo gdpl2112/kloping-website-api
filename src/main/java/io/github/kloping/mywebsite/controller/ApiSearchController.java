@@ -12,9 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author github-kloping
@@ -85,6 +83,8 @@ public class ApiSearchController {
         return result;
     }
 
+    private Map<String, Songs> hist_songs = new HashMap<>();
+
     @RequestMapping("/song")
     public Songs searchSong(HttpServletRequest request, @RequestParam("keyword") String keyword
             , @RequestParam(required = false, value = "type") String type
@@ -97,16 +97,24 @@ public class ApiSearchController {
         } catch (Exception e) {
         }
         try {
+            String vk = keyword + "," + type + "," + numStr;
+            if (hist_songs.containsKey(vk)) return hist_songs.get(vk);
+            Songs songs = null;
             switch (type.toLowerCase()) {
                 case "wy":
-                    return searchSongWy.searchSong(keyword, num);
+                    songs = searchSongWy.searchSong(keyword, num);
+                    break;
                 case "kugou":
-                    return searchSongKugou.searchSong(keyword, num);
+                    songs = searchSongKugou.searchSong(keyword, num);
+                    break;
                 case "qq":
-                    return searchSongQq.searchSong(keyword, num);
+                    songs = searchSongQq.searchSong(keyword, num);
+                    break;
                 default:
                     return new Songs(-1, 0, System.currentTimeMillis(), keyword, null, "err");
             }
+            hist_songs.put(vk, songs);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
