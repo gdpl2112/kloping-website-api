@@ -12,6 +12,12 @@ public class All {
         String js = callbackJson.substring(i + 1, i1);
         return js;
     }
+    public static String doc1(String callbackJson) {
+        int i = callbackJson.indexOf("(");
+        int i1 = callbackJson.lastIndexOf(")");
+        String js = callbackJson.substring(i + 1, i1);
+        return js;
+    }
     private static final String SINGLE_PATTERN = "[0-9|a-f|A-F]";
     private static final String PATTERN = SINGLE_PATTERN + SINGLE_PATTERN +
             SINGLE_PATTERN + SINGLE_PATTERN;

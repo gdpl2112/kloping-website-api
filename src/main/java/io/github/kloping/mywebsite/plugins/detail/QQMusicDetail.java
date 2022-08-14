@@ -3,13 +3,14 @@ package io.github.kloping.mywebsite.plugins.detail;
 import com.alibaba.fastjson.JSON;
 import io.github.kloping.mywebsite.entitys.medias.Song;
 import io.github.kloping.mywebsite.entitys.medias.Songs;
-import io.github.kloping.mywebsite.plugins.Source;
-import io.github.kloping.mywebsite.entitys.webApi.qqLyric.QQLyric;
+import io.github.kloping.mywebsite.entitys.webApi.fcgPlaySingleSong.FcgPlaySingleSong;
 import io.github.kloping.mywebsite.entitys.webApi.qqDetail.QQMusicDataList;
-import io.github.kloping.mywebsite.entitys.webApi.qqDetail.QQSongDetail;
 import io.github.kloping.mywebsite.entitys.webApi.qqDetail.Singer;
+import io.github.kloping.mywebsite.entitys.webApi.qqLyric.QQLyric;
+import io.github.kloping.mywebsite.entitys.webApi.qqMusicSearchNewPlatform.QqMusicSearchNewPlatform;
 import io.github.kloping.mywebsite.entitys.webApi.qqOneSong.Data;
 import io.github.kloping.mywebsite.entitys.webApi.qqOneSong.QQOneSong;
+import io.github.kloping.mywebsite.plugins.Source;
 
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -62,26 +63,32 @@ public class QQMusicDetail {
     }
 
     public static Songs songs(String keyword, int num) {
-        QQSongDetail songDetail = qqMusic.qqDetail(null, null, null, null, 0,
-                num, keyword);
         List<Song> songs = new ArrayList<>();
-        for (QQMusicDataList list : songDetail.getData().getSong().getList()) {
+        QqMusicSearchNewPlatform qm = qqMusic.qqDetail(null, null, null, null, null, null, null,
+                0,
+                num,
+                keyword
+        );
+        for (io.github.kloping.mywebsite.entitys.webApi.qqMusicSearchNewPlatform.List list : qm.getData().getSong().getList()) {
+            String[] ss = list.getF().split("\\|");
             Song song = new Song();
-            QQOneSong qqOneSong = qqMusic.oneDetail(null, list, HEADERS);
+            FcgPlaySingleSong singleSong = qqMusic.singleSong(ss[0], null, null, null);
+            QQMusicDataList dl0 = new QQMusicDataList();
+            String mid = singleSong.getData()[0].getMid();
+            dl0.setMedia_mid(mid);
+            QQOneSong qqOneSong = qqMusic.oneDetail(null, dl0, HEADERS);
             io.github.kloping.mywebsite.entitys.webApi.qqOneSong.Data data = qqOneSong.getReq_0().getData();
-            String urlEnd = data.getMidurlinfo()[0].getPurl();
+            String urlEnd = "http://dl.stream.qqmusic.qq.com/" + data.getMidurlinfo()[0].getPurl();
             String lyric = qqMusic.getLyric(null, null, null, null, null, null, null, null, null, null, null, null,
-                    list.getSongmid(),
+                    mid,
                     System.currentTimeMillis(),
-                    QQMusicDetail.HEADERS_LYRIC
-            ).getLyric();
+                    QQMusicDetail.HEADERS_LYRIC).getLyric();
             song.setLyric(lyric)
-                    .setSongUrl(getT0(data, urlEnd))
-                    .setMedia_name(list.getSongname())
-                    .setImgUrl(getImgUrlDataByAlbumMid(list.getAlbummid()))
-                    .setAuthor_name(getSingersName(list.getSinger()))
-                    .setId(list.getSongmid())
-            ;
+                    .setSongUrl(urlEnd)
+                    .setMedia_name(ss[1])
+                    .setImgUrl(String.format("http://imgcache.qq.com/music/photo/album_300/76/300_albumpic_%s_0.jpg", ss[4]))
+                    .setAuthor_name(ss[3])
+                    .setId(mid);
             songs.add(song);
         }
         return new Songs(0, songs.size(), System.currentTimeMillis(), keyword, songs.toArray(new Song[0]), "qq");

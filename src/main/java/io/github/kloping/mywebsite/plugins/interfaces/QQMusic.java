@@ -1,9 +1,11 @@
 package io.github.kloping.mywebsite.plugins.interfaces;
 
+import com.alibaba.fastjson.JSONObject;
 import io.github.kloping.MySpringTool.annotations.http.*;
-import io.github.kloping.mywebsite.entitys.webApi.qqLyric.QQLyric;
+import io.github.kloping.mywebsite.entitys.webApi.fcgPlaySingleSong.FcgPlaySingleSong;
 import io.github.kloping.mywebsite.entitys.webApi.qqDetail.QQMusicDataList;
-import io.github.kloping.mywebsite.entitys.webApi.qqDetail.QQSongDetail;
+import io.github.kloping.mywebsite.entitys.webApi.qqLyric.QQLyric;
+import io.github.kloping.mywebsite.entitys.webApi.qqMusicSearchNewPlatform.QqMusicSearchNewPlatform;
 import io.github.kloping.mywebsite.entitys.webApi.qqOneSong.QQOneSong;
 
 import java.util.Map;
@@ -18,17 +20,14 @@ public interface QQMusic {
     /**
      * qq song detail
      *
-     * @param cr
-     * @param aggr
-     * @param flagQc
-     * @param format
-     * @param p      跳过页数
-     * @param n      单页数量
-     * @param w      keyword
+     * @param p 跳过页数
+     * @param n 单页数量
+     * @param w keyword
      * @return
      */
-    @GetPath("https://c.y.qq.com/soso/fcgi-bin/client_search_cp")
-    QQSongDetail qqDetail(
+    @GetPath("https://c.y.qq.com/soso/fcgi-bin/music_search_new_platform")
+    @Callback("io.github.kloping.mywebsite.plugins.detail.All.doc1")
+    QqMusicSearchNewPlatform qqDetail(
             @ParamName("cr")
             @DefaultValue("1")
                     String cr,
@@ -38,9 +37,18 @@ public interface QQMusic {
             @ParamName("flag_qc")
             @DefaultValue("0")
                     String flagQc,
-            @ParamName("format")
+            @ParamName("t")
+            @DefaultValue("1")
+                    String t,
+            @ParamName("lossless")
+            @DefaultValue("0")
+                    String lossless,
+            @ParamName("catZhida")
             @DefaultValue("json")
-                    String format,
+                    String catZhida,
+            @ParamName("searchId")
+            @DefaultValue("53806572956004615")
+                    String sid,
             @ParamName("p")
             @DefaultValue("1")
                     Integer p,
@@ -152,4 +160,27 @@ public interface QQMusic {
     );
 
 
+    /**
+     * q
+     * @param sid
+     * @param tpl
+     * @param format
+     * @param callback
+     * @return
+     */
+    @GetPath("https://c.y.qq.com/v8/fcg-bin/fcg_play_single_song.fcg")
+    @Callback("io.github.kloping.mywebsite.plugins.detail.All.doc1")
+    FcgPlaySingleSong singleSong(
+            @ParamName("songid")
+                    String sid,
+            @ParamName("tpl")
+            @DefaultValue("yqq_song_detail")
+                    String tpl,
+            @ParamName("format")
+            @DefaultValue("jsonp")
+                    String format,
+            @ParamName("callback")
+            @DefaultValue("getOneSongInfoCallback")
+                    String callback
+    );
 }
