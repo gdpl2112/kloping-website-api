@@ -38,10 +38,6 @@ public class QQMusicDetail {
         HEADERS_LYRIC.put("referer", "https://y.qq.com/");
     }
 
-    public static String getImgUrlDataByAlbumMid(String albummid) {
-        return String.format("http://y.gtimg.cn/music/photo_new/T002R300x300M000%s.jpg", albummid);
-    }
-
     public static String filterBase64(String json) {
         QQLyric qqLyric = JSON.toJavaObject(JSON.parseObject(json), QQLyric.class);
         qqLyric.setLyric(Source.decodeBySunMisc(qqLyric.getLyric()));
@@ -79,10 +75,16 @@ public class QQMusicDetail {
             QQOneSong qqOneSong = qqMusic.oneDetail(null, dl0, HEADERS);
             io.github.kloping.mywebsite.entitys.webApi.qqOneSong.Data data = qqOneSong.getReq_0().getData();
             String urlEnd = "http://dl.stream.qqmusic.qq.com/" + data.getMidurlinfo()[0].getPurl();
-            String lyric = qqMusic.getLyric(null, null, null, null, null, null, null, null, null, null, null, null,
-                    mid,
-                    System.currentTimeMillis(),
-                    QQMusicDetail.HEADERS_LYRIC).getLyric();
+            String lyric = "";
+
+            try {
+                lyric = qqMusic.getLyric(null, null, null, null, null, null, null, null, null, null, null, null,
+                        mid,
+                        System.currentTimeMillis(),
+                        QQMusicDetail.HEADERS_LYRIC).getLyric();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             song.setLyric(lyric)
                     .setSongUrl(urlEnd)
                     .setMedia_name(ss[1])
