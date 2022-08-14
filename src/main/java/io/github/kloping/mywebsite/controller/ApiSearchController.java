@@ -113,9 +113,7 @@ public class ApiSearchController {
                 default:
                     return new Songs(-1, 0, System.currentTimeMillis(), keyword, null, "err");
             }
-            if (songs != null)
-                hist_songs.put(vk, songs);
-
+            if (songs != null && songs.getState() != -1) hist_songs.put(vk, songs);
         } catch (Exception e) {
             e.printStackTrace();
         }
