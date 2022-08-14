@@ -16,7 +16,7 @@ public class SearchSongKugou implements ISearchSong {
     }
 
     @Override
-    public Songs searchSong(String keyword, int num) throws Exception {
+    public synchronized Songs searchSong(String keyword, int num) throws Exception {
         return KugouDetail.songs(KugouDetail.search(num, 0, keyword)).setKeyword(keyword);
     }
 }

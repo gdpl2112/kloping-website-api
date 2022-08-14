@@ -21,7 +21,7 @@ public class NetEaseDetail {
     public static Entry<String, String> TYPE_ENTRY = getEntry("type", "1");
     public static Entry<String, String> NMTID_ENTRY = getEntry("NMTID", "00OD6v28qj6pKz_UkWbhj4K8i7ro-8AAAF7zh3LOA");
 
-    public static Songs songs(String keyword, Integer num) {
+    public synchronized static Songs songs(String keyword, Integer num) {
         NetEaseSongs netEaseSongs = netEaseMusic.songs(
                 getEntry("s", keyword.trim()),
                 OFFSET_ENTRY,
