@@ -86,7 +86,7 @@ public class ApiSearchController {
     private Map<String, Songs> hist_songs = new HashMap<>();
 
     @RequestMapping("/song")
-    public Songs searchSong(HttpServletRequest request, @RequestParam("keyword") String keyword
+    public synchronized Songs searchSong(HttpServletRequest request, @RequestParam("keyword") String keyword
             , @RequestParam(required = false, value = "type") String type
             , @RequestParam(required = false, value = "n") String numStr
     ) {
@@ -113,7 +113,8 @@ public class ApiSearchController {
                 default:
                     return new Songs(-1, 0, System.currentTimeMillis(), keyword, null, "err");
             }
-            hist_songs.put(vk, songs);
+            if (songs != null)
+                hist_songs.put(vk, songs);
 
         } catch (Exception e) {
             e.printStackTrace();
