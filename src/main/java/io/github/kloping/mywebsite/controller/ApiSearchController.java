@@ -115,7 +115,10 @@ public class ApiSearchController {
                     default:
                         return new Songs(-1, 0, System.currentTimeMillis(), keyword, null, "err");
                 }
-                if (songs != null && songs.getState() != -1) SONGS_HASH_MAP.put(vk, songs);
+                if (songs != null && songs.getState() != -1) {
+                    SONGS_HASH_MAP.put(vk, songs);
+                    return songs;
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
