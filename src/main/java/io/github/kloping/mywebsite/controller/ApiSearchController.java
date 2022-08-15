@@ -86,34 +86,37 @@ public class ApiSearchController {
     private Map<String, Songs> histSongs = new HashMap<>();
 
     @RequestMapping("/song")
-    public synchronized Songs searchSong(HttpServletRequest request, @RequestParam("keyword") String keyword
+    public Songs searchSong(HttpServletRequest request, @RequestParam("keyword") String keyword
             , @RequestParam(required = false, value = "type") String type
             , @RequestParam(required = false, value = "n") String numStr
     ) {
         if (type == null || type.isEmpty()) type = "kugou";
-        int num = 7;
+        int num = 2;
         try {
             num = Integer.parseInt(numStr.trim());
         } catch (Exception e) {
         }
         try {
-            String vk = keyword + "," + type + "," + numStr;
-            if (histSongs.containsKey(vk)) return histSongs.get(vk);
-            Songs songs = null;
-            switch (type.toLowerCase()) {
-                case "wy":
-                    songs = searchSongWy.searchSong(keyword, num);
-                    break;
-                case "kugou":
-                    songs = searchSongKugou.searchSong(keyword, num);
-                    break;
-                case "qq":
-                    songs = searchSongQq.searchSong(keyword, num);
-                    break;
-                default:
-                    return new Songs(-1, 0, System.currentTimeMillis(), keyword, null, "err");
+            String vk = keyword + "," + type + "," + num;
+            synchronized (ApiSearchController.class) {
+                if (histSongs.containsKey(vk))
+                    return histSongs.get(vk);
+                Songs songs = null;
+                switch (type.toLowerCase()) {
+                    case "wy":
+                        songs = searchSongWy.searchSong(keyword, num);
+                        break;
+                    case "kugou":
+                        songs = searchSongKugou.searchSong(keyword, num);
+                        break;
+                    case "qq":
+                        songs = searchSongQq.searchSong(keyword, num);
+                        break;
+                    default:
+                        return new Songs(-1, 0, System.currentTimeMillis(), keyword, null, "err");
+                }
+                if (songs != null && songs.getState() != -1) histSongs.put(vk, songs);
             }
-            if (songs != null && songs.getState() != -1) histSongs.put(vk, songs);
         } catch (Exception e) {
             e.printStackTrace();
         }
