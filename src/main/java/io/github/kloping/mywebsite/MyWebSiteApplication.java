@@ -30,7 +30,7 @@ public class MyWebSiteApplication implements WebServerFactoryCustomizer<Configur
     public static void main(String[] args) {
         onCreate();
         SpringApplication.run(MyWebSiteApplication.class, args);
-        System.out.println("start succes -v 7-26");
+        System.out.println("start succes -v 8-15");
         io.github.kloping.mywebsite.plugins.Source.before();
     }
 
