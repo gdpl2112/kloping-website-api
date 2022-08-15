@@ -83,7 +83,7 @@ public class ApiSearchController {
         return result;
     }
 
-    private Map<String, Songs> histSongs = new HashMap<>();
+    public static final Map<String, Songs> SONGS_HASH_MAP = new HashMap<>();
 
     @RequestMapping("/song")
     public Songs searchSong(HttpServletRequest request, @RequestParam("keyword") String keyword
@@ -99,8 +99,8 @@ public class ApiSearchController {
         try {
             String vk = keyword + "," + type + "," + num;
             synchronized (ApiSearchController.class) {
-                if (histSongs.containsKey(vk))
-                    return histSongs.get(vk);
+                if (SONGS_HASH_MAP.containsKey(vk))
+                    return SONGS_HASH_MAP.get(vk);
                 Songs songs = null;
                 switch (type.toLowerCase()) {
                     case "wy":
@@ -115,7 +115,7 @@ public class ApiSearchController {
                     default:
                         return new Songs(-1, 0, System.currentTimeMillis(), keyword, null, "err");
                 }
-                if (songs != null && songs.getState() != -1) histSongs.put(vk, songs);
+                if (songs != null && songs.getState() != -1) SONGS_HASH_MAP.put(vk, songs);
             }
         } catch (Exception e) {
             e.printStackTrace();
