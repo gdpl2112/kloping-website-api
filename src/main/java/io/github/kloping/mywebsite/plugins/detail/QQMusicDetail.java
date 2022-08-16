@@ -76,14 +76,13 @@ public class QQMusicDetail {
             io.github.kloping.mywebsite.entitys.webApi.qqOneSong.Data data = qqOneSong.getReq_0().getData();
             String urlEnd = "http://dl.stream.qqmusic.qq.com/" + data.getMidurlinfo()[0].getPurl();
             String lyric = "";
-
             try {
                 lyric = qqMusic.getLyric(null, null, null, null, null, null, null, null, null, null, null, null,
                         mid,
                         System.currentTimeMillis(),
                         QQMusicDetail.HEADERS_LYRIC).getLyric();
             } catch (Exception e) {
-                e.printStackTrace();
+                System.err.println("get lyric error");
             }
             song.setLyric(lyric)
                     .setSongUrl(urlEnd)
