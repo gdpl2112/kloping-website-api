@@ -26,31 +26,40 @@ public class NoticeServiceImpl implements INoticeService {
 
     private static final int MAX = 5;
 
+    public static List<Notice> notices = new LinkedList<>();
+    public static List<Notice> notices2 = new LinkedList<>();
+
     @Override
     public NoticePack get(int pn) {
-        pn--;
-        QueryWrapper<Notice> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("state", 0);
-        queryWrapper.orderByDesc("time");
-        List<Notice> list = mapper.selectList(queryWrapper);
-        List<Notice> list0 = new LinkedList<>();
-        int i = pn * MAX;
-        while (true) {
-            if (i >= list.size() || list0.size() >= MAX) break;
-            list0.add(list.get(i));
-            i++;
+        List<Notice> list = new LinkedList<>();
+        if (notices != null && !notices.isEmpty()) {
+            list.addAll(notices);
+        } else {
+            QueryWrapper<Notice> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("state", 0);
+            queryWrapper.orderByDesc("time");
+            list = mapper.selectList(queryWrapper);
+            notices = list;
         }
-        NoticePack noticePack = new NoticePack();
-        noticePack.setNotices(list0);
-        noticePack.setPn(++pn);
-        noticePack.setMax(list.size() / 5 + (list.size() % 5 > 0 ? 1 : 0));
-        return noticePack;
+        return exportPack(list, --pn);
     }
 
     @Override
     public NoticePack get1(Integer pn) {
-        pn--;
-        List<Notice> list = mapper.ln();
+        List<Notice> list = new LinkedList<>();
+        if (notices2 != null && !notices2.isEmpty()) {
+            list.addAll(notices2);
+        } else {
+            QueryWrapper<Notice> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("state", 0);
+            queryWrapper.orderByDesc("time");
+            list = mapper.selectList(queryWrapper);
+            notices2 = list;
+        }
+        return exportPack(list, --pn);
+    }
+
+    public NoticePack exportPack(List<Notice> list, int pn) {
         List<Notice> list0 = new LinkedList<>();
         int i = pn * MAX;
         while (true) {
