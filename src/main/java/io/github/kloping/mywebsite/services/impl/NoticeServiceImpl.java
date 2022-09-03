@@ -56,15 +56,21 @@ public class NoticeServiceImpl implements INoticeService {
             list = mapper.selectList(queryWrapper);
             notices2 = list;
         }
-        return exportPack(list, --pn);
+        return exportPack(list, --pn, true);
     }
 
     public NoticePack exportPack(List<Notice> list, int pn) {
+        return exportPack(list, pn, false);
+    }
+
+    public NoticePack exportPack(List<Notice> list, int pn, boolean k) {
         List<Notice> list0 = new LinkedList<>();
         int i = pn * MAX;
         while (true) {
             if (i >= list.size() || list0.size() >= MAX) break;
-            list0.add(list.get(i));
+            Notice notice = list.get(i);
+            if (k) notice.setHtml("");
+            list0.add(notice);
             i++;
         }
         NoticePack noticePack = new NoticePack();
