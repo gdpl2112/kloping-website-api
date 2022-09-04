@@ -11,6 +11,7 @@ import io.github.kloping.mywebsite.entitys.webApi.qqMusicSearchNewPlatform.QqMus
 import io.github.kloping.mywebsite.entitys.webApi.qqOneSong.Data;
 import io.github.kloping.mywebsite.entitys.webApi.qqOneSong.QQOneSong;
 import io.github.kloping.mywebsite.plugins.Source;
+import org.apache.tomcat.util.codec.binary.Base64;
 
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -81,6 +82,7 @@ public class QQMusicDetail {
                         mid,
                         System.currentTimeMillis(),
                         QQMusicDetail.HEADERS_LYRIC).getLyric();
+                lyric = new String(Base64.decodeBase64URLSafe(lyric));
             } catch (Exception e) {
                 System.err.println("get lyric error");
             }
