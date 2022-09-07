@@ -68,6 +68,9 @@ public class Source {
     public static Vopipi vopipi;
 
     @AutoStand
+    public static MyHkw myHkw;
+
+    @AutoStand
     public static Empty empty;
 
     @AutoStand

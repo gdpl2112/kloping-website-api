@@ -29,6 +29,14 @@ public class ApiShowDetailController {
                 .setAddress("/api/search/song?keyword=关键词&type=类型&n=7")
         );
         LIST.add(new ApiDetail()
+                .setName("搜歌(VIP)")
+                .setState("success")
+                .setDesc("通过歌名获取歌曲直链")
+                .setDetail("类型可为:netease,tencent,kugou;依靠其它网站,可能不太稳定")
+                .setSimpleUrl("/api/search/vipSong?keyword=霜雪千年&type=tencent")
+                .setAddress("/api/search/vipSong?keyword=关键词&type=类型&n=7")
+        );
+        LIST.add(new ApiDetail()
                 .setName("搜图")
                 .setState("success")
                 .setDesc("通过关键词获取图片直链")

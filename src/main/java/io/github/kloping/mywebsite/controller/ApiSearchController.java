@@ -1,8 +1,11 @@
 package io.github.kloping.mywebsite.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import io.github.kloping.mywebsite.entitys.VideoAnimeSource;
 import io.github.kloping.mywebsite.entitys.medias.Result;
+import io.github.kloping.mywebsite.entitys.medias.Song;
 import io.github.kloping.mywebsite.entitys.medias.Songs;
+import io.github.kloping.mywebsite.entitys.vipSong.VipSong;
 import io.github.kloping.mywebsite.services.*;
 import io.github.kloping.mywebsite.services.impl.ParseGifImgImpl0;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +15,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.*;
+
+import static io.github.kloping.mywebsite.plugins.Source.myHkw;
 
 /**
  * @author github-kloping
@@ -183,5 +189,57 @@ public class ApiSearchController {
             default:
                 return null;
         }
+    }
+
+    @RequestMapping("vipSong")
+    public Songs vipSongs(HttpServletRequest request, @RequestParam("keyword") String keyword
+            , @RequestParam(required = false, value = "type") String type
+            , @RequestParam(required = false, value = "n") String numStr
+    ) {
+        Songs songs = new Songs();
+        int num = 5;
+        try {
+            num = Integer.parseInt(numStr.trim());
+        } catch (Exception e) {
+        }
+        VipSong[] ss = myHkw.songs(null, null, num, type, 1, keyword, System.currentTimeMillis());
+        songs.setKeyword(keyword);
+        songs.setState(0);
+        songs.setType(type);
+        songs.setTime(System.currentTimeMillis());
+        songs.setNum(num);
+        List<Song> s0 = new LinkedList<>();
+        for (VipSong s : ss) {
+            String surl = null;
+            String img = null;
+            try {
+                surl = UtilsController.getRedirectUrl("https://myhkw.cn/api/musicUrl?songId=" + s.getUrl_id() + "&type=" + s.getType() + "&id=155782152289");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                img = UtilsController.getRedirectUrl(String.format("https://myhkw.cn/api/musicPic?picId=%s&type=%s&size=%s", s.getPic_id(), s.getType(), "big"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            JSONObject jo = myHkw.lyric(null, s.getType(), s.getId(), s.getLyric_id(), System.currentTimeMillis());
+
+            String lyric = "";
+            if (jo.containsKey("txt")){
+                lyric = jo.get("txt").toString();
+            }else if (jo.containsKey("lyric")){
+                lyric = jo.get("lyric").toString();
+            }
+            s0.add(
+                    new Song().setId(s.getId())
+                            .setAuthor_name(s.getAllArtists())
+                            .setMedia_name(s.getName())
+                            .setLyric(lyric)
+                            .setSongUrl(surl)
+                            .setImgUrl(img)
+            );
+        }
+        songs.setData(s0.toArray(new Song[s0.size()]));
+        return songs;
     }
 }

@@ -4,8 +4,6 @@ import io.github.kloping.mywebsite.entitys.ApiDetailM;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.UnsupportedEncodingException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -25,6 +23,12 @@ public class ApiShowController {
                 .setName("搜歌")
                 .setState("success")
                 .setDesc("通过歌名获取,歌的封面,作者,歌曲直链,歌词,id")
+                .setAddress("")
+        );
+        LIST.add(new ApiDetailM()
+                .setName("搜VIP歌")
+                .setState("success")
+                .setDesc("通过歌名歌曲直链")
                 .setAddress("")
         );
         LIST.add(new ApiDetailM()
