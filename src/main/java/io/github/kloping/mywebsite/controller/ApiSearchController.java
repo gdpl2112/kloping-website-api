@@ -104,7 +104,7 @@ public class ApiSearchController {
         }
         try {
             String vk = keyword + "," + type + "," + num;
-            synchronized (ApiSearchController.class) {
+            synchronized (SONGS_HASH_MAP) {
                 if (SONGS_HASH_MAP.containsKey(vk))
                     return SONGS_HASH_MAP.get(vk);
                 Songs songs = null;
@@ -191,55 +191,64 @@ public class ApiSearchController {
         }
     }
 
+    public static final Map<String, Songs> SONGS_HASH_MAP2 = new HashMap<>();
+
     @RequestMapping("vipSong")
     public Songs vipSongs(HttpServletRequest request, @RequestParam("keyword") String keyword
             , @RequestParam(required = false, value = "type") String type
             , @RequestParam(required = false, value = "n") String numStr
     ) {
-        Songs songs = new Songs();
         int num = 5;
         try {
             num = Integer.parseInt(numStr.trim());
         } catch (Exception e) {
         }
-        VipSong[] ss = myHkw.songs(null, null, num, type, 1, keyword, System.currentTimeMillis());
-        songs.setKeyword(keyword);
-        songs.setState(0);
-        songs.setType(type);
-        songs.setTime(System.currentTimeMillis());
-        songs.setNum(num);
-        List<Song> s0 = new LinkedList<>();
-        for (VipSong s : ss) {
-            String surl = null;
-            String img = null;
-            try {
-                surl = UtilsController.getRedirectUrl("https://myhkw.cn/api/musicUrl?songId=" + s.getUrl_id() + "&type=" + s.getType() + "&id=155782152289");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            try {
-                img = UtilsController.getRedirectUrl(String.format("https://myhkw.cn/api/musicPic?picId=%s&type=%s&size=%s", s.getPic_id(), s.getType(), "big"));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            JSONObject jo = myHkw.lyric(null, s.getType(), s.getId(), s.getLyric_id(), System.currentTimeMillis());
+        String vk = keyword + "," + type + "," + num;
+        Songs songs = new Songs();
+        synchronized (SONGS_HASH_MAP2){
+           if (SONGS_HASH_MAP2.containsKey(vk)) {
+               return SONGS_HASH_MAP2.get(vk);
+           }
+           VipSong[] ss = myHkw.songs(null, null, num, type, 1, keyword, System.currentTimeMillis());
+           songs.setKeyword(keyword);
+           songs.setState(0);
+           songs.setType(type);
+           songs.setTime(System.currentTimeMillis());
+           songs.setNum(num);
+           List<Song> s0 = new LinkedList<>();
+           for (VipSong s : ss) {
+               String surl = null;
+               String img = null;
+               try {
+                   surl = UtilsController.getRedirectUrl("https://myhkw.cn/api/musicUrl?songId=" + s.getUrl_id() + "&type=" + s.getType() + "&id=155782152289");
+               } catch (IOException e) {
+                   e.printStackTrace();
+               }
+               try {
+                   img = UtilsController.getRedirectUrl(String.format("https://myhkw.cn/api/musicPic?picId=%s&type=%s&size=%s", s.getPic_id(), s.getType(), "big"));
+               } catch (IOException e) {
+                   e.printStackTrace();
+               }
+               JSONObject jo = myHkw.lyric(null, s.getType(), s.getId(), s.getLyric_id(), System.currentTimeMillis());
 
-            String lyric = "";
-            if (jo.containsKey("txt")){
-                lyric = jo.get("txt").toString();
-            }else if (jo.containsKey("lyric")){
-                lyric = jo.get("lyric").toString();
-            }
-            s0.add(
-                    new Song().setId(s.getId())
-                            .setAuthor_name(s.getAllArtists())
-                            .setMedia_name(s.getName())
-                            .setLyric(lyric)
-                            .setSongUrl(surl)
-                            .setImgUrl(img)
-            );
-        }
-        songs.setData(s0.toArray(new Song[s0.size()]));
+               String lyric = "";
+               if (jo.containsKey("txt")) {
+                   lyric = jo.get("txt").toString();
+               } else if (jo.containsKey("lyric")) {
+                   lyric = jo.get("lyric").toString();
+               }
+               s0.add(
+                       new Song().setId(s.getId())
+                               .setAuthor_name(s.getAllArtists())
+                               .setMedia_name(s.getName())
+                               .setLyric(lyric)
+                               .setSongUrl(surl)
+                               .setImgUrl(img)
+               );
+           }
+           songs.setData(s0.toArray(new Song[s0.size()]));
+           SONGS_HASH_MAP2.put(vk, songs);
+       }
         return songs;
     }
 }
