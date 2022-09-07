@@ -191,7 +191,7 @@ public class ApiSearchController {
         }
     }
 
-    public static final Map<String, Songs> SONGS_HASH_MAP2 = new HashMap<>();
+//    public static final Map<String, Songs> SONGS_HASH_MAP2 = new HashMap<>();
 
     @RequestMapping("vipSong")
     public Songs vipSongs(HttpServletRequest request, @RequestParam("keyword") String keyword
@@ -205,10 +205,10 @@ public class ApiSearchController {
         }
         String vk = keyword + "," + type + "," + num;
         Songs songs = new Songs();
-        synchronized (SONGS_HASH_MAP2){
-           if (SONGS_HASH_MAP2.containsKey(vk)) {
-               return SONGS_HASH_MAP2.get(vk);
-           }
+//        synchronized (SONGS_HASH_MAP2){
+//           if (SONGS_HASH_MAP2.containsKey(vk)) {
+//               return SONGS_HASH_MAP2.get(vk);
+//           }
            VipSong[] ss = myHkw.songs(null, null, num, type, 1, keyword, System.currentTimeMillis());
            songs.setKeyword(keyword);
            songs.setState(0);
@@ -247,8 +247,8 @@ public class ApiSearchController {
                );
            }
            songs.setData(s0.toArray(new Song[s0.size()]));
-           SONGS_HASH_MAP2.put(vk, songs);
-       }
+//           SONGS_HASH_MAP2.put(vk, songs);
+//       }
         return songs;
     }
 }
