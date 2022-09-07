@@ -83,15 +83,7 @@ public class VipSong {
     }
 
     public String getAllArtists() {
-        String s0 = "";
-        for (String s : artist) {
-            if (s0.isEmpty()){
-                s0 = s;
-            }else{
-                s0 = s0 + "," + s;
-            }
-        }
-        return s0;
+        return this.artist[0].replaceAll(",", ";");
     }
 
     public String getType() {
