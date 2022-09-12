@@ -13,6 +13,10 @@ server:
 upload:
   passwd: 443212
 
+bottle:
+  max:
+    pickup: 5
+
 auth:
   url: http://localhost:20049
   pwd: 123456

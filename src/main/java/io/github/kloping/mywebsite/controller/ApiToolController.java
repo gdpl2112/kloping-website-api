@@ -11,6 +11,7 @@ import io.github.kloping.mywebsite.mapper.BottleMessageMapper;
 import io.github.kloping.mywebsite.mapper.IllegalMapper;
 import io.github.kloping.mywebsite.plugins.Source;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -59,7 +60,7 @@ public class ApiToolController {
                         .setSimpleUrl("/ok")
         );
         //=============
-         ApiShowController.LIST.add(new ApiDetailM()
+        ApiShowController.LIST.add(new ApiDetailM()
                 .setName("捡漂流瓶")
                 .setState("success")
                 .setDesc("捡一个漂流瓶")
@@ -70,7 +71,7 @@ public class ApiToolController {
                         .setState("success")
                         .setDesc("捡一个漂流瓶")
                         .setAddress("/api/pickUpBottle")
-                        .setDetail("捡一个漂流瓶 每个漂流瓶只能被捡3次 自行测试")
+                        .setDetail("捡一个漂流瓶 每个漂流瓶只能被捡3-5次 自行测试")
                         .setSimpleUrl("/ok")
         );
     }
@@ -100,13 +101,16 @@ public class ApiToolController {
         return "您的漂流瓶已扔入大海,等待有缘人的拾取";
     }
 
+    @Value("${bottle.max.pickup}")
+    Integer max;
+
     public static Random RANDOM = new SecureRandom();
 
     @GetMapping("/pickUpBottle")
     public Object throwBottle() {
         BottleMessage bottle = null;
         QueryWrapper<BottleMessage> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lt("state", 3);
+        queryWrapper.lt("state", max);
         List<BottleMessage> list = bottleMessageMapper.selectList(queryWrapper);
         if (list.isEmpty()) {
             bottle = new BottleMessage();
