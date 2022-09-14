@@ -111,6 +111,7 @@ public class ApiToolController {
         BottleMessage bottle = null;
         QueryWrapper<BottleMessage> queryWrapper = new QueryWrapper<>();
         queryWrapper.lt("state", max);
+        System.out.println(max);
         List<BottleMessage> list = bottleMessageMapper.selectList(queryWrapper);
         if (list.isEmpty()) {
             bottle = new BottleMessage();
