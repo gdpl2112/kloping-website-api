@@ -1,6 +1,7 @@
 package io.github.kloping.mywebsite.entitys.webApi.tencentVideo;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.annotation.JSONField;
 
 /**
@@ -30,21 +31,26 @@ public class DataRequest {
         return this;
     }
 
+    //  "req_from": "web",
+    //    "cid": "m441e3rjq9kwpsc",
+    //    "page_id": "pc_short_video_infinite_rec",
+    //    "page_type": "detail_operation",
+    //    "lid": ""
+
+    //    "req_from": "web",
+    //    "cid": "q.com",
+    //    "lid": "",
+
     @Override
     public String toString() {
-//        JSONObject jo = new JSONObject();
-//        try {
-//            jo.put("has_cache", has_cache);
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//        try {
-//            jo.put("page_params", JSON.toJSONString(page_params));
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//
-//        return jo.toString();
-        return JSON.toJSONString(this);
+        JSONObject jo = JSON.parseObject(JSON.toJSONString(this));
+
+//        jo.getJSONObject("page_params").remove("vid");
+//        jo.getJSONObject("page_params").remove("page_num");
+//        jo.getJSONObject("page_params").remove("page_size");
+//        jo.getJSONObject("page_params").remove("page_context");
+//        jo.getJSONObject("page_params").put("page_id", "pc_short_video_infinite_rec");
+//        jo.getJSONObject("page_params").put("page_type", "detail_operation");
+        return jo.toString();
     }
 }

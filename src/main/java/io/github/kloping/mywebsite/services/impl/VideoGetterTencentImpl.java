@@ -1,5 +1,7 @@
 package io.github.kloping.mywebsite.services.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import io.github.kloping.mywebsite.entitys.VideoAnimeDetail;
 import io.github.kloping.mywebsite.entitys.VideoAnimeSource;
 import io.github.kloping.mywebsite.entitys.webApi.tencentVideo.DataRequest;
@@ -10,8 +12,10 @@ import io.github.kloping.mywebsite.services.IVideoGetter;
 import io.github.kloping.number.NumberUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
+import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.Map.Entry;
@@ -25,6 +29,24 @@ import static io.github.kloping.mywebsite.plugins.Source.*;
 public class VideoGetterTencentImpl implements IVideoGetter {
 
     public static final Map<String, VideoAnimeSource[]> HIST = new HashMap<>();
+
+    @Override
+    public VideoAnimeSource get(String keyword, String url) {
+        VideoAnimeSource[] sss0 = search(keyword);
+        VideoAnimeSource[] sources = new VideoAnimeSource[sss0.length];
+        System.arraycopy(sss0, 0, sources, 0, sss0.length);
+        for (VideoAnimeSource source : sources) {
+            if (source.getUrl().trim().equals(url.trim())) {
+                try {
+                    source.setDetails(getDetail(source));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return source;
+            }
+        }
+        return sources[0];
+    }
 
     @Override
     public VideoAnimeSource[] search(String keyword) {
@@ -43,32 +65,59 @@ public class VideoGetterTencentImpl implements IVideoGetter {
                         .setKeyword(keyword).setName(name)
                         .setUrl(url).setImg(filterProtocol(img));
                 VideoAnimeDetail[] details = getDetail(source);
-                source.setDetails(details);
+                source.setDetails(new VideoAnimeDetail[]{});
                 source.setSt(details.length);
                 sources.add(source);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        Element e1 = doc.getElementsByClass("wrapper_main").get(0);
-        for (Element element0 : e1.getElementsByTag("li")) {
-            try {
-                String desc0 = element0.getElementsByClass("figure_desc").text();
-                Element a1 = element0.getElementsByTag("a").get(1);
-                String name = a1.attr("title");
-                String url = a1.attr("href");
-                String img = element0.getElementsByTag("img").get(0).attr("src");
+        Element e1 = doc.getElementsByClass("result_series_new").get(0);
+//        for (Element element0 : e1.getElementsByTag("li")) {
+//            try {
+//                String desc0 = element0.getElementsByClass("figures_list").text();
+//                Element a1 = element0.getElementsByTag("a").get(0);
+//                String name = a1.attr("title");
+//                String url = a1.attr("href");
+//                String img = element0.getElementsByTag("img").get(0).attr("src");
+//                VideoAnimeSource source = new VideoAnimeSource()
+//                        .setDesc(desc0).setFrom("tencent")
+//                        .setKeyword(keyword).setName(name)
+//                        .setUrl(url).setImg(filterProtocol(img));
+//                VideoAnimeDetail[] details = getDetail(source);
+//                source.setDetails(details);
+//                source.setSt(details.length);
+//                sources.add(source);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+        try {
+            String h1 = e1.toString();
+            int i1 = h1.indexOf("totalData: '");
+            int i2 = h1.lastIndexOf(";\n" +
+                    "\t\tsearchParam");
+            h1 = h1.substring(i1 + 12, i2 - 1);
+            h1 = URLDecoder.decode(h1);
+            JSONObject jo = JSON.parseObject(h1);
+            for (Object o : jo.getJSONArray("itemList")) {
+                JSONObject jo1 = (JSONObject) o;
+                jo1 = jo1.getJSONObject("videoInfo");
+                String desc0 = jo1.getString("descrip");
+                String name = jo1.getString("title");
+                String img = jo1.getString("imgUrl");
+                String url = jo1.getString("url");
                 VideoAnimeSource source = new VideoAnimeSource()
                         .setDesc(desc0).setFrom("tencent")
                         .setKeyword(keyword).setName(name)
                         .setUrl(url).setImg(filterProtocol(img));
                 VideoAnimeDetail[] details = getDetail(source);
-                source.setDetails(details);
+                source.setDetails(new VideoAnimeDetail[]{});
                 source.setSt(details.length);
                 sources.add(source);
-            } catch (Exception e) {
-                e.printStackTrace();
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         VideoAnimeSource[] ss = sources.toArray(new VideoAnimeSource[0]);
         HIST.put(keyword, ss);
@@ -87,14 +136,17 @@ public class VideoGetterTencentImpl implements IVideoGetter {
     private VideoAnimeDetail[] getDetail(VideoAnimeSource source) throws Exception {
         List<VideoAnimeDetail> details = new LinkedList<>();
         Document doc0 = empty.empty(source.url);
-        String s0 = doc0.getElementsByTag("link").get(1).attr("href");
-        String vid = null;
+        Element e0 = doc0.getElementsByTag("head").get(0);
+        Elements es = e0.getElementsByTag("script");
+        e0 = es.get(es.size() - 1);
+        String s0 = e0.html();
+        int i1 = s0.indexOf("{");
+        int i2 = s0.lastIndexOf("}");
+        s0 = s0.substring(i1, i2 + 1);
+        JSONObject jo0 = JSON.parseObject(s0);
+        String vid = jo0.getJSONObject("global").getJSONObject("coverInfo").getJSONArray("video_ids").get(0).toString();
         String cid = null;
-        int i = s0.indexOf("cover/");
-        s0 = s0.substring(i + 6, s0.length() - 5);
-        String[] ss = s0.split("/");
-        cid = ss[0];
-        vid = ss[1];
+        cid = source.url.substring(source.url.lastIndexOf("/") + 1, source.url.lastIndexOf("."));
         boolean next = true;
         int num = 0;
         while (next) {
@@ -127,7 +179,8 @@ public class VideoGetterTencentImpl implements IVideoGetter {
                     int order = 0;
                     try {
                         order = Integer.valueOf(NumberUtils.findNumberFromString(params.getC_title_output()));
-                    } catch (NumberFormatException e) {}
+                    } catch (NumberFormatException e) {
+                    }
                     VideoAnimeDetail detail = new VideoAnimeDetail()
                             .setName(params.getUnion_title()).setDesc(params.getPlay_title())
                             .setVid(params.getVid()).setSource("tencent")

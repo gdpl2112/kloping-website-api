@@ -165,33 +165,41 @@ public class ApiSearchController {
     IVideoGetter getter2;
 
     @RequestMapping("/video")
-    public VideoAnimeSource[] searchVideo(@RequestParam("keyword") String keyword,
-                                          @RequestParam(required = false, value = "type") String type,
-                                          @RequestParam(required = false, value = "url") String url
+    public Object searchVideo(@RequestParam("keyword") String keyword,
+                              @RequestParam(required = false, value = "type") String type,
+                              @RequestParam(required = false, value = "url") String url
     ) {
         keyword = keyword.trim();
-        switch (type.trim()) {
-            case "iqiyi":
-                return getter0.search(keyword);
-            case "tencent":
-                return getter1.search(keyword);
-            case "all":
-                List<VideoAnimeSource> sources = new LinkedList<>();
-                sources.addAll(Arrays.asList(getter0.search(keyword)));
-                sources.addAll(Arrays.asList(getter1.search(keyword)));
-                return sources.toArray(new VideoAnimeSource[0]);
-            case "tp":
-                if (url == null || url.isEmpty()) {
-                    return getter2.search(keyword);
-                } else {
-                    return new VideoAnimeSource[]{getter2.get(keyword, url)};
-                }
-            default:
-                return null;
+        if (url != null && !url.isEmpty()) {
+            switch (type.trim()) {
+                case "iqiyi":
+                    return getter0.get(keyword, url);
+                case "tencent":
+                    return getter1.get(keyword, url);
+                case "all":
+                    List<VideoAnimeSource> sources = new LinkedList<>();
+                    sources.addAll(Arrays.asList(getter0.get(keyword, url)));
+                    sources.addAll(Arrays.asList(getter1.get(keyword, url)));
+                    return sources.toArray(new VideoAnimeSource[0]);
+                default:
+                    return null;
+            }
+        } else {
+            switch (type.trim()) {
+                case "iqiyi":
+                    return getter0.search(keyword);
+                case "tencent":
+                    return getter1.search(keyword);
+                case "all":
+                    List<VideoAnimeSource> sources = new LinkedList<>();
+                    sources.addAll(Arrays.asList(getter0.search(keyword)));
+                    sources.addAll(Arrays.asList(getter1.search(keyword)));
+                    return sources.toArray(new VideoAnimeSource[0]);
+                default:
+                    return null;
+            }
         }
     }
-
-//    public static final Map<String, Songs> SONGS_HASH_MAP2 = new HashMap<>();
 
     @RequestMapping("vipSong")
     public Songs vipSongs(HttpServletRequest request, @RequestParam("keyword") String keyword
@@ -209,46 +217,47 @@ public class ApiSearchController {
 //           if (SONGS_HASH_MAP2.containsKey(vk)) {
 //               return SONGS_HASH_MAP2.get(vk);
 //           }
-           VipSong[] ss = myHkw.songs(null, null, num, type, 1, keyword, System.currentTimeMillis());
-           songs.setKeyword(keyword);
-           songs.setState(0);
-           songs.setType(type);
-           songs.setTime(System.currentTimeMillis());
-           songs.setNum(num);
-           List<Song> s0 = new LinkedList<>();
-           for (VipSong s : ss) {
-               String surl = null;
-               String img = null;
-               try {
-                   surl = UtilsController.getRedirectUrl("https://myhkw.cn/api/musicUrl?songId=" + s.getUrl_id() + "&type=" + s.getType() + "&id=155782152289");
-               } catch (IOException e) {
-                   e.printStackTrace();
-               }
-               try {
-                   img = UtilsController.getRedirectUrl(String.format("https://myhkw.cn/api/musicPic?picId=%s&type=%s&size=%s", s.getPic_id(), s.getType(), "big"));
-               } catch (IOException e) {
-                   e.printStackTrace();
-               }
-               JSONObject jo = myHkw.lyric(null, s.getType(), s.getId(), s.getLyric_id(), System.currentTimeMillis());
+        VipSong[] ss = myHkw.songs(null, null, num, type, 1, keyword, System.currentTimeMillis());
+        songs.setKeyword(keyword);
+        songs.setState(0);
+        songs.setType(type);
+        songs.setTime(System.currentTimeMillis());
+        songs.setNum(num);
+        List<Song> s0 = new LinkedList<>();
+        for (VipSong s : ss) {
+            String surl = null;
+            String img = null;
+            try {
+                surl = UtilsController.getRedirectUrl("https://myhkw.cn/api/musicUrl?songId=" + s.getUrl_id() + "&type=" + s.getType() + "&id=155782152289");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                img = UtilsController.getRedirectUrl(String.format("https://myhkw.cn/api/musicPic?picId=%s&type=%s&size=%s", s.getPic_id(), s.getType(), "big"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            JSONObject jo = myHkw.lyric(null, s.getType(), s.getId(), s.getLyric_id(), System.currentTimeMillis());
 
-               String lyric = "";
-               if (jo.containsKey("txt")) {
-                   lyric = jo.get("txt").toString();
-               } else if (jo.containsKey("lyric")) {
-                   lyric = jo.get("lyric").toString();
-               }
-               s0.add(
-                       new Song().setId(s.getId())
-                               .setAuthor_name(s.getAllArtists())
-                               .setMedia_name(s.getName())
-                               .setLyric(lyric)
-                               .setSongUrl(surl)
-                               .setImgUrl(img)
-               );
-           }
-           songs.setData(s0.toArray(new Song[s0.size()]));
+            String lyric = "";
+            if (jo.containsKey("txt")) {
+                lyric = jo.get("txt").toString();
+            } else if (jo.containsKey("lyric")) {
+                lyric = jo.get("lyric").toString();
+            }
+            s0.add(
+                    new Song().setId(s.getId())
+                            .setAuthor_name(s.getAllArtists())
+                            .setMedia_name(s.getName())
+                            .setLyric(lyric)
+                            .setSongUrl(surl)
+                            .setImgUrl(img)
+            );
+        }
+        songs.setData(s0.toArray(new Song[s0.size()]));
 //           SONGS_HASH_MAP2.put(vk, songs);
 //       }
         return songs;
     }
+
 }
