@@ -73,6 +73,22 @@ public class ApiToolController {
                         .setAddress("/api/pickUpBottle")
                         .setDetail("捡一个漂流瓶 每个漂流瓶只能被捡3-5次 自行测试")
                         .setSimpleUrl("/ok")
+        ); //=============
+        ApiShowController.LIST.add(new ApiDetailM()
+                .setName("网站工具")
+                .setState("success")
+                .setDesc("网站工具s")
+        );
+        ApiShowDetailController.LIST.add(
+                new ApiDetail()
+                        .setName("网站工具")
+                        .setState("success")
+                        .setDesc("网站工具s")
+                        .setAddress("/ok")
+                        .setDetail(
+                                "1.'/transImg?url=图片链接' 将指定图片转存到该网站 并重定向该网直链\n" +
+                                "2.'getHost?url=网址' 获取指定网址的host")
+                        .setSimpleUrl("/ok")
         );
     }
 

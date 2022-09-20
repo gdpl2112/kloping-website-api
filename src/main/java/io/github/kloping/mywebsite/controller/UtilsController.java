@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
 
@@ -78,7 +79,6 @@ public class UtilsController {
 
     @GetMapping("/ok")
     public String ok(String a) {
-        System.out.println(a);
         return "ok";
     }
 
@@ -139,6 +139,18 @@ public class UtilsController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @GetMapping("/getHost")
+    public String getHost(@RequestParam("url") String url) {
+        String host = "localhost";
+        try {
+            URL u = new URL(url);
+            host = u.getHost();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return host;
     }
 
     public static String save(byte[] bytes, boolean isTemp) {
