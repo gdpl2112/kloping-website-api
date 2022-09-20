@@ -45,3 +45,4 @@ upMap.txt
 META-INF
 *.xz
 *.jar
+**/temp

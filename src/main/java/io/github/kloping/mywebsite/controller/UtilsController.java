@@ -2,6 +2,7 @@ package io.github.kloping.mywebsite.controller;
 
 import io.github.kloping.date.DateUtils;
 import io.github.kloping.file.FileUtils;
+import io.github.kloping.mywebsite.entitys.FileWithPath;
 import io.github.kloping.mywebsite.entitys.OnlyData;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -153,16 +154,25 @@ public class UtilsController {
         return host;
     }
 
-    public static String save(byte[] bytes, boolean isTemp) {
-        String name = DateUtils.getYear() + "/" + DateUtils.getMonth() + "/" + DateUtils.getDay() + "/" + UUID.randomUUID().toString() + ".jpg";
+    public static FileWithPath requestFile(boolean isTemp) {
+        return requestFile(isTemp, "jpg");
+    }
+
+    public static FileWithPath requestFile(boolean isTemp, String format) {
+        String name = DateUtils.getYear() + "/" + DateUtils.getMonth() + "/" + DateUtils.getDay() + "/" + UUID.randomUUID().toString() + "." + format;
         name = isTemp ? "temp/" + name : name;
         File file = new File("./files/" + name);
+        file.getParentFile().mkdirs();
+        return new FileWithPath(file, name);
+    }
+
+    public static String save(byte[] bytes, boolean isTemp) {
+        FileWithPath file = requestFile(isTemp);
         try {
-            file.getParentFile().mkdirs();
-            FileUtils.writeBytesToFile(bytes, file);
+            FileUtils.writeBytesToFile(bytes, file.getFile());
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return name;
+        return file.getName();
     }
 }
