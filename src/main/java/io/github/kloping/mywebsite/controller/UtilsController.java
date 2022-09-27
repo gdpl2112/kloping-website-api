@@ -36,6 +36,17 @@ public class UtilsController {
         return conn.getHeaderField("Location");
     }
 
+    public static String getRedirectUrl(String url, String host) throws IOException {
+        Document doc = Jsoup.connect(url).ignoreContentType(true).ignoreHttpErrors(true)
+                .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36 Edg/105.0.1343.50")
+                .header("Host", host)
+                .header("Accept-Language", "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6")
+                .header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9")
+                .header("Accept-Encoding", "gzip, deflate, br")
+                .header("Connection", "keep-alive")
+                .get();
+        return doc.location();
+    }
 
     @GetMapping("/getMCloud3")
     public String getMCloud3Url() throws Exception {

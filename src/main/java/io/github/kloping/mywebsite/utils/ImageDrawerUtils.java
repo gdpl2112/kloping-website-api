@@ -191,4 +191,61 @@ public class ImageDrawerUtils {
         encoder.finish();
         return outFile.getAbsolutePath();
     }
+
+    public static BufferedImage changeAlpha(BufferedImage image, int alpha) throws Exception {
+        File tempFile1 = null;
+        File tempFile2 = null;
+        try {
+            tempFile1 = File.createTempFile("temp1", ".jpg");
+            tempFile2 = File.createTempFile("temp2", ".jpg");
+            ImageIO.write(image, "jpg", tempFile1);
+            changeAlpha(tempFile1.getAbsolutePath(), tempFile2.getAbsolutePath(), alpha);
+            return ImageIO.read(tempFile2);
+        } finally {
+            tempFile1.delete();
+            tempFile2.delete();
+        }
+    }
+
+    /**
+     * @param path    源路径
+     * @param tarPath 生成路径
+     * @param alpha   透明度   （0不透明---10全透明）
+     */
+    public static void changeAlpha(String path, String tarPath, int alpha) {
+        //检查透明度是否越界
+        if (alpha < 0) {
+            alpha = 0;
+        } else if (alpha > 10) {
+            alpha = 10;
+        }
+        try {
+            BufferedImage image = ImageIO.read(new File(path));
+            int weight = image.getWidth();
+            int height = image.getHeight();
+
+            BufferedImage output = new BufferedImage(weight, height, BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g2 = output.createGraphics();
+            output = g2.getDeviceConfiguration().createCompatibleImage(weight, height, Transparency.TRANSLUCENT);
+            g2.dispose();
+            g2 = output.createGraphics();
+
+            //调制透明度
+            for (int j1 = output.getMinY(); j1 < output.getHeight(); j1++) {
+                for (int j2 = output.getMinX(); j2 < output.getWidth(); j2++) {
+                    int rgb = output.getRGB(j2, j1);
+                    rgb = ((alpha * 255 / 10) << 24) | (rgb & 0x00ffffff);
+                    output.setRGB(j2, j1, rgb);
+                }
+            }
+            g2.setComposite(AlphaComposite.SrcIn);
+            g2.drawImage(image, 0, 0, weight, height, null);
+            g2.dispose();
+            ImageIO.write(output, "png", new File(tarPath));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 }

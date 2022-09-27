@@ -206,7 +206,7 @@ public class ApiSearchController {
             , @RequestParam(required = false, value = "type") String type
             , @RequestParam(required = false, value = "n") String numStr
     ) {
-        int num = 5;
+        int num = 2;
         try {
             num = Integer.parseInt(numStr.trim());
         } catch (Exception e) {
@@ -228,7 +228,7 @@ public class ApiSearchController {
             String surl = null;
             String img = null;
             try {
-                surl = UtilsController.getRedirectUrl("https://myhkw.cn/api/musicUrl?songId=" + s.getUrl_id() + "&type=" + s.getType() + "&id=155782152289");
+                surl = UtilsController.getRedirectUrl("https://myhkw.cn/api/musicUrl?songId=" + s.getUrl_id() + "&type=" + s.getType() + "&id=155782152289","myhkw.cn");
             } catch (IOException e) {
                 e.printStackTrace();
             }
