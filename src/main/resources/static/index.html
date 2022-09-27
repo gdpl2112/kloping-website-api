@@ -105,9 +105,9 @@
             axios.get("/getNotice0?pn=" + page).then(function (response) {
                 vm1.data = response.data
                 vm1.pn = page
-                let sc1 = document.createElement("script")
-                sc1.src = "/js/lib/dzzui.js"
-                document.getElementsByTagName("body")[0].appendChild(sc1)
+                // let sc1 = document.createElement("script")
+                // sc1.src = "/js/lib/dzzui.js"
+                // document.getElementsByTagName("body")[0].appendChild(sc1)
             }).catch(function (err) {
                 alert(err);
             })
@@ -125,5 +125,8 @@
 </script>
 <script src="./js/footer-bottom.js"></script>
 
+<script src="https://cdn.staticfile.org/jquery/3.5.1/jquery.min.js"></script>
+<div id="music" key="63327318a8794" api="https://music.mx142.ltd"></div>
+<script id="xplayer" src="https://music.mx142.ltd/Static/player4/js/player.js"></script>
 </body>
 </html>
