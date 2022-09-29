@@ -155,17 +155,26 @@ public class ApiImageController {
         return "http://kloping.top/" + outFile.getName();
     }
 
+    private static int i0 = -1;
+
     @NotNull
     private static ImageE0 getIndex(BufferedImage oImage, BufferedImage base, double end, int i) throws IOException {
         int e1 = (int) (end);
+        i0 *= -1;
+        e1 *= i0;
+
         BufferedImage i1 = (BufferedImage) ImageDrawerUtils.image2Size(oImage, 50 + e1, 50 + e1);
+
         i1 = (BufferedImage) ImageDrawerUtils.roundImage(i1, 999);
+
         int x1 = (int) (78 + (end * 6));
+
         double w = (Math.PI / 6);
         double d0 = w * i;
         end = Math.sin(d0);
         end *= 10;
         int y1 = (int) (36 + (end * 0.6));
+
         return new ImageE0(i1, x1, y1);
     }
 
