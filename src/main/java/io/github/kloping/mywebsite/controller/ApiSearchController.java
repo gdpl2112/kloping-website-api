@@ -213,11 +213,7 @@ public class ApiSearchController {
         }
         String vk = keyword + "," + type + "," + num;
         Songs songs = new Songs();
-//        synchronized (SONGS_HASH_MAP2){
-//           if (SONGS_HASH_MAP2.containsKey(vk)) {
-//               return SONGS_HASH_MAP2.get(vk);
-//           }
-        VipSong[] ss = myHkw.songs(null, null, num, type, 1, keyword, System.currentTimeMillis());
+        VipSong[] ss = myHkw.songs(null, null, num, type, 1, keyword,"tinggeba", System.currentTimeMillis());
         songs.setKeyword(keyword);
         songs.setState(0);
         songs.setType(type);
@@ -237,13 +233,18 @@ public class ApiSearchController {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            JSONObject jo = myHkw.lyric(null, s.getType(), s.getId(), s.getLyric_id(), System.currentTimeMillis());
+            String lyric = null;
+            try {
+                JSONObject jo = myHkw.lyric(null, s.getType(), s.getId(), "myhkwebplayertinggeba",s.getSign(), System.currentTimeMillis());
 
-            String lyric = "";
-            if (jo.containsKey("txt")) {
-                lyric = jo.get("txt").toString();
-            } else if (jo.containsKey("lyric")) {
-                lyric = jo.get("lyric").toString();
+                lyric = "";
+                if (jo.containsKey("txt")) {
+                    lyric = jo.get("txt").toString();
+                } else if (jo.containsKey("lyric")) {
+                    lyric = jo.get("lyric").toString();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
             s0.add(
                     new Song().setId(s.getId())
@@ -255,8 +256,6 @@ public class ApiSearchController {
             );
         }
         songs.setData(s0.toArray(new Song[s0.size()]));
-//           SONGS_HASH_MAP2.put(vk, songs);
-//       }
         return songs;
     }
 

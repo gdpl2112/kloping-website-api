@@ -9,6 +9,15 @@ public class VipSong {
     private String id;
     private String url_id;
     private String source;
+    private String sign;
+
+    public String getSign() {
+        return sign;
+    }
+
+    public void setSign(String sign) {
+        this.sign = sign;
+    }
 
     public String getPic_id() {
         return this.pic_id;

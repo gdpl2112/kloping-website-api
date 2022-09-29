@@ -56,6 +56,8 @@ public interface MyHkw {
                     Integer pages,
             @ParamName("name")
                     String name,
+            @ParamName("web")
+                    String web,
             @ParamName("_")
                     Long _t);
 
@@ -70,7 +72,7 @@ public interface MyHkw {
      * @param _t
      * @return
      */
-    @GetPath("/api/musicLyric")
+    @GetPath("/api/lyric")
     @Callback("io.github.kloping.mywebsite.plugins.detail.All.doc1")
     JSONObject lyric(
             @ParamName("callback")
@@ -78,10 +80,12 @@ public interface MyHkw {
                     String callback,
             @ParamName("type")
                     String type,
-            @ParamName("songId")
-                    String songId,
+            @ParamName("song")
+                    String song,
             @ParamName("id")
                     String id,
+           @ParamName("sign")
+                    String sign,
             @ParamName("_")
                     Long _t
     );
