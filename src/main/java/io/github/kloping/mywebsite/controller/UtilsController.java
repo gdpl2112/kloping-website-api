@@ -14,6 +14,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -139,6 +140,17 @@ public class UtilsController {
             return pkv.getValue();
         }
     }
+
+    @GetMapping("/del")
+    public String del(@RequestParam("key") @Nullable String key, @RequestParam("pwd") String pwd) {
+        QueryWrapper<PwdKeyValue> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("pwd", pwd);
+        if (key != null && !key.isEmpty()) {
+            queryWrapper.eq("k", key);
+        }
+        return pkvMapper.delete(queryWrapper) > 0 ? "OK" : "ERROR";
+    }
+
 
     @GetMapping("/notice")
     public String notice(
