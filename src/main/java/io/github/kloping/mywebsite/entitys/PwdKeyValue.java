@@ -15,7 +15,7 @@ public class PwdKeyValue {
     @TableField("`pwd`")
     private String pwd;
     @TableField("`k`")
-    private String key;
+    private String k;
     @TableField("`value`")
     private String value;
 }

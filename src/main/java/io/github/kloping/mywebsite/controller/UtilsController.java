@@ -107,21 +107,21 @@ public class UtilsController {
         String oldValue = "";
         QueryWrapper<PwdKeyValue> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("pwd", pwd);
-        queryWrapper.eq("key", key);
+        queryWrapper.eq("k", key);
         PwdKeyValue pkv = pkvMapper.selectOne(queryWrapper);
         if (pkv == null) {
             pkv = new PwdKeyValue();
             pkv.setPwd(pwd);
             pkv.setValue(value);
-            pkv.setKey(key);
+            pkv.setK(key);
             return pkvMapper.insert(pkv) > 0 ? "OK" : oldValue;
         } else {
             oldValue = pkv.getValue();
             pkv.setPwd(pwd);
             pkv.setValue(value);
-            pkv.setKey(key);
+            pkv.setK(key);
             UpdateWrapper<PwdKeyValue> updateWrapper = new UpdateWrapper<>();
-            updateWrapper.eq("key", key);
+            updateWrapper.eq("k", key);
             updateWrapper.eq("pwd", pwd);
             return pkvMapper.update(pkv, updateWrapper) > 0 ? oldValue : "ERROR";
         }
@@ -131,7 +131,7 @@ public class UtilsController {
     public String get(@RequestParam("key") String key, @RequestParam("pwd") String pwd) {
         QueryWrapper<PwdKeyValue> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("pwd", pwd);
-        queryWrapper.eq("key", key);
+        queryWrapper.eq("k", key);
         PwdKeyValue pkv = pkvMapper.selectOne(queryWrapper);
         if (pkv == null) {
             return "";
