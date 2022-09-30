@@ -1,13 +1,18 @@
 package io.github.kloping.mywebsite.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import io.github.kloping.date.DateUtils;
 import io.github.kloping.file.FileUtils;
 import io.github.kloping.mywebsite.entitys.FileWithPath;
 import io.github.kloping.mywebsite.entitys.OnlyData;
+import io.github.kloping.mywebsite.entitys.PwdKeyValue;
+import io.github.kloping.mywebsite.mapper.PwdKeyValueMapper;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
@@ -94,25 +99,45 @@ public class UtilsController {
         return "ok";
     }
 
-    @Value("${auth.pwd}")
-    String pwd;
-
-    public Map<String, String> dataMap = new HashMap<>();
+    @Autowired
+    PwdKeyValueMapper pkvMapper;
 
     @GetMapping("/put")
     public String put(@RequestParam("key") String key, @RequestParam("value") String value, @RequestParam("pwd") String pwd) {
-        if (this.pwd.equals(pwd)) {
-            return dataMap.put(key, value);
+        String oldValue = "";
+        QueryWrapper<PwdKeyValue> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("pwd", pwd);
+        queryWrapper.eq("key", key);
+        PwdKeyValue pkv = pkvMapper.selectOne(queryWrapper);
+        if (pkv == null) {
+            pkv = new PwdKeyValue();
+            pkv.setPwd(pwd);
+            pkv.setValue(value);
+            pkv.setKey(key);
+            return pkvMapper.insert(pkv) > 0 ? "OK" : oldValue;
+        } else {
+            oldValue = pkv.getValue();
+            pkv.setPwd(pwd);
+            pkv.setValue(value);
+            pkv.setKey(key);
+            UpdateWrapper<PwdKeyValue> updateWrapper = new UpdateWrapper<>();
+            updateWrapper.eq("key", key);
+            updateWrapper.eq("pwd", pwd);
+            return pkvMapper.update(pkv, updateWrapper) > 0 ? oldValue : "ERROR";
         }
-        return "wrong password";
     }
 
     @GetMapping("/get")
     public String get(@RequestParam("key") String key, @RequestParam("pwd") String pwd) {
-        if (this.pwd.equals(pwd)) {
-            return dataMap.get(key);
+        QueryWrapper<PwdKeyValue> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("pwd", pwd);
+        queryWrapper.eq("key", key);
+        PwdKeyValue pkv = pkvMapper.selectOne(queryWrapper);
+        if (pkv == null) {
+            return "";
+        } else {
+            return pkv.getValue();
         }
-        return "wrong password";
     }
 
     @GetMapping("/notice")
@@ -125,6 +150,9 @@ public class UtilsController {
         }
         return "success";
     }
+
+    @Value("${auth.pwd}")
+    String pwd;
 
     @PostMapping("/uploadImg")
     public String upload(@RequestParam("key") String key, @RequestBody OnlyData data, HttpServletRequest request) {
