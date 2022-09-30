@@ -14,7 +14,7 @@ import lombok.experimental.Accessors;
 public class PwdKeyValue {
     @TableField("`pwd`")
     private String pwd;
-    @TableField("`key`")
+    @TableField("`k`")
     private String key;
     @TableField("`value`")
     private String value;
