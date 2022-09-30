@@ -213,7 +213,7 @@ public class ApiSearchController {
         }
         String vk = keyword + "," + type + "," + num;
         Songs songs = new Songs();
-        VipSong[] ss = myHkw.songs(null, null, num, type, 1, keyword,"tinggeba", System.currentTimeMillis());
+        VipSong[] ss = myHkw.songs(null, null, num, type, 1, keyword, "tinggeba", System.currentTimeMillis());
         songs.setKeyword(keyword);
         songs.setState(0);
         songs.setType(type);
@@ -224,19 +224,21 @@ public class ApiSearchController {
             String surl = null;
             String img = null;
             try {
-                surl = UtilsController.getRedirectUrl("https://myhkw.cn/api/musicUrl?songId=" + s.getUrl_id() + "&type=" + s.getType() + "&id=155782152289","myhkw.cn");
+                surl = UtilsController.getRedirectUrl(String.format("https://myhkw.cn/api/url?song=%s&type=%s&id=tinggeba&sign=%s"
+                        , s.getId(),s.getType(), s.getSign()), "myhkw.cn","https://tinggeba.cn/");
             } catch (IOException e) {
                 e.printStackTrace();
             }
             try {
-                img = UtilsController.getRedirectUrl(String.format("https://myhkw.cn/api/musicPic?picId=%s&type=%s&size=%s", s.getPic_id(), s.getType(), "big"));
+                img = UtilsController.getRedirectUrl(
+                        String.format("https://myhkw.cn/api/pic?song=%s&pic=%s&type=%s&size=big&id=tinggeba&sign=%s", s.getId(), s.getPic_id(), s.getType(), s.getSign())
+                );
             } catch (IOException e) {
                 e.printStackTrace();
             }
             String lyric = null;
             try {
-                JSONObject jo = myHkw.lyric(null, s.getType(), s.getId(), "myhkwebplayertinggeba",s.getSign(), System.currentTimeMillis());
-
+                JSONObject jo = myHkw.lyric(null, s.getType(), s.getId(), "myhkwebplayertinggeba", s.getSign(), System.currentTimeMillis());
                 lyric = "";
                 if (jo.containsKey("txt")) {
                     lyric = jo.get("txt").toString();
