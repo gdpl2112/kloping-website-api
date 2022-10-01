@@ -87,7 +87,11 @@ public class ApiToolController {
                         .setAddress("/ok")
                         .setDetail(
                                 "1.'/transImg?url=图片链接' 将指定图片转存到该网站 并重定向该网直链\n" +
-                                "2.'getHost?url=网址' 获取指定网址的host")
+                                        "2.'/getHost?url=网址' 获取指定网址的host\n" +
+                                        "3.'/put?pwd=(参数)&key=(参数)&value=(参数)' 根据pwd操作key value\n"+
+                                        "4.'/get?pwd=(参数)&key=(参数)' 根据pwd操作key value\n"+
+                                        "5.'/del?pwd=(参数)&key=(参数)' 根据pwd操作key value key为空时删除所有pwd\n"
+                        )
                         .setSimpleUrl("/ok")
         );
     }
