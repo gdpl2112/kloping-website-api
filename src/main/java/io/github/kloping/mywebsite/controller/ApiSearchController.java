@@ -1,24 +1,27 @@
 package io.github.kloping.mywebsite.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import io.github.kloping.mywebsite.entitys.VideoAnimeSource;
 import io.github.kloping.mywebsite.entitys.medias.Result;
 import io.github.kloping.mywebsite.entitys.medias.Song;
 import io.github.kloping.mywebsite.entitys.medias.Songs;
-import io.github.kloping.mywebsite.entitys.vipSong.VipSong;
+import io.github.kloping.mywebsite.plugins.Source;
 import io.github.kloping.mywebsite.services.*;
 import io.github.kloping.mywebsite.services.impl.ParseGifImgImpl0;
+import jdk.nashorn.api.scripting.ScriptObjectMirror;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.script.ScriptException;
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.util.*;
 
-import static io.github.kloping.mywebsite.plugins.Source.myHkw;
+import static io.github.kloping.mywebsite.plugins.detail.All.ENGINE;
 
 /**
  * @author github-kloping
@@ -203,59 +206,50 @@ public class ApiSearchController {
 
     @RequestMapping("vipSong")
     public Songs vipSongs(HttpServletRequest request, @RequestParam("keyword") String keyword
-            , @RequestParam(required = false, value = "type") String type
+//            , @RequestParam(required = false, value = "type") String type
             , @RequestParam(required = false, value = "n") String numStr
-    ) {
+    ) throws ScriptException {
         int num = 2;
         try {
             num = Integer.parseInt(numStr.trim());
         } catch (Exception e) {
         }
-        String vk = keyword + "," + type + "," + num;
+//        String vk = keyword + "," + type + "," + num;
         Songs songs = new Songs();
-        VipSong[] ss = myHkw.songs(null, null, num, type, 1, keyword, "tinggeba", System.currentTimeMillis());
         songs.setKeyword(keyword);
         songs.setState(0);
-        songs.setType(type);
+        songs.setType("normal");
         songs.setTime(System.currentTimeMillis());
         songs.setNum(num);
         List<Song> s0 = new LinkedList<>();
-        for (VipSong s : ss) {
-            String surl = null;
-            String img = null;
-            try {
-                surl = UtilsController.getRedirectUrl(String.format("https://myhkw.cn/api/url?song=%s&type=%s&id=tinggeba&sign=%s"
-                        , s.getId(),s.getType(), s.getSign()), "myhkw.cn","https://tinggeba.cn/");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            try {
-                img = UtilsController.getRedirectUrl(
-                        String.format("https://myhkw.cn/api/pic?song=%s&pic=%s&type=%s&size=big&id=tinggeba&sign=%s", s.getId(), s.getPic_id(), s.getType(), s.getSign())
-                );
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            String lyric = null;
-            try {
-                JSONObject jo = myHkw.lyric(null, s.getType(), s.getId(), "myhkwebplayertinggeba", s.getSign(), System.currentTimeMillis());
-                lyric = "";
-                if (jo.containsKey("txt")) {
-                    lyric = jo.get("txt").toString();
-                } else if (jo.containsKey("lyric")) {
-                    lyric = jo.get("lyric").toString();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            s0.add(
-                    new Song().setId(s.getId())
-                            .setAuthor_name(s.getAllArtists())
-                            .setMedia_name(s.getName())
-                            .setLyric(lyric)
-                            .setSongUrl(surl)
-                            .setImgUrl(img)
-            );
+        Document doc = Source.dwh99.search("q=" + keyword + "&submit=%E6%90%9C%E7%B4%A2");
+        Element element = doc.getElementsByTag("table").get(0);
+        for (Element tr : element.getElementsByTag("tbody").get(1).getElementsByTag("tr")) {
+            Song song = new Song();
+            Elements es = tr.getElementsByTag("td");
+            Element e0 = es.get(0);
+            Element e2 = es.get(2);
+            Element e3 = es.get(3);
+            song.setAuthor_name(e2.text());
+            song.setMedia_name(e0.text());
+            Document doc1 = Source.dwh99.path(e3.getElementsByTag("a").get(0).attr("href"));
+            Element script0 = doc1.getElementsByTag("script").get(1);
+            String javaScriptText = script0.html();
+            javaScriptText = javaScriptText.replace("zp3.init();", "");
+            javaScriptText = javaScriptText.replace("new zplayer(", "");
+            javaScriptText = javaScriptText.replace("});", "};");
+            javaScriptText = javaScriptText.replace("element: document.getElementById(\"player3\"),", "");
+            ENGINE.eval(javaScriptText);
+            ScriptObjectMirror o = (ScriptObjectMirror) ENGINE.get("zp3");
+            o = (ScriptObjectMirror) o.get("musics");
+            o = (ScriptObjectMirror) o.get("0");
+            song.setLyric(o.get("lrc").toString());
+            song.setSongUrl(o.get("url").toString());
+            song.setImgUrl("http://kloping.top/favicon.ico");
+            song.setId("0");
+            s0.add(song);
+            if (s0.size() >= num)
+                break;
         }
         songs.setData(s0.toArray(new Song[s0.size()]));
         return songs;

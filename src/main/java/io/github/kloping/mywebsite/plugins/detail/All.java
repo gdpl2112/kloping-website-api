@@ -1,26 +1,34 @@
 package io.github.kloping.mywebsite.plugins.detail;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
 import java.util.regex.Pattern;
 
 /**
  * @author github.kloping
  */
 public class All {
+    public static final ScriptEngineManager MANAGER = new ScriptEngineManager();
+    public static final ScriptEngine ENGINE = MANAGER.getEngineByName("javascript");
+
     public static String doc0(String callbackJson) {
         int i = callbackJson.indexOf("(");
         int i1 = callbackJson.lastIndexOf(");");
         String js = callbackJson.substring(i + 1, i1);
         return js;
     }
+
     public static String doc1(String callbackJson) {
         int i = callbackJson.indexOf("(");
         int i1 = callbackJson.lastIndexOf(")");
         String js = callbackJson.substring(i + 1, i1);
         return js;
     }
+
     private static final String SINGLE_PATTERN = "[0-9|a-f|A-F]";
     private static final String PATTERN = SINGLE_PATTERN + SINGLE_PATTERN +
             SINGLE_PATTERN + SINGLE_PATTERN;
+
     /**
      * 把 \\u 开头的单字转成汉字，如 \\u6B65 ->　步
      *

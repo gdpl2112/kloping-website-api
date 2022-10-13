@@ -71,6 +71,9 @@ public class Source {
     public static MyHkw myHkw;
 
     @AutoStand
+    public static Dwh99 dwh99;
+
+    @AutoStand
     public static Empty empty;
 
     @AutoStand
