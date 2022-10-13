@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.script.ScriptException;
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.*;
 
 import static io.github.kloping.mywebsite.plugins.detail.All.ENGINE;
@@ -208,7 +209,7 @@ public class ApiSearchController {
     public Songs vipSongs(HttpServletRequest request, @RequestParam("keyword") String keyword
 //            , @RequestParam(required = false, value = "type") String type
             , @RequestParam(required = false, value = "n") String numStr
-    ) throws ScriptException {
+    ) throws ScriptException, IOException {
         int num = 2;
         try {
             num = Integer.parseInt(numStr.trim());
@@ -245,7 +246,7 @@ public class ApiSearchController {
             o = (ScriptObjectMirror) o.get("0");
             song.setLyric(o.get("lrc").toString());
             song.setSongUrl(o.get("url").toString());
-            song.setImgUrl("http://kloping.top/favicon.ico");
+            song.setImgUrl(UtilsController.getRedirectUrl("http://kloping.top/favicon.ico"));
             song.setId("0");
             s0.add(song);
             if (s0.size() >= num)
