@@ -1,23 +1,24 @@
 package io.github.kloping.mywebsite.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import io.github.kloping.mywebsite.entitys.database.Verify0Entity;
+import io.github.kloping.mywebsite.entitys.database.GameHouse;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 /**
  * @author github.kloping
  */
 @Mapper
-public interface Verify0Mapper extends BaseMapper<Verify0Entity> {
+public interface GameHouseMapper extends BaseMapper<GameHouse> {
     /**
-     * get one
+     * qid
      *
-     * @param code
+     * @param qid
      * @return
      */
-    @Select("select * from verify0_entity where code=#{code}")
-    Verify0Entity selectByCode(@Param("code") String code);
-
+    @Select("SELECT * FROM `game_house` WHERE `qid`=${qid}")
+    List<GameHouse> selectByQid(@Param("qid") Long qid);
 }

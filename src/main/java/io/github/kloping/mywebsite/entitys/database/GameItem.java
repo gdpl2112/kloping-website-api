@@ -1,18 +1,22 @@
-package io.github.kloping.mywebsite.entitys;
+package io.github.kloping.mywebsite.entitys.database;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 
 /**
  * @author github.kloping
  */
-@Data
+@Getter
+@Setter
 @Accessors(chain = true)
-public class Illegal {
+public class GameItem {
     @TableId(type = IdType.AUTO)
     private Integer id;
-
-    private String content;
+    private Integer goodsId;
+    private Integer num;
+    private Integer price0;
+    private Long ownerId;
 }

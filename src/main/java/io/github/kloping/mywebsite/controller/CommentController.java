@@ -1,6 +1,6 @@
 package io.github.kloping.mywebsite.controller;
 
-import io.github.kloping.mywebsite.entitys.Comment;
+import io.github.kloping.mywebsite.entitys.database.Comment;
 import io.github.kloping.mywebsite.services.ICommentService;
 import io.github.kloping.url.UrlUtils;
 import org.jsoup.Jsoup;

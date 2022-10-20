@@ -1,4 +1,4 @@
-package io.github.kloping.mywebsite.entitys;
+package io.github.kloping.mywebsite.entitys.database;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;

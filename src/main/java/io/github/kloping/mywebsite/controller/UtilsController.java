@@ -6,7 +6,7 @@ import io.github.kloping.date.DateUtils;
 import io.github.kloping.file.FileUtils;
 import io.github.kloping.mywebsite.entitys.FileWithPath;
 import io.github.kloping.mywebsite.entitys.OnlyData;
-import io.github.kloping.mywebsite.entitys.PwdKeyValue;
+import io.github.kloping.mywebsite.entitys.database.PwdKeyValue;
 import io.github.kloping.mywebsite.mapper.PwdKeyValueMapper;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;

@@ -5,7 +5,7 @@ package io.github.kloping.mywebsite.mapper;
  */
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import io.github.kloping.mywebsite.entitys.BottleMessage;
+import io.github.kloping.mywebsite.entitys.database.BottleMessage;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper

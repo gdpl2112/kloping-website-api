@@ -1,4 +1,4 @@
-package io.github.kloping.mywebsite.entitys;
+package io.github.kloping.mywebsite.entitys.database;
 
 import lombok.Data;
 import lombok.experimental.Accessors;

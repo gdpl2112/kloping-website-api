@@ -1,7 +1,7 @@
 package io.github.kloping.mywebsite.controller;
 
 import io.github.kloping.mywebsite.broadcast.InterceptorBroadcast;
-import io.github.kloping.mywebsite.entitys.Verify0Entity;
+import io.github.kloping.mywebsite.entitys.database.Verify0Entity;
 import io.github.kloping.mywebsite.entitys.VerifyFile;
 import io.github.kloping.mywebsite.mapper.Verify0Mapper;
 import io.github.kloping.mywebsite.utils.MyUtils;

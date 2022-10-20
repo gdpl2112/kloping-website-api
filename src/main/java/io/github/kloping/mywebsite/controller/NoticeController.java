@@ -2,7 +2,7 @@ package io.github.kloping.mywebsite.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import io.github.kloping.mywebsite.entitys.Notice;
+import io.github.kloping.mywebsite.entitys.database.Notice;
 import io.github.kloping.mywebsite.entitys.NoticePack;
 import io.github.kloping.mywebsite.services.INoticeService;
 import org.springframework.beans.factory.annotation.Autowired;

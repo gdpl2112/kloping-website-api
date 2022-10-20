@@ -1,7 +1,7 @@
 package io.github.kloping.mywebsite.services.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import io.github.kloping.mywebsite.entitys.Comment;
+import io.github.kloping.mywebsite.entitys.database.Comment;
 import io.github.kloping.mywebsite.mapper.CommentMapper;
 import io.github.kloping.mywebsite.services.ICommentService;
 import org.springframework.beans.factory.annotation.Autowired;
