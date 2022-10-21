@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/mydb1?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&rewriteBatchedStatements=true
+    username: root
+    password: root
+  web:
+    resources:
+      static-locations: classpath:/static,file:./files,file:./temp
+
+server:
+  additionalPorts: 80
+
+upload:
+  passwd: 443212
+
+bottle:
+  max:
+    pickup: 5
+
+auth:
+  url: http://localhost:20049
+  pwd: 123456
