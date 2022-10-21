@@ -28,6 +28,6 @@ public interface GameItemMapper extends BaseMapper<GameItem> {
      * @param gid
      * @return
      */
-    @Select("SELECT * FROM `game_item` WHERE `owner_id`=${qid} AND `goods_id`=${gid} ORDER BY `price0` LIMIT 1")
+    @Select("SELECT * FROM `game_item` WHERE `owner_id`=${qid} AND `goods_id`=${gid} ORDER BY `price0` DESC LIMIT 1")
     GameItem selectOne(@Param("qid") Long qid, @Param("gid") Integer gid);
 }
