@@ -96,6 +96,8 @@ public class GameController {
                 int m0 = goods.getPrice1();
                 gpi.setMoney(gpi.getMoney() + m0 * item.getNum());
                 gameService.gamePersonInfoMapper.updateById(gpi);
+                goods.setNum(goods.getNum() + n);
+                gameService.gameGoodsMapper.updateById(goods);
                 return "成功";
             } else {
                 return "储量不足";
