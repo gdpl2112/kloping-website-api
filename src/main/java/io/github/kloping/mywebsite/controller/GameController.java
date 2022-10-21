@@ -49,6 +49,7 @@ public class GameController {
         wrapper.eq("name", name);
         wrapper.eq("up", 1);
         GameGoods goods = gameService.gameGoodsMapper.selectOne(wrapper);
+        if (goods == null) return "未发现相关商品";
         if (goods.getNum() < n) {
             return "供货不足";
         } else {
