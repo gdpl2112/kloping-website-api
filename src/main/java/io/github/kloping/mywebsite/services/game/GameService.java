@@ -6,6 +6,8 @@ import io.github.kloping.mywebsite.entitys.database.*;
 import io.github.kloping.mywebsite.mapper.*;
 import io.github.kloping.number.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
 
 import java.util.Collections;
 import java.util.List;
@@ -16,7 +18,7 @@ import static io.github.kloping.mywebsite.controller.ApiToolController.RANDOM;
  * @author github.kloping
  */
 @org.springframework.stereotype.Service
-public class GameService {
+public class GameService implements ApplicationRunner {
     /**
      * 玩家基础容量
      */
@@ -80,10 +82,10 @@ public class GameService {
     @Autowired
     public GamePersonInfoMapper gamePersonInfoMapper;
 
-    public GameService() {
+    @Override
+    public void run(ApplicationArguments args) throws Exception {
         Public.EXECUTOR_SERVICE.submit(() -> {
             try {
-                Thread.sleep(2000);
                 System.out.println("init");
                 im = getGameInfoValue(INIT_MONEY, 2000);
                 sm = getGameInfoValue(INIT_MONEY, 100);
@@ -103,6 +105,10 @@ public class GameService {
                 e.printStackTrace();
             }
         });
+    }
+
+    public GameService() {
+
     }
 
     public final Runnable RUNNABLE = new Runnable() {
