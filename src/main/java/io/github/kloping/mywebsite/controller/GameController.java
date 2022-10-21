@@ -87,7 +87,7 @@ public class GameController {
             return "未发现相关商品";
         } else {
             GameItem item = gameService.gameItemMapper.selectOne(qid, goods.getId());
-            if (item.getNum() >= n) {
+            if (item!=null &&item.getNum() >= n) {
                 if (item.getNum().intValue() == n) {
                     gameService.gameItemMapper.deleteById(item.getId());
                 } else {
