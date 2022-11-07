@@ -24,12 +24,7 @@ import java.util.Map;
 public class ParseGifImgImpl implements IParseImg {
     @Override
     public String[] parse(String url) throws Exception {
-        Connection connection = Jsoup.connect(url)
-                .ignoreContentType(true)
-                .userAgent("Mozilla/5.0 (Linux; U; Android 12; zh-cn; PEGT10 Build/RKQ1.211103.002) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/90.0.4430.61 Mobile Safari/537.36 HeyTapBrowser/40.7.39.2");
-
-        Document doc = connection.get();
-        DataResponse response = getFromDoc(doc, connection.response().cookies());
+        DataResponse response = getDataResponse(url);
         List<String> list = new ArrayList<>();
         for (String u0 : response.getAtlas().getList()) {
             try {
@@ -42,6 +37,16 @@ public class ParseGifImgImpl implements IParseImg {
             }
         }
         return list.toArray(new String[0]);
+    }
+
+    public DataResponse getDataResponse(String url) throws IOException {
+        Connection connection = Jsoup.connect(url)
+                .ignoreContentType(true)
+                .userAgent("Mozilla/5.0 (Linux; U; Android 12; zh-cn; PEGT10 Build/RKQ1.211103.002) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/90.0.4430.61 Mobile Safari/537.36 HeyTapBrowser/40.7.39.2");
+
+        Document doc = connection.get();
+        DataResponse response = getFromDoc(doc, connection.response().cookies());
+        return response;
     }
 
 

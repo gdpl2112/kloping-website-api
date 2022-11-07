@@ -6,8 +6,10 @@ import io.github.kloping.mywebsite.entitys.medias.Song;
 import io.github.kloping.mywebsite.entitys.medias.Songs;
 import io.github.kloping.mywebsite.plugins.Source;
 import io.github.kloping.mywebsite.services.*;
+import io.github.kloping.mywebsite.services.impl.ParseGifImgImpl;
 import io.github.kloping.mywebsite.services.impl.ParseGifImgImpl0;
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
+import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.script.ScriptException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.util.*;
 
 import static io.github.kloping.mywebsite.plugins.detail.All.ENGINE;
@@ -136,7 +139,8 @@ public class ApiSearchController {
         return new Songs(-1, 0, System.currentTimeMillis(), keyword, null, "err");
     }
 
-    IParseImg parseImgKs = new ParseGifImgImpl0();
+    ParseGifImgImpl0 parseImgKs0 = new ParseGifImgImpl0();
+    ParseGifImgImpl parseImgKs = new ParseGifImgImpl();
 
     @RequestMapping("/parseImgs")
     public List<String> parseImg(HttpServletRequest request, String url, @RequestParam(required = false) String type) {
@@ -144,7 +148,7 @@ public class ApiSearchController {
         try {
             switch (type) {
                 case "ks":
-                    return Arrays.asList(parseImgKs.parse(url.trim()));
+                    return Arrays.asList(parseImgKs0.parse(url.trim()));
                 case "dy":
                     return Arrays.asList(parseImgDy.parse(url.trim()));
                 default:
@@ -154,6 +158,24 @@ public class ApiSearchController {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @RequestMapping("/parseVoice")
+    public Object parseVoice(String url) throws IOException {
+        if (url.contains("kuaishou")) {
+            return "https://p4.a.yximgs.com" + parseImgKs.getDataResponse(url).getAtlas().getMusic();
+        } else if (url.contains("douyin")) {
+            Document doc0 = Jsoup.connect(url).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36 Edg/107.0.1418.35")
+                    .get();
+            String all = doc0.html();
+            String u0 = null;
+            int i = all.indexOf("%7B%22src%22%3A%22");
+            all = all.substring(i + "%7B%22src%22%3A%22".length());
+            u0 = all.substring(0, all.indexOf("%22"));
+            u0 = URLDecoder.decode(u0);
+            return "http:"+u0;
+        }
+        return "暂不支持该类型的网站的解析";
     }
 
     @Autowired

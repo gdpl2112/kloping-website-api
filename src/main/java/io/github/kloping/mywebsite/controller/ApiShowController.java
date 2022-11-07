@@ -1,11 +1,14 @@
 package io.github.kloping.mywebsite.controller;
 
 import io.github.kloping.mywebsite.entitys.ApiDetailM;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 
 /**
@@ -13,10 +16,10 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 @RestController
 @RequestMapping("/api")
-public class ApiShowController {
+public class ApiShowController implements ApplicationRunner {
 
 
-    public static final List<ApiDetailM> LIST = new CopyOnWriteArrayList<>();
+    public static final List<ApiDetailM> LIST = new LinkedList<>();
 
     static {
         LIST.add(new ApiDetailM()
@@ -26,7 +29,7 @@ public class ApiShowController {
                 .setAddress("")
         );
         LIST.add(new ApiDetailM()
-                .setName("搜VIP歌")
+                .setName("搜歌(VIP)")
                 .setState("success")
                 .setDesc("通过歌名歌曲直链")
                 .setAddress("")
@@ -41,6 +44,12 @@ public class ApiShowController {
                 .setName("解析图片")
                 .setState("success")
                 .setDesc("通过快手,抖音 短链接 获取无水印图片")
+                .setAddress("")
+        );
+        LIST.add(new ApiDetailM()
+                .setName("解析bgm")
+                .setState("success")
+                .setDesc("通过快手,抖音图集作品 短链接 获取bgm")
                 .setAddress("")
         );
         LIST.add(new ApiDetailM()
@@ -66,5 +75,10 @@ public class ApiShowController {
     @RequestMapping("/getApiList")
     public List<ApiDetailM> m1() {
         return LIST;
+    }
+
+    @Override
+    public void run(ApplicationArguments args) throws Exception {
+        Collections.sort(LIST);
     }
 }

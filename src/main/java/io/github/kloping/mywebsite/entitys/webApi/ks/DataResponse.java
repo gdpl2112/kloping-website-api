@@ -2,6 +2,9 @@ package io.github.kloping.mywebsite.entitys.webApi.ks;
 
 import com.alibaba.fastjson.annotation.JSONField;
 
+/**
+ * @author HRS-Computer
+ */
 public class DataResponse {
     private Number result;
     private ShareInfo shareInfo;

@@ -3,21 +3,24 @@ package io.github.kloping.mywebsite.controller;
 import io.github.kloping.clasz.ClassUtils;
 import io.github.kloping.mywebsite.entitys.ApiDetail;
 import io.github.kloping.mywebsite.entitys.ApiDetailM;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 
 /**
  * @author github-kloping
  */
 @RestController
-public class ApiShowDetailController {
+public class ApiShowDetailController implements ApplicationRunner {
 
-    public static final List<ApiDetailM> LIST = new CopyOnWriteArrayList<>();
+    public static final List<ApiDetailM> LIST = new LinkedList<>();
 
     static {
         LIST.add(new ApiDetail()
@@ -51,6 +54,13 @@ public class ApiShowDetailController {
                 .setDetail("类型 可为 ks(快手) dy(抖音)")
                 .setAddress("/api/search/parseImgs?url=关键词&type=类型")
                 .setSimpleUrl("/api/search/parseImgs?url=https://v.kuaishouapp.com/s/MIaftqoZ&type=ks")
+        ); LIST.add(new ApiDetail()
+                .setName("解析bgm")
+                .setState("success")
+                .setDesc("通过短链接获取bgm")
+                .setDetail("类型可为 快手 抖音")
+                .setAddress("/api/search/parseVoice?url=短链接")
+                .setSimpleUrl("/api/search/parseVoice?url=https://v.douyin.com/r1GcyHN/")
         );
         LIST.add(new ApiDetail()
                 .setName("天气")
@@ -95,6 +105,11 @@ public class ApiShowDetailController {
             e.printStackTrace();
         }
         return ERR;
+    }
+
+    @Override
+    public void run(ApplicationArguments args) throws Exception {
+        Collections.sort(LIST);
     }
 
     private static final ApiDetail ERR = new ApiDetail().setAddress("请求错误").setDesc("错误").setName("错误 ");

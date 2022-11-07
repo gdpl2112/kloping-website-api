@@ -8,6 +8,7 @@ import io.github.kloping.mywebsite.plugins.detail.GetPvpNews;
 import io.github.kloping.mywebsite.plugins.detail.PvpQq;
 import io.github.kloping.mywebsite.plugins.detail.RunAll;
 import io.github.kloping.mywebsite.plugins.interfaces.*;
+import io.github.kloping.mywebsite.services.impl.ParseGifImgImpl;
 import io.github.kloping.mywebsite.services.impl.VideoGetterIqiyiImpl;
 import io.github.kloping.mywebsite.services.impl.VideoGetterTencentImpl;
 import sun.misc.BASE64Decoder;
@@ -84,6 +85,8 @@ public class Source {
 
     @AutoStand
     public static RunAll runAll;
+
+    public static ParseGifImgImpl parseGifImg = new ParseGifImgImpl();
 
     /**
      * sun.misc方式Base64编码
