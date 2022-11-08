@@ -25,6 +25,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -205,6 +206,13 @@ public class UtilsController {
         }
         return host;
     }
+
+    @GetMapping("/stamp2time")
+    public String getHost(@RequestParam("stamp") Long stamp, @RequestParam("exp") @Nullable String exp) {
+        exp = exp == null ? "yyyy-MM-dd:HH:mm:ss" : exp;
+        return new SimpleDateFormat(exp).format(new Date(stamp));
+    }
+
 
     public static FileWithPath requestFile(boolean isTemp) {
         return requestFile(isTemp, "jpg");
