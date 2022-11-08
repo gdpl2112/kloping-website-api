@@ -209,7 +209,7 @@ public class UtilsController {
 
     @GetMapping("/stamp2time")
     public String getHost(@RequestParam("stamp") Long stamp, @RequestParam("exp") @Nullable String exp) {
-        exp = exp == null ? "yyyy-MM-dd:HH:mm:ss" : exp;
+        exp = exp == null ? "yyyy年MM月dd日 HH:mm:ss" : exp;
         return new SimpleDateFormat(exp).format(new Date(stamp));
     }
 
