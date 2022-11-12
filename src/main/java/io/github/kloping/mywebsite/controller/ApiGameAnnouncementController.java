@@ -25,7 +25,7 @@ public class ApiGameAnnouncementController {
                 .setState("success")
                 .setDesc("获取王者荣耀官网公告")
         );
-        ApiShowDetailController.LIST.add(
+        ApiShowDetailController.DETAIL_LIST.add(
                 new ApiDetail()
                         .setName("王者公告")
                         .setState("success")
@@ -40,9 +40,9 @@ public class ApiGameAnnouncementController {
                 .setState("success")
                 .setDesc("获取王者荣耀官网皮肤")
         );
-        ApiShowDetailController.LIST.add(
+        ApiShowDetailController.DETAIL_LIST.add(
                 new ApiDetail()
-                        .setName("王者皮肤")
+                        .setName("王者皮肤图片")
                         .setState("success")
                         .setDesc("获取王者荣耀官网皮肤")
                         .setAddress("/api/get/pvpSkin?n=排序")

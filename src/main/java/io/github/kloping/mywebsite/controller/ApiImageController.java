@@ -36,7 +36,7 @@ public class ApiImageController {
                 .setState("success")
                 .setDesc("根据QQ号生成表情包")
         );
-        ApiShowDetailController.LIST.add(
+        ApiShowDetailController.DETAIL_LIST.add(
                 new ApiDetail()
                         .setName("捅刀子(表情包)")
                         .setState("success")
@@ -51,7 +51,7 @@ public class ApiImageController {
                 .setState("success")
                 .setDesc("根据QQ号生成表情包")
         );
-        ApiShowDetailController.LIST.add(
+        ApiShowDetailController.DETAIL_LIST.add(
                 new ApiDetail()
                         .setName("摇啊摇(动表情包)")
                         .setState("success")

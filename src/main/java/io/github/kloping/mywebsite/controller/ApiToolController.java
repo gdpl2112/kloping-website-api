@@ -35,7 +35,7 @@ public class ApiToolController {
                 .setState("success")
                 .setDesc("在线运行各种代码")
         );
-        ApiShowDetailController.LIST.add(
+        ApiShowDetailController.DETAIL_LIST.add(
                 new ApiDetail()
                         .setName("在线运行代码")
                         .setState("success")
@@ -50,7 +50,7 @@ public class ApiToolController {
                 .setState("success")
                 .setDesc("扔出一个漂流瓶")
         );
-        ApiShowDetailController.LIST.add(
+        ApiShowDetailController.DETAIL_LIST.add(
                 new ApiDetail()
                         .setName("扔漂流瓶")
                         .setState("success")
@@ -65,7 +65,7 @@ public class ApiToolController {
                 .setState("success")
                 .setDesc("捡一个漂流瓶")
         );
-        ApiShowDetailController.LIST.add(
+        ApiShowDetailController.DETAIL_LIST.add(
                 new ApiDetail()
                         .setName("捡漂流瓶")
                         .setState("success")
@@ -79,7 +79,7 @@ public class ApiToolController {
                 .setState("success")
                 .setDesc("网站工具s")
         );
-        ApiShowDetailController.LIST.add(
+        ApiShowDetailController.DETAIL_LIST.add(
                 new ApiDetail()
                         .setName("网站工具")
                         .setState("success")

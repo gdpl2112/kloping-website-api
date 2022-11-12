@@ -20,10 +20,10 @@ import java.util.List;
 @RestController
 public class ApiShowDetailController implements ApplicationRunner {
 
-    public static final List<ApiDetailM> LIST = new LinkedList<>();
+    public static final List<ApiDetailM> DETAIL_LIST = new LinkedList<>();
 
     static {
-        LIST.add(new ApiDetail()
+        DETAIL_LIST.add(new ApiDetail()
                 .setName("搜歌")
                 .setState("success")
                 .setDesc("通过歌名获取,歌的封面,作者,歌曲直链")
@@ -31,7 +31,7 @@ public class ApiShowDetailController implements ApplicationRunner {
                 .setSimpleUrl("/api/search/song?keyword=清空&type=kugou")
                 .setAddress("/api/search/song?keyword=关键词&type=类型&n=7")
         );
-        LIST.add(new ApiDetail()
+        DETAIL_LIST.add(new ApiDetail()
                 .setName("搜歌(VIP)")
                 .setState("success")
                 .setDesc("通过歌名获取歌曲直链")
@@ -39,7 +39,7 @@ public class ApiShowDetailController implements ApplicationRunner {
                 .setSimpleUrl("/api/search/vipSong?keyword=霜雪千年")
                 .setAddress("/api/search/vipSong?keyword=关键词&n=7")
         );
-        LIST.add(new ApiDetail()
+        DETAIL_LIST.add(new ApiDetail()
                 .setName("搜图")
                 .setState("success")
                 .setDesc("通过关键词获取图片直链")
@@ -47,14 +47,14 @@ public class ApiShowDetailController implements ApplicationRunner {
                 .setAddress("/api/search/pic?keyword=关键词&num=数量&type=类型")
                 .setSimpleUrl("/api/search/pic?keyword=原神&num=3&type=duit")
         );
-        LIST.add(new ApiDetail()
+        DETAIL_LIST.add(new ApiDetail()
                 .setName("解析图片")
                 .setState("success")
                 .setDesc("通过快手,抖音 短链接 获取无水印图片")
                 .setDetail("类型 可为 ks(快手) dy(抖音)")
                 .setAddress("/api/search/parseImgs?url=关键词&type=类型")
                 .setSimpleUrl("/api/search/parseImgs?url=https://v.kuaishouapp.com/s/MIaftqoZ&type=ks")
-        ); LIST.add(new ApiDetail()
+        ); DETAIL_LIST.add(new ApiDetail()
                 .setName("解析bgm")
                 .setState("success")
                 .setDesc("通过短链接获取bgm")
@@ -62,7 +62,7 @@ public class ApiShowDetailController implements ApplicationRunner {
                 .setAddress("/api/search/parseVoice?url=短链接")
                 .setSimpleUrl("/api/search/parseVoice?url=https://v.douyin.com/r1GcyHN/")
         );
-        LIST.add(new ApiDetail()
+        DETAIL_LIST.add(new ApiDetail()
                 .setName("天气")
                 .setState("success")
                 .setDesc("通过地名 获取当地天气详情")
@@ -71,7 +71,7 @@ public class ApiShowDetailController implements ApplicationRunner {
                 .setSimpleUrl("/api/get/weather?address=合肥")
 
         );
-        LIST.add(new ApiDetail()
+        DETAIL_LIST.add(new ApiDetail()
                 .setName("短时天气")
                 .setState("success")
                 .setDesc("通过地名 获取当地短时天气")
@@ -79,7 +79,7 @@ public class ApiShowDetailController implements ApplicationRunner {
                 .setSimpleUrl("/api/get/shortWeather?address=合肥")
                 .setDetail("地名 例如: 北京")
         );
-        LIST.add(new ApiDetail()
+        DETAIL_LIST.add(new ApiDetail()
                 .setName("视频搜索")
                 .setState("debug")
                 .setDesc(" 搜索腾讯爱奇艺视频")
@@ -93,8 +93,8 @@ public class ApiShowDetailController implements ApplicationRunner {
     public ApiDetailM m1(HttpServletRequest request, String id) {
         try {
             int i = Integer.parseInt(id);
-            if (i < LIST.size()) {
-                ApiDetail apiDetail = (ApiDetail) LIST.get(i);
+            if (i < DETAIL_LIST.size()) {
+                ApiDetail apiDetail = (ApiDetail) DETAIL_LIST.get(i);
                 ApiDetail ad0 = ClassUtils.copyAllField(apiDetail);
                 String reu = request.getRequestURL().toString();
                 reu = reu.substring(0, reu.lastIndexOf("/"));
@@ -109,7 +109,7 @@ public class ApiShowDetailController implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        Collections.sort(LIST);
+        Collections.sort(DETAIL_LIST);
     }
 
     private static final ApiDetail ERR = new ApiDetail().setAddress("请求错误").setDesc("错误").setName("错误 ");

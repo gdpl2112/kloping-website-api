@@ -14,6 +14,7 @@ public class ApiDetailM implements Comparable<ApiDetailM> {
     public int compareTo(@NotNull ApiDetailM o) {
         return o.getName().compareTo(this.getName());
     }
+
     public String name;
     private String desc;
     private String state;
