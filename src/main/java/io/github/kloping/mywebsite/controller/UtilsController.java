@@ -8,8 +8,11 @@ import io.github.kloping.file.FileUtils;
 import io.github.kloping.io.ReadUtils;
 import io.github.kloping.mywebsite.entitys.FileWithPath;
 import io.github.kloping.mywebsite.entitys.OnlyData;
+import io.github.kloping.mywebsite.entitys.baiduShitu.BaiduShitu;
+import io.github.kloping.mywebsite.entitys.baiduShitu.response.BaiduShituResponse;
 import io.github.kloping.mywebsite.entitys.database.PwdKeyValue;
 import io.github.kloping.mywebsite.mapper.PwdKeyValueMapper;
+import io.github.kloping.mywebsite.plugins.detail.BaiduShituDetail;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -29,6 +32,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
+import static io.github.kloping.mywebsite.plugins.Source.iBaiduShitu;
 
 /**
  * @author github-kloping
@@ -195,6 +200,28 @@ public class UtilsController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @GetMapping("/transImg2")
+    public String proxy2(@RequestParam("url") String url, HttpServletRequest request, HttpServletResponse response) {
+        try {
+            Connection connection = null;
+            connection = org.jsoup.Jsoup.connect(url).ignoreContentType(true).ignoreHttpErrors(true)
+                    .header("Host", new URL(url).getHost())
+                    .header("accept-encoding", "gzip, deflate, br")
+                    .userAgent(
+                            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Safari/537.36 Edg/100.0.1185.50"
+                    ).method(Connection.Method.GET);
+            Connection.Response resp = connection.execute();
+            byte[] bytes = resp.bodyAsBytes();
+            String name = save(bytes, true);
+            BaiduShitu baiduShitu = BaiduShituDetail.get("http://kloping.top/" + name);
+            BaiduShituResponse response0 = iBaiduShitu.response(baiduShitu.getData().getSign());
+            return response0.getData().getImageUrl();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
     @GetMapping("/getHost")

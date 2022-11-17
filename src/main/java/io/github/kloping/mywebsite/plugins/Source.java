@@ -84,6 +84,10 @@ public class Source {
     public static PvpQq pvpQq;
 
     @AutoStand
+    public static IBaiduShitu iBaiduShitu;
+
+
+    @AutoStand
     public static RunAll runAll;
 
     public static ParseGifImgImpl parseGifImg = new ParseGifImgImpl();
