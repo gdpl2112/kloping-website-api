@@ -7,9 +7,11 @@ import io.github.kloping.mywebsite.entitys.database.BottleMessage;
 import io.github.kloping.mywebsite.entitys.database.Illegal;
 import io.github.kloping.mywebsite.entitys.runcode.CodeContent;
 import io.github.kloping.mywebsite.entitys.runcode.CodeEntity;
+import io.github.kloping.mywebsite.entitys.yuanShen.YuanShenPlayerInfo;
 import io.github.kloping.mywebsite.mapper.BottleMessageMapper;
 import io.github.kloping.mywebsite.mapper.IllegalMapper;
 import io.github.kloping.mywebsite.plugins.Source;
+import io.github.kloping.mywebsite.utils.ImageDrawer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.Nullable;
@@ -18,9 +20,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.security.SecureRandom;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -177,5 +183,21 @@ public class ApiToolController {
             e.printStackTrace();
         }
         return o;
+    }
+
+    private static final Map<String, String> HEADERS0 = new HashMap<>();
+
+    static {
+        HEADERS0.put("origin", "https://ys.daidr.me");
+        HEADERS0.put("referer", "https://ys.daidr.me/");
+        HEADERS0.put("accept", "*/*");
+    }
+
+    @GetMapping("/shenInfo")
+    public String info(@RequestParam("uid") String uid,
+                       @RequestParam("server") Integer server, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        YuanShenPlayerInfo info = Source.daidr.info(uid, server, HEADERS0);
+        String name = ImageDrawer.drawerShenInfo(info);
+        return "http://kloping.top/" + name;
     }
 }

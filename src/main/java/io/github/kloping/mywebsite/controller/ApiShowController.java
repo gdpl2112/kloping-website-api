@@ -70,6 +70,12 @@ public class ApiShowController implements ApplicationRunner {
                 .setDesc("搜索腾讯爱奇艺视频")
                 .setAddress("")
         );
+        LIST.add(new ApiDetailM()
+                .setName("原神信息查询")
+                .setState("success")
+                .setDesc("根据uid查询原神玩家信息")
+                .setAddress("")
+        );
     }
 
     @RequestMapping("/getApiList")

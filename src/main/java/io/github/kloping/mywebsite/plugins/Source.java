@@ -75,6 +75,12 @@ public class Source {
     public static Dwh99 dwh99;
 
     @AutoStand
+    public static IBaiduShitu iBaiduShitu;
+
+    @AutoStand
+    public static Daidr daidr;
+
+    @AutoStand
     public static Empty empty;
 
     @AutoStand
@@ -82,9 +88,6 @@ public class Source {
 
     @AutoStand
     public static PvpQq pvpQq;
-
-    @AutoStand
-    public static IBaiduShitu iBaiduShitu;
 
 
     @AutoStand

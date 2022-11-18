@@ -196,7 +196,7 @@ public class UtilsController {
             Connection.Response resp = connection.execute();
             byte[] bytes = resp.bodyAsBytes();
             String name = save(bytes, true);
-            response.sendRedirect("http://kloping.top/" + name);
+            response.sendRedirect("/" + name);
         } catch (IOException e) {
             e.printStackTrace();
         }
