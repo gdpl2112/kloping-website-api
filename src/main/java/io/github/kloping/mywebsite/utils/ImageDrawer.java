@@ -107,7 +107,7 @@ public class ImageDrawer {
 
     public static String drawerShenInfo(YuanShenPlayerInfo info) throws Exception {
         int width = 600;
-        int height = 300;
+        int height = 400;
         height += ((info.getData().getAvatars().length + 2) / 3 * 101);
         height += ((info.getData().getWorld_explorations().length + 1) / 2 * 111);
         BufferedImage outputImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
@@ -136,6 +136,7 @@ public class ImageDrawer {
                 y += 100;
             }
         }
+        y += 100;
         x = 25;
         xi = 0;
         for (WorldExplorations w : info.getData().getWorld_explorations()) {
