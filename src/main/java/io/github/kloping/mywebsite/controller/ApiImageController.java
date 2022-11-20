@@ -1,6 +1,7 @@
 package io.github.kloping.mywebsite.controller;
 
 import com.madgag.gif.fmsware.AnimatedGifEncoder;
+import io.github.kloping.judge.Judge;
 import io.github.kloping.mywebsite.entitys.ApiDetail;
 import io.github.kloping.mywebsite.entitys.ApiDetailM;
 import io.github.kloping.mywebsite.entitys.FileWithPath;
@@ -63,11 +64,17 @@ public class ApiImageController {
     }
 
     @RequestMapping("/tong")
-    public String tong(@RequestParam("q1") String q1, @RequestParam("q2") String q2, HttpServletResponse response) {
+    public String tong(
+            @RequestParam("q1") String q1, @RequestParam("q2") String q2,
+            @RequestParam("u1") String u1, @RequestParam("u2") String u2, HttpServletResponse response) {
         try {
+            if (Judge.isEmpty(u1) || Judge.isEmpty(u2)) {
+                u1 = String.format("https://q1.qlogo.cn/g?b=qq&nk=%s&s=640", q1);
+                u2 = String.format("https://q1.qlogo.cn/g?b=qq&nk=%s&s=640", q2);
+            }
             BufferedImage image = ImageIO.read(new ByteArrayInputStream(TONG_BASE_BYTES));
-            BufferedImage iq1 = ImageIO.read(new URL(String.format("https://q1.qlogo.cn/g?b=qq&nk=%s&s=640", q1)));
-            BufferedImage iq2 = ImageIO.read(new URL(String.format("https://q1.qlogo.cn/g?b=qq&nk=%s&s=640", q2)));
+            BufferedImage iq1 = ImageIO.read(new URL(u1));
+            BufferedImage iq2 = ImageIO.read(new URL(u2));
             int size = 84;
             iq1 = (BufferedImage) ImageDrawerUtils.image2Size(iq1, size, size);
             iq2 = (BufferedImage) ImageDrawerUtils.image2Size(iq2, size + 6, size + 6);
