@@ -8,6 +8,7 @@ import io.github.kloping.mywebsite.entitys.FileWithPath;
 import io.github.kloping.mywebsite.entitys.ImageE0;
 import io.github.kloping.mywebsite.utils.ImageDrawerUtils;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -65,8 +66,8 @@ public class ApiImageController {
 
     @RequestMapping("/tong")
     public String tong(
-            @RequestParam("q1") String q1, @RequestParam("q2") String q2,
-            @RequestParam("u1") String u1, @RequestParam("u2") String u2, HttpServletResponse response) {
+            @Nullable @RequestParam("q1") String q1,@Nullable @RequestParam("q2") String q2,
+            @Nullable @RequestParam("u1") String u1,@Nullable @RequestParam("u2") String u2, HttpServletResponse response) {
         try {
             if (Judge.isEmpty(u1) || Judge.isEmpty(u2)) {
                 u1 = String.format("https://q1.qlogo.cn/g?b=qq&nk=%s&s=640", q1);
