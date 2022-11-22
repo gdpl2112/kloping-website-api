@@ -66,8 +66,8 @@ public class ApiImageController {
 
     @RequestMapping("/tong")
     public String tong(
-            @Nullable @RequestParam("q1") String q1,@Nullable @RequestParam("q2") String q2,
-            @Nullable @RequestParam("u1") String u1,@Nullable @RequestParam("u2") String u2, HttpServletResponse response) {
+            @Nullable @RequestParam("q1") String q1, @Nullable @RequestParam("q2") String q2,
+            @Nullable @RequestParam("u1") String u1, @Nullable @RequestParam("u2") String u2, HttpServletResponse response) {
         try {
             if (Judge.isEmpty(u1) || Judge.isEmpty(u2)) {
                 u1 = String.format("https://q1.qlogo.cn/g?b=qq&nk=%s&s=640", q1);
@@ -92,7 +92,13 @@ public class ApiImageController {
     }
 
     @RequestMapping("/yao2yao")
-    public String yao2yao(@RequestParam("qid") String q1, HttpServletResponse response) throws Exception {
+    public String yao2yao(
+            @RequestParam("qid") @Nullable String q1,
+            @RequestParam("u1") @Nullable String u1,
+            HttpServletResponse response) throws Exception {
+        if (Judge.isEmpty(u1)) {
+            u1 = String.format("https://q1.qlogo.cn/g?b=qq&nk=%s&s=640", q1);
+        }
         FileWithPath outFile = requestFile(true, "gif");
         AnimatedGifEncoder encoder = new AnimatedGifEncoder();
         encoder.start(outFile.getFile().getAbsolutePath());
@@ -101,7 +107,7 @@ public class ApiImageController {
         encoder.setFrameRate(200);
         double w = (Math.PI / 12);
         int[] is = new int[]{4, 3, 0, 1, 2};
-        final BufferedImage oImage = ImageIO.read(new URL("http://q1.qlogo.cn/g?b=qq&nk=" + q1 + "&s=640").openStream());
+        final BufferedImage oImage = ImageIO.read(new URL(u1).openStream());
         for (int i = 0; i < 24; i++) {
             int width = 200;
             int height = 200;
