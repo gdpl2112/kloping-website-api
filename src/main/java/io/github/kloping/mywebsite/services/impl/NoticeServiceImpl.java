@@ -3,8 +3,8 @@ package io.github.kloping.mywebsite.services.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import io.github.kloping.mywebsite.entitys.database.Notice;
 import io.github.kloping.mywebsite.entitys.NoticePack;
+import io.github.kloping.mywebsite.entitys.database.Notice;
 import io.github.kloping.mywebsite.mapper.NoticeMapper;
 import io.github.kloping.mywebsite.services.INoticeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,6 +100,8 @@ public class NoticeServiceImpl implements INoticeService {
                     .setDate(sf_0.format(new Date())).setTitle(title)
                     .setHtml(html).setIcon(icon);
             mapper.insert(notice);
+            notices.clear();
+            notices2.clear();
             return true;
         }
         return false;
