@@ -1,6 +1,6 @@
 package io.github.kloping.mywebsite;
 
-import io.github.kloping.mywebsite.controller.UtilsController;
+import okhttp3.OkHttpClient;
 
 import java.io.*;
 import java.text.ParseException;
@@ -9,15 +9,13 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import static io.github.kloping.mywebsite.utils.MyUtils.threads;
-
 /**
  * @author github-kloping
  * @version 1.0
  */
 public class Source {
 
-    private static void setPrintln(String filePath) {
+    public static void setPrintln(String filePath) {
         try {
             PrintStream oldPrintStream = System.out;
             FileOutputStream bos = new FileOutputStream(filePath);
