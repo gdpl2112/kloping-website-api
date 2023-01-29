@@ -59,7 +59,7 @@ public class QQMusicDetail {
         }
     }
 
-    public synchronized static Songs songs(String keyword, int num) {
+    public static Songs songs(String keyword, int num) {
         List<Song> songs = new ArrayList<>();
         QqMusicSearchNewPlatform qm = qqMusic.qqDetail(null, null, null, null, null, null, null,
                 0,

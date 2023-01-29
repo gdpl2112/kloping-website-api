@@ -36,7 +36,7 @@ public class KugouDetail {
                 pageSize, page, keyword);
     }
 
-    public static synchronized Songs songs(KugouSongDetail detail) {
+    public static Songs songs(KugouSongDetail detail) {
         List<Song> list = new ArrayList<>();
         Info[] infos = detail.getData().getInfo();
         for (Info info : infos) {

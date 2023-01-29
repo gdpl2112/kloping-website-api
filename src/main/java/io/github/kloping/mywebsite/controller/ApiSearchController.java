@@ -103,40 +103,42 @@ public class ApiSearchController {
             , @RequestParam(required = false, value = "type") String type
             , @RequestParam(required = false, value = "n") String numStr
     ) {
-        if (type == null || type.isEmpty()) type = "kugou";
-        int num = 2;
-        try {
-            num = Integer.parseInt(numStr.trim());
-        } catch (Exception e) {
-        }
-        try {
-            String vk = keyword + "," + type + "," + num;
-            synchronized (SONGS_HASH_MAP) {
-                if (SONGS_HASH_MAP.containsKey(vk))
-                    return SONGS_HASH_MAP.get(vk);
-                Songs songs = null;
-                switch (type.toLowerCase()) {
-                    case "wy":
-                        songs = searchSongWy.searchSong(keyword, num);
-                        break;
-                    case "kugou":
-                        songs = searchSongKugou.searchSong(keyword, num);
-                        break;
-                    case "qq":
-                        songs = searchSongQq.searchSong(keyword, num);
-                        break;
-                    default:
-                        return new Songs(-1, 0, System.currentTimeMillis(), keyword, null, "err");
-                }
-                if (songs != null && songs.getState() != -1 && songs.getData().length > 0) {
-                    SONGS_HASH_MAP.put(vk, songs);
-                    return songs;
-                }
+        synchronized (SONGS_HASH_MAP) {
+            if (type == null || type.isEmpty()) type = "kugou";
+            int num = 2;
+            try {
+                num = Integer.parseInt(numStr.trim());
+            } catch (Exception e) {
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+            try {
+                String vk = keyword + "," + type + "," + num;
+                synchronized (SONGS_HASH_MAP) {
+                    if (SONGS_HASH_MAP.containsKey(vk))
+                        return SONGS_HASH_MAP.get(vk);
+                    Songs songs = null;
+                    switch (type.toLowerCase()) {
+                        case "wy":
+                            songs = searchSongWy.searchSong(keyword, num);
+                            break;
+                        case "kugou":
+                            songs = searchSongKugou.searchSong(keyword, num);
+                            break;
+                        case "qq":
+                            songs = searchSongQq.searchSong(keyword, num);
+                            break;
+                        default:
+                            return new Songs(-1, 0, System.currentTimeMillis(), keyword, null, "err");
+                    }
+                    if (songs != null && songs.getState() != -1 && songs.getData().length > 0) {
+                        SONGS_HASH_MAP.put(vk, songs);
+                        return songs;
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return new Songs(-1, 0, System.currentTimeMillis(), keyword, null, "err");
         }
-        return new Songs(-1, 0, System.currentTimeMillis(), keyword, null, "err");
     }
 
     ParseGifImgImpl0 parseImgKs0 = new ParseGifImgImpl0();
@@ -173,7 +175,7 @@ public class ApiSearchController {
             all = all.substring(i + "%7B%22src%22%3A%22".length());
             u0 = all.substring(0, all.indexOf("%22"));
             u0 = URLDecoder.decode(u0);
-            return "http:"+u0;
+            return "http:" + u0;
         }
         return "暂不支持该类型的网站的解析";
     }
