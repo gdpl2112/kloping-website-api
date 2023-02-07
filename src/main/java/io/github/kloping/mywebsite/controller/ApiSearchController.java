@@ -241,46 +241,46 @@ public class ApiSearchController {
     public Songs vipSongs(HttpServletRequest request, @RequestParam("keyword") String keyword
             , @RequestParam(required = false, value = "n") String numStr
     ) throws ScriptException, IOException {
-        int num = 2;
-        try {
-            num = Integer.parseInt(numStr.trim());
-        } catch (Exception e) {
-        }
-//        String vk = keyword + "," + type + "," + num;
-        Songs songs = new Songs();
-        songs.setKeyword(keyword);
-        songs.setState(0);
-        songs.setType("normal");
-        songs.setTime(System.currentTimeMillis());
-        songs.setNum(num);
-        List<Song> s0 = new LinkedList<>();
-        JSONObject body = new JSONObject();
-        body.put("page", "1");
-        body.put("keyword", keyword);
-
-        JSONObject data = Source.hamm.search(HEADERS, body.toJSONString());
-
-        if (data.getInteger("code") == 200) {
-            for (Object e0 : data.getJSONObject("data").getJSONArray("list")) {
-                JSONObject d0 = (JSONObject) e0;
-                Song song = new Song();
-                song.setId(d0.get("mid").toString());
-                song.setAuthor_name(d0.getString("artist"));
-                song.setMedia_name(d0.getString("album"));
-                song.setImgUrl(d0.getString("pic"));
-                song.setLyric("vip歌曲暂不提供歌词");
-                song.setSongUrl(UtilsController.getRedirectUrl(
-                        "https://api.hamm.cn/song/play?mid=" + song.getId()));
-                s0.add(song);
-                if (s0.size() >= num)
-                    break;
+        synchronized (HEADERS) {
+            int num = 2;
+            try {
+                num = Integer.parseInt(numStr.trim());
+            } catch (Exception e) {
             }
-        } else {
-            System.err.println("获取vip失败=>" + keyword);
+            Songs songs = new Songs();
+            songs.setKeyword(keyword);
+            songs.setState(0);
+            songs.setType("normal");
+            songs.setTime(System.currentTimeMillis());
+            songs.setNum(num);
+            List<Song> s0 = new LinkedList<>();
+            JSONObject body = new JSONObject();
+            body.put("page", "1");
+            body.put("keyword", keyword);
+
+            JSONObject data = Source.hamm.search(HEADERS, body.toJSONString());
+
+            if (data.getInteger("code") == 200) {
+                for (Object e0 : data.getJSONObject("data").getJSONArray("list")) {
+                    JSONObject d0 = (JSONObject) e0;
+                    Song song = new Song();
+                    song.setId(d0.get("mid").toString());
+                    song.setAuthor_name(d0.getString("artist"));
+                    song.setMedia_name(d0.getString("album"));
+                    song.setImgUrl(d0.getString("pic"));
+                    song.setLyric("vip歌曲暂不提供歌词");
+                    song.setSongUrl(UtilsController.getRedirectUrl(
+                            "https://api.hamm.cn/song/play?mid=" + song.getId()));
+                    s0.add(song);
+                    if (s0.size() >= num)
+                        break;
+                }
+            } else {
+                System.err.println("获取vip失败=>" + keyword);
+            }
+            songs.setData(s0.toArray(new Song[s0.size()]));
+            return songs;
         }
-        System.out.println();
-        songs.setData(s0.toArray(new Song[s0.size()]));
-        return songs;
     }
 
 }
