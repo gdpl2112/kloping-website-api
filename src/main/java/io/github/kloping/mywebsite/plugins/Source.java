@@ -72,13 +72,13 @@ public class Source {
     public static MyHkw myHkw;
 
     @AutoStand
-    public static Dwh99 dwh99;
-
-    @AutoStand
     public static IBaiduShitu iBaiduShitu;
 
     @AutoStand
     public static Daidr daidr;
+
+    @AutoStand
+    public static Hamm hamm;
 
     @AutoStand
     public static Empty empty;

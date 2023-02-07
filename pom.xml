@@ -41,7 +41,7 @@
         <dependency>
             <groupId>io.github.Kloping</groupId>
             <artifactId>SpringTool</artifactId>
-            <version>0.5.5</version>
+            <version>0.5.8</version>
         </dependency>
         <dependency>
             <groupId>io.github.Kloping</groupId>
@@ -98,7 +98,6 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
-
         <dependency>
             <groupId>us.codecraft</groupId>
             <artifactId>webmagic-core</artifactId>
@@ -122,7 +121,6 @@
             <version>0.7.3</version>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
     <pluginRepositories>
         <pluginRepository>

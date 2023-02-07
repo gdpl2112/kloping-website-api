@@ -1,5 +1,6 @@
 package io.github.kloping.mywebsite.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import io.github.kloping.mywebsite.entitys.VideoAnimeSource;
 import io.github.kloping.mywebsite.entitys.medias.Result;
 import io.github.kloping.mywebsite.entitys.medias.Song;
@@ -8,11 +9,8 @@ import io.github.kloping.mywebsite.plugins.Source;
 import io.github.kloping.mywebsite.services.*;
 import io.github.kloping.mywebsite.services.impl.ParseGifImgImpl;
 import io.github.kloping.mywebsite.services.impl.ParseGifImgImpl0;
-import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,8 +22,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.util.*;
-
-import static io.github.kloping.mywebsite.plugins.detail.All.ENGINE;
 
 /**
  * @author github-kloping
@@ -229,9 +225,20 @@ public class ApiSearchController {
         }
     }
 
+    private static final Map<String, String> HEADERS = new LinkedHashMap<>();
+
+    static {
+        HEADERS.put("accept", "application/json, text/plain, */*");
+        HEADERS.put("accept-encoding", "gzip, deflate, br");
+        HEADERS.put("accept-language", "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6");
+        HEADERS.put("content-type", "application/json");
+        HEADERS.put("origin", "https://music.hamm.cn");
+        HEADERS.put("referer", "https://music.hamm.cn/");
+        HEADERS.put("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 Edg/109.0.1518.78");
+    }
+
     @RequestMapping("vipSong")
     public Songs vipSongs(HttpServletRequest request, @RequestParam("keyword") String keyword
-//            , @RequestParam(required = false, value = "type") String type
             , @RequestParam(required = false, value = "n") String numStr
     ) throws ScriptException, IOException {
         int num = 2;
@@ -247,35 +254,31 @@ public class ApiSearchController {
         songs.setTime(System.currentTimeMillis());
         songs.setNum(num);
         List<Song> s0 = new LinkedList<>();
-        Document doc = Source.dwh99.search("q=" + keyword + "&submit=%E6%90%9C%E7%B4%A2");
-        Element element = doc.getElementsByTag("table").get(0);
-        for (Element tr : element.getElementsByTag("tbody").get(1).getElementsByTag("tr")) {
-            Song song = new Song();
-            Elements es = tr.getElementsByTag("td");
-            Element e0 = es.get(0);
-            Element e2 = es.get(2);
-            Element e3 = es.get(3);
-            song.setAuthor_name(e2.text());
-            song.setMedia_name(e0.text());
-            Document doc1 = Source.dwh99.path(e3.getElementsByTag("a").get(0).attr("href"));
-            Element script0 = doc1.getElementsByTag("script").get(1);
-            String javaScriptText = script0.html();
-            javaScriptText = javaScriptText.replace("zp3.init();", "");
-            javaScriptText = javaScriptText.replace("new zplayer(", "");
-            javaScriptText = javaScriptText.replace("});", "};");
-            javaScriptText = javaScriptText.replace("element: document.getElementById(\"player3\"),", "");
-            ENGINE.eval(javaScriptText);
-            ScriptObjectMirror o = (ScriptObjectMirror) ENGINE.get("zp3");
-            o = (ScriptObjectMirror) o.get("musics");
-            o = (ScriptObjectMirror) o.get("0");
-            song.setLyric(o.get("lrc").toString());
-            song.setSongUrl(o.get("url").toString());
-            song.setImgUrl(UtilsController.getRedirectUrl("http://kloping.top/favicon.ico"));
-            song.setId("0");
-            s0.add(song);
-            if (s0.size() >= num)
-                break;
+        JSONObject body = new JSONObject();
+        body.put("page", "1");
+        body.put("keyword", keyword);
+
+        JSONObject data = Source.hamm.search(HEADERS, body.toJSONString());
+
+        if (data.getInteger("code") == 200) {
+            for (Object e0 : data.getJSONObject("data").getJSONArray("list")) {
+                JSONObject d0 = (JSONObject) e0;
+                Song song = new Song();
+                song.setId(d0.get("mid").toString());
+                song.setAuthor_name(d0.getString("artist"));
+                song.setMedia_name(d0.getString("album"));
+                song.setImgUrl(d0.getString("pic"));
+                song.setLyric("vip歌曲暂不提供歌词");
+                song.setSongUrl(UtilsController.getRedirectUrl(
+                        "https://api.hamm.cn/song/play?mid=" + song.getId()));
+                s0.add(song);
+                if (s0.size() >= num)
+                    break;
+            }
+        } else {
+            System.err.println("获取vip失败=>" + keyword);
         }
+        System.out.println();
         songs.setData(s0.toArray(new Song[s0.size()]));
         return songs;
     }
