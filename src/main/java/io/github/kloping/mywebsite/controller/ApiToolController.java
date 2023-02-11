@@ -2,7 +2,6 @@ package io.github.kloping.mywebsite.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.github.kloping.mywebsite.entitys.ApiDetail;
-import io.github.kloping.mywebsite.entitys.ApiDetailM;
 import io.github.kloping.mywebsite.entitys.database.BottleMessage;
 import io.github.kloping.mywebsite.entitys.database.Illegal;
 import io.github.kloping.mywebsite.entitys.runcode.CodeContent;
@@ -35,73 +34,6 @@ import java.util.Random;
 @RestController
 @RequestMapping("/api")
 public class ApiToolController {
-    static {
-        ApiShowController.LIST.add(new ApiDetailM()
-                .setName("在线运行代码")
-                .setState("success")
-                .setDesc("在线运行各种代码")
-        );
-        ApiShowDetailController.DETAIL_LIST.add(
-                new ApiDetail()
-                        .setName("在线运行代码")
-                        .setState("success")
-                        .setDesc("在线运行各种代码")
-                        .setAddress("/api/runCode?l=语言&file=文件名&content=文件内容&version=版本&stdin=输入")
-                        .setDetail("在线运行各种代码 version 为空默认 latest ")
-                        .setSimpleUrl("/api/runCode?l=c&file=main.c&content=%23include+%3Cstdio.h%3E%0A+%0Aint+main%28%29%0A%7B%0A++++printf%28%22Hello%2C+World%21+%5Cn%22%29%3B%0A++++return+0%3B%0A%7D&version=&stdin=")
-        );
-        //=============
-        ApiShowController.LIST.add(new ApiDetailM()
-                .setName("扔漂流瓶")
-                .setState("success")
-                .setDesc("扔出一个漂流瓶")
-        );
-        ApiShowDetailController.DETAIL_LIST.add(
-                new ApiDetail()
-                        .setName("扔漂流瓶")
-                        .setState("success")
-                        .setDesc("扔出一个漂流瓶")
-                        .setAddress("/api/throwBottle?sid=qq&gid=群号&message=内容&name=名字可无")
-                        .setDetail("扔出一个漂流瓶(自带非法字符检测) 请自行测试")
-                        .setSimpleUrl("/ok")
-        );
-        //=============
-        ApiShowController.LIST.add(new ApiDetailM()
-                .setName("捡漂流瓶")
-                .setState("success")
-                .setDesc("捡一个漂流瓶")
-        );
-        ApiShowDetailController.DETAIL_LIST.add(
-                new ApiDetail()
-                        .setName("捡漂流瓶")
-                        .setState("success")
-                        .setDesc("捡一个漂流瓶")
-                        .setAddress("/api/pickUpBottle")
-                        .setDetail("捡一个漂流瓶 每个漂流瓶只能被捡3-5次 自行测试")
-                        .setSimpleUrl("/ok")
-        ); //=============
-        ApiShowController.LIST.add(new ApiDetailM()
-                .setName("网站工具")
-                .setState("success")
-                .setDesc("网站工具s")
-        );
-        ApiShowDetailController.DETAIL_LIST.add(
-                new ApiDetail()
-                        .setName("网站工具")
-                        .setState("success")
-                        .setDesc("网站工具s")
-                        .setAddress("/ok")
-                        .setDetail(
-                                "1.'/transImg?url=图片链接' 将指定图片转存到该网站 并重定向该网直链\n" +
-                                        "2.'/getHost?url=网址' 获取指定网址的host\n" +
-                                        "3.'/put?pwd=(参数)&key=(参数)&value=(参数)' 根据pwd操作key value\n" +
-                                        "4.'/get?pwd=(参数)&key=(参数)' 根据pwd操作key value\n" +
-                                        "5.'/del?pwd=(参数)&key=(参数)' 根据pwd操作key value key为空时删除所有pwd\n" +
-                                        "6.'/stamp2time?stamp=时间戳&exp=表达式 表达式可为空\n"
-                        )
-                        .setSimpleUrl("/ok")
-        );
-    }
 
     @Autowired
     BottleMessageMapper bottleMessageMapper;

@@ -104,7 +104,7 @@ public class UtilsController {
 
     public static final List<Notice> NOTICES = new ArrayList<>();
 
-    @GetMapping("/ok")
+    @GetMapping("/tool/ok")
     public String ok(String a) {
         return "ok";
     }

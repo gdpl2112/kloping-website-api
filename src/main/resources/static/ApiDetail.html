@@ -47,13 +47,13 @@
     <div class="col-sm-1"></div>
 </div>
 <script>
-    let id = location.href;
-    id = id.substr(id.indexOf("=") + 1);
+    let name = location.href;
+    name = name.substr(name.indexOf("=") + 1);
     let vm1 = new Vue({
         el: "#f1",
         created: function () {
             let data1 = new FormData();
-            data1.set("id", id)
+            data1.set("name", name)
             axios.post("/apid", data1).then(function (response) {
                 vm1.en = response.data;
                 vm1.init_();

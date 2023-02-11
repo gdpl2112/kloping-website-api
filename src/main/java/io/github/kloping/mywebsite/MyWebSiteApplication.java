@@ -1,10 +1,12 @@
 package io.github.kloping.mywebsite;
 
 import io.github.kloping.file.FileUtils;
+import io.github.kloping.mywebsite.entitys.ApiDetail;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.server.ConfigurableWebServerFactory;
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Import;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
@@ -32,7 +34,8 @@ public class MyWebSiteApplication implements WebServerFactoryCustomizer<Configur
 
     public static void main(String[] args) {
         onCreate();
-        SpringApplication.run(MyWebSiteApplication.class, args);
+        ConfigurableApplicationContext context =
+                SpringApplication.run(MyWebSiteApplication.class, args);
         System.out.println("start succes -v 1-20");
         io.github.kloping.mywebsite.plugins.Source.before();
         String name = ManagementFactory.getRuntimeMXBean().getName();

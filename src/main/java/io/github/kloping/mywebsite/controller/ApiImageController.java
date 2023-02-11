@@ -3,7 +3,6 @@ package io.github.kloping.mywebsite.controller;
 import com.madgag.gif.fmsware.AnimatedGifEncoder;
 import io.github.kloping.judge.Judge;
 import io.github.kloping.mywebsite.entitys.ApiDetail;
-import io.github.kloping.mywebsite.entitys.ApiDetailM;
 import io.github.kloping.mywebsite.entitys.FileWithPath;
 import io.github.kloping.mywebsite.entitys.ImageE0;
 import io.github.kloping.mywebsite.utils.ImageDrawerUtils;
@@ -32,37 +31,6 @@ import static io.github.kloping.mywebsite.utils.ImageDrawerUtils.TONG_BASE_BYTES
 @RestController
 @RequestMapping("/api/image")
 public class ApiImageController {
-    static {
-        ApiShowController.LIST.add(new ApiDetailM()
-                .setName("捅刀子(表情包)")
-                .setState("success")
-                .setDesc("根据QQ号生成表情包")
-        );
-        ApiShowDetailController.DETAIL_LIST.add(
-                new ApiDetail()
-                        .setName("捅刀子(表情包)")
-                        .setState("success")
-                        .setDesc("根据QQ号生成表情包")
-                        .setAddress("/api/image/tong?q1=主动&q2=被动")
-                        .setDetail("q1捅刀子的人,q2被捅刀子的人")
-                        .setSimpleUrl("/api/image/tong?q1=3474006766&q2=930204019")
-        );
-        //=============
-        ApiShowController.LIST.add(new ApiDetailM()
-                .setName("摇啊摇(动表情包)")
-                .setState("success")
-                .setDesc("根据QQ号生成表情包")
-        );
-        ApiShowDetailController.DETAIL_LIST.add(
-                new ApiDetail()
-                        .setName("摇啊摇(动表情包)")
-                        .setState("success")
-                        .setDesc("根据QQ号生成表情包")
-                        .setAddress("/api/image/yao2yao?qid=qq")
-                        .setDetail("qid QQ号")
-                        .setSimpleUrl("/api/image/yao2yao?qid=3474006766")
-        );
-    }
 
     @RequestMapping("/tong")
     public String tong(

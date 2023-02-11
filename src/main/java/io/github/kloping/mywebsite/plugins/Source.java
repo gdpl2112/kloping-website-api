@@ -89,7 +89,6 @@ public class Source {
     @AutoStand
     public static PvpQq pvpQq;
 
-
     @AutoStand
     public static RunAll runAll;
 

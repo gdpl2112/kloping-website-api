@@ -32,5 +32,4 @@ public class BottleMessage {
 
     @TableField("`state`")
     private Integer state;
-
 }

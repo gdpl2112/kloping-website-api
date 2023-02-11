@@ -56,30 +56,4 @@ public class ApiSelectController {
         }
         return null;
     }
-
-    @Autowired
-    @Qualifier("getKugouSongById")
-    IGetSongById kugouSongGet;
-
-    @Autowired
-    @Qualifier("getQQSongById")
-    IGetSongById qqSongGet;
-
-    @Autowired
-    @Qualifier("getNetEaseSongById")
-    IGetSongById wySongGet;
-
-    @RequestMapping("/subi")
-    public String p3(@RequestParam("id") String id, @RequestParam("type") String type) {
-        switch (type.trim()) {
-            case "kugou":
-                return kugouSongGet.getUrl(id);
-            case "qq":
-                return qqSongGet.getUrl(id);
-            case "wy":
-                return wySongGet.getUrl(id);
-            default:
-                return "{\"status\":-1}";
-        }
-    }
 }

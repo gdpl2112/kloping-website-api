@@ -1,6 +1,6 @@
 package io.github.kloping.mywebsite.entitys.webApi.qqLyric;
 
-public class QQOneSong {
+public class QqOneSong {
 	private Number start_ts;
 	private String traceid;
 	private Number code;
@@ -11,7 +11,7 @@ public class QQOneSong {
 		return this.start_ts;
 	}
 
-	public QQOneSong setStart_ts(Number start_ts) {
+	public QqOneSong setStart_ts(Number start_ts) {
 		this.start_ts = start_ts;
 		return this;
 	}
@@ -20,7 +20,7 @@ public class QQOneSong {
 		return this.traceid;
 	}
 
-	public QQOneSong setTraceid(String traceid) {
+	public QqOneSong setTraceid(String traceid) {
 		this.traceid = traceid;
 		return this;
 	}
@@ -29,7 +29,7 @@ public class QQOneSong {
 		return this.code;
 	}
 
-	public QQOneSong setCode(Number code) {
+	public QqOneSong setCode(Number code) {
 		this.code = code;
 		return this;
 	}
@@ -38,7 +38,7 @@ public class QQOneSong {
 		return this.req_0;
 	}
 
-	public QQOneSong setReq_0(Req_0 req_0) {
+	public QqOneSong setReq_0(Req_0 req_0) {
 		this.req_0 = req_0;
 		return this;
 	}
@@ -47,7 +47,7 @@ public class QQOneSong {
 		return this.ts;
 	}
 
-	public QQOneSong setTs(Number ts) {
+	public QqOneSong setTs(Number ts) {
 		this.ts = ts;
 		return this;
 	}

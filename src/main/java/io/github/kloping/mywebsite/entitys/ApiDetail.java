@@ -1,5 +1,8 @@
 package io.github.kloping.mywebsite.entitys;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.jetbrains.annotations.NotNull;
@@ -9,13 +12,16 @@ import org.jetbrains.annotations.NotNull;
  */
 @Data
 @Accessors(chain = true)
-public class ApiDetail extends ApiDetailM implements Comparable<ApiDetailM> {
+public class ApiDetail implements Comparable<ApiDetail> {
     @Override
-    public int compareTo(@NotNull ApiDetailM o) {
+    public int compareTo(@NotNull ApiDetail o) {
         return o.getName().compareTo(this.getName());
     }
 
+    @TableId(type = IdType.AUTO)
+    public Integer id = null;
     public String name;
+    @TableField("`desc`")
     private String desc;
     private String state;
     private String address;

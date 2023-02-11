@@ -11,7 +11,7 @@ let vm1 = new Vue({
         list: []
     }, methods: {
         mDetail: function (i) {
-            window.open("ApiDetail.html?id=" + i)
+            window.open("ApiDetail.html?name=" + i)
         }
     }, mounted() {
         load();
