@@ -36,7 +36,7 @@ public class MyWebSiteApplication implements WebServerFactoryCustomizer<Configur
         onCreate();
         ConfigurableApplicationContext context =
                 SpringApplication.run(MyWebSiteApplication.class, args);
-        System.out.println("start succes -v 1-20");
+        System.out.println("start succes -v 2-15");
         io.github.kloping.mywebsite.plugins.Source.before();
         String name = ManagementFactory.getRuntimeMXBean().getName();
         String pid = name.split("@")[0];

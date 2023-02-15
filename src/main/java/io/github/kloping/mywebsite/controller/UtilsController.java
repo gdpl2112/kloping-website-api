@@ -150,6 +150,25 @@ public class UtilsController {
         }
     }
 
+    @GetMapping("/contains")
+    public Integer contains(@RequestParam("keys") String[] keys, @RequestParam("pwd") String pwd, @RequestParam("value") @Nullable String value) {
+        Integer c = 0;
+        for (String key : keys) {
+            QueryWrapper<PwdKeyValue> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("pwd", pwd);
+            queryWrapper.eq("k", key);
+            PwdKeyValue pkv = pkvMapper.selectOne(queryWrapper);
+            if (value != null && !value.isEmpty()) {
+                if (pkv.getValue().equalsIgnoreCase(value)) {
+                    c++;
+                }
+            } else {
+                c++;
+            }
+        }
+        return c;
+    }
+
     @GetMapping("/del")
     public String del(@RequestParam("key") @Nullable String key, @RequestParam("pwd") String pwd) {
         QueryWrapper<PwdKeyValue> queryWrapper = new QueryWrapper<>();
