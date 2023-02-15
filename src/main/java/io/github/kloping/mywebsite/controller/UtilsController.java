@@ -51,23 +51,13 @@ public class UtilsController {
     }
 
     public static String getRedirectUrl(String url, String host, String referer) throws IOException {
-        Document doc = Jsoup.connect(url).ignoreContentType(true).ignoreHttpErrors(true)
-                .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36 Edg/105.0.1343.50")
-                .header("Host", host)
-                .header("Referer", referer)
-                .header("Accept-Language", "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6")
-                .header("Accept", "*/*")
-                .header("Accept-Encoding", "gzip, deflate, br")
-                .header("Connection", "keep-alive")
-                .get();
+        Document doc = Jsoup.connect(url).ignoreContentType(true).ignoreHttpErrors(true).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36 Edg/105.0.1343.50").header("Host", host).header("Referer", referer).header("Accept-Language", "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6").header("Accept", "*/*").header("Accept-Encoding", "gzip, deflate, br").header("Connection", "keep-alive").get();
         return doc.location();
     }
 
     @GetMapping("/getMCloud3")
     public String getMCloud3Url() throws Exception {
-        Connection connection = Jsoup.connect("http://fy4.nsmc.org.cn/nsmc/cn/image/area.html")
-                .ignoreContentType(true)
-                .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.54 Safari/537.36 Edg/95.0.1020.30");
+        Connection connection = Jsoup.connect("http://fy4.nsmc.org.cn/nsmc/cn/image/area.html").ignoreContentType(true).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.54 Safari/537.36 Edg/95.0.1020.30");
         Document document = connection.get();
         Element element = document.getElementById("j-video");
         String url = element.attr("src");
@@ -150,7 +140,7 @@ public class UtilsController {
         }
     }
 
-    @GetMapping("/contains")
+    @GetMapping("/containsKeys")
     public Integer contains(@RequestParam("keys") String[] keys, @RequestParam("pwd") String pwd, @RequestParam("value") @Nullable String value) {
         Integer c = 0;
         for (String key : keys) {
@@ -158,6 +148,28 @@ public class UtilsController {
             queryWrapper.eq("pwd", pwd);
             queryWrapper.eq("k", key);
             PwdKeyValue pkv = pkvMapper.selectOne(queryWrapper);
+            if (pkv == null) continue;
+            if (value != null && !value.isEmpty()) {
+                if (pkv.getValue().equalsIgnoreCase(value)) {
+                    c++;
+                }
+            } else {
+                c++;
+            }
+        }
+        return c;
+    }
+
+
+    @GetMapping("/containsPwds")
+    public Integer containsPwds(@RequestParam("key") String key, @RequestParam("pwds") String[] pwds, @RequestParam("value") @Nullable String value) {
+        Integer c = 0;
+        for (String pwd : pwds) {
+            QueryWrapper<PwdKeyValue> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("pwd", pwd);
+            queryWrapper.eq("k", key);
+            PwdKeyValue pkv = pkvMapper.selectOne(queryWrapper);
+            if (pkv == null) continue;
             if (value != null && !value.isEmpty()) {
                 if (pkv.getValue().equalsIgnoreCase(value)) {
                     c++;
@@ -181,10 +193,7 @@ public class UtilsController {
 
 
     @GetMapping("/notice")
-    public String notice(
-            @RequestParam String packName,
-            @RequestParam String title,
-            @RequestParam String text) {
+    public String notice(@RequestParam String packName, @RequestParam String title, @RequestParam String text) {
         for (Notice notice : NOTICES) {
             notice.notice(packName, title, text);
         }
@@ -206,12 +215,7 @@ public class UtilsController {
     public void proxy(@RequestParam("url") String url, HttpServletRequest request, HttpServletResponse response) {
         try {
             Connection connection = null;
-            connection = org.jsoup.Jsoup.connect(url).ignoreContentType(true).ignoreHttpErrors(true)
-                    .header("Host", new URL(url).getHost())
-                    .header("accept-encoding", "gzip, deflate, br")
-                    .userAgent(
-                            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Safari/537.36 Edg/100.0.1185.50"
-                    ).method(Connection.Method.GET);
+            connection = org.jsoup.Jsoup.connect(url).ignoreContentType(true).ignoreHttpErrors(true).header("Host", new URL(url).getHost()).header("accept-encoding", "gzip, deflate, br").userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Safari/537.36 Edg/100.0.1185.50").method(Connection.Method.GET);
             Connection.Response resp = connection.execute();
             byte[] bytes = resp.bodyAsBytes();
             String name = save(bytes, true);
@@ -225,12 +229,7 @@ public class UtilsController {
     public String proxy2(@RequestParam("url") String url, HttpServletRequest request, HttpServletResponse response) {
         try {
             Connection connection = null;
-            connection = org.jsoup.Jsoup.connect(url).ignoreContentType(true).ignoreHttpErrors(true)
-                    .header("Host", new URL(url).getHost())
-                    .header("accept-encoding", "gzip, deflate, br")
-                    .userAgent(
-                            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Safari/537.36 Edg/100.0.1185.50"
-                    ).method(Connection.Method.GET);
+            connection = org.jsoup.Jsoup.connect(url).ignoreContentType(true).ignoreHttpErrors(true).header("Host", new URL(url).getHost()).header("accept-encoding", "gzip, deflate, br").userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Safari/537.36 Edg/100.0.1185.50").method(Connection.Method.GET);
             Connection.Response resp = connection.execute();
             byte[] bytes = resp.bodyAsBytes();
             String name = save(bytes, true);
