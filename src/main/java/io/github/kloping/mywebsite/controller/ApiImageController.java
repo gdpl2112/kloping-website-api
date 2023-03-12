@@ -2,7 +2,6 @@ package io.github.kloping.mywebsite.controller;
 
 import com.madgag.gif.fmsware.AnimatedGifEncoder;
 import io.github.kloping.judge.Judge;
-import io.github.kloping.mywebsite.entitys.ApiDetail;
 import io.github.kloping.mywebsite.entitys.FileWithPath;
 import io.github.kloping.mywebsite.entitys.ImageE0;
 import io.github.kloping.mywebsite.utils.ImageDrawerUtils;

@@ -32,18 +32,13 @@ public class MyUtils {
         }
         int imageWidth = bufferedImage.getWidth(null);
         int imageHeight = bufferedImage.getHeight(null);
-
         Rectangle rectangle = calculatorRotatedSize(new Rectangle(new Dimension(imageWidth, imageHeight)), angel);
-
         int type = bufferedImage.getColorModel().getTransparency();
         BufferedImage newImage = null;
         newImage = new BufferedImage(rectangle.width, rectangle.height, type);
         Graphics2D graphics = newImage.createGraphics();
-
         graphics.translate((rectangle.width - imageWidth) / 2, (rectangle.height - imageHeight) / 2);
-
         graphics.rotate(Math.toRadians(angel), imageWidth / 2, imageHeight / 2);
-
         graphics.drawImage(bufferedImage, null, null);
         return newImage;
     }

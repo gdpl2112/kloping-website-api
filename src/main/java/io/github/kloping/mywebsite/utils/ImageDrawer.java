@@ -12,6 +12,7 @@ import io.github.kloping.number.NumberUtils;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
@@ -385,5 +386,29 @@ public class ImageDrawer {
         g2d.setColor(PURPLE);
         g2d.drawString(info.getData().getStats().getSpiral_abyss().toString(),
                 x, y);
+    }
+
+    private static final File[] SIGN_BGS = new File[]{
+            new File("./files/sign-bg0.jpg")
+            , new File("./files/sign-bg1.jpg")
+            , new File("./files/sign-bg2.jpg")};
+
+    public static String drawSign(String icon, String title,
+                                  String left, String right,
+                                  String desc) throws Exception {
+        BufferedImage base = ImageIO.read(SIGN_BGS[RANDOM.nextInt(SIGN_BGS.length)]);
+        base = (BufferedImage) ImageDrawerUtils.image2Size(base, 480, 300);
+        BufferedImage iconImg = ImageIO.read(new URL(icon));
+        iconImg = (BufferedImage) ImageDrawerUtils.image2Size(iconImg, 90, 90);
+        iconImg = (BufferedImage) ImageDrawerUtils.roundImage(iconImg, 99);
+        ImageDrawerUtils.putImage(base, iconImg, 195, 30);
+        Graphics g = base.getGraphics();
+        g.setFont(FONT16);
+        g.setColor(Color.black);
+        g.drawString(title, 215, 160);
+
+        FileWithPath fwp = UtilsController.requestFile(true);
+        ImageIO.write(base, "jpg", fwp.getFile());
+        return fwp.getName();
     }
 }
