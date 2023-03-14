@@ -93,7 +93,7 @@ public class MyUtils {
         return null;
     }
 
-    public static final ExecutorService threads = Executors.newFixedThreadPool(20);
+    public static final ExecutorService EXECUTOR_SERVICE = Executors.newFixedThreadPool(20);
 
     public static String toUrlString(String s, String charset) {
         StringBuffer sb = new StringBuffer();

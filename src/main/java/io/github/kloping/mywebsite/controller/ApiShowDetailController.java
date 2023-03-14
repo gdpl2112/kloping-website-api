@@ -22,6 +22,9 @@ import java.util.Map;
 @RestController
 public class ApiShowDetailController implements ApplicationRunner {
 
+    public static final String HTTP_FORMAT = "http://%s%s";
+    public static final String HTTP_FORMAT1 = "http://%s/%s";
+
     @Autowired
     ApiDetailMapper mapper;
 
@@ -29,16 +32,19 @@ public class ApiShowDetailController implements ApplicationRunner {
 
     @PostMapping("/apid")
     public ApiDetail m1(HttpServletRequest request, String name) {
+        String host = request.getHeader("Host");
         name = URLDecoder.decode(name);
         synchronized (detailMap) {
             if (detailMap.isEmpty()) {
                 List<ApiDetail> details = mapper.selectList(new QueryWrapper<>());
                 for (ApiDetail detail : details) {
+                    detail.setAddress(String.format(HTTP_FORMAT, host, detail.getAddress()));
                     detailMap.put(detail.getName(), detail);
                 }
             }
         }
-        return detailMap.get(name);
+        ApiDetail apiDetail = detailMap.get(name);
+        return apiDetail;
     }
 
     @Override

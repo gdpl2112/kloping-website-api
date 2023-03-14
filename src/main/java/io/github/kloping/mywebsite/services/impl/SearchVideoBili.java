@@ -60,7 +60,7 @@ public class SearchVideoBili implements ISearchVideo {
         List<MediaSource> list = new ArrayList<>();
         for (int i = 0; i < size; i++) {
             int finalI = i;
-            MyUtils.threads.execute(() -> {
+            MyUtils.EXECUTOR_SERVICE.execute(() -> {
                 JSONObject jo = arrFa.getJSONObject(finalI);
                 String authorName = jo.getString("author");
                 String title = jo.getString("description");

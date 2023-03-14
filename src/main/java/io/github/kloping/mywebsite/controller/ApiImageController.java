@@ -12,14 +12,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
+import static io.github.kloping.mywebsite.controller.ApiShowDetailController.HTTP_FORMAT1;
 import static io.github.kloping.mywebsite.controller.UtilsController.requestFile;
 import static io.github.kloping.mywebsite.controller.UtilsController.save;
 import static io.github.kloping.mywebsite.utils.ImageDrawerUtils.TONG_BASE_BYTES;
@@ -32,9 +35,8 @@ import static io.github.kloping.mywebsite.utils.ImageDrawerUtils.TONG_BASE_BYTES
 public class ApiImageController {
 
     @RequestMapping("/tong")
-    public String tong(
-            @Nullable @RequestParam("q1") String q1, @Nullable @RequestParam("q2") String q2,
-            @Nullable @RequestParam("u1") String u1, @Nullable @RequestParam("u2") String u2, HttpServletResponse response) {
+    public String tong(HttpServletRequest request, @Nullable @RequestParam("q1") String q1, @Nullable @RequestParam("q2") String q2, @Nullable @RequestParam("u1") String u1, @Nullable @RequestParam("u2") String u2, HttpServletResponse response) {
+        String host = request.getHeader("Host");
         try {
             if (Judge.isEmpty(u1) || Judge.isEmpty(u2)) {
                 u1 = String.format("https://q1.qlogo.cn/g?b=qq&nk=%s&s=640", q1);
@@ -51,7 +53,7 @@ public class ApiImageController {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ImageIO.write(image, "jpg", baos);
             String name = save(baos.toByteArray(), true);
-            return "http://kloping.top/" + name;
+            return String.format(HTTP_FORMAT1, host, name);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -59,13 +61,11 @@ public class ApiImageController {
     }
 
     @RequestMapping("/yao2yao")
-    public String yao2yao(
-            @RequestParam("qid") @Nullable String q1,
-            @RequestParam("u1") @Nullable String u1,
-            HttpServletResponse response) throws Exception {
+    public String yao2yao(HttpServletRequest request, @RequestParam("qid") @Nullable String q1, @RequestParam("u1") @Nullable String u1, HttpServletResponse response) throws Exception {
         if (Judge.isEmpty(u1)) {
             u1 = String.format("https://q1.qlogo.cn/g?b=qq&nk=%s&s=640", q1);
         }
+        String host = request.getHeader("Host");
         FileWithPath outFile = requestFile(true, "gif");
         AnimatedGifEncoder encoder = new AnimatedGifEncoder();
         encoder.start(outFile.getFile().getAbsolutePath());
@@ -133,7 +133,7 @@ public class ApiImageController {
             encoder.addFrame(base);
         }
         encoder.finish();
-        return "http://kloping.top/" + outFile.getName();
+        return String.format(HTTP_FORMAT1, host, outFile.getName());
     }
 
     private static int i0 = -1;
@@ -157,6 +157,24 @@ public class ApiImageController {
         int y1 = (int) (36 + (end * 0.6));
 
         return new ImageE0(i1, x1, y1);
+    }
+
+    public static final File[] PA = new File("./files/pa1").listFiles();
+
+    @RequestMapping("/pa")
+    public String pa(HttpServletRequest request, @RequestParam("qid") @Nullable String q1, @RequestParam("u1") @Nullable String u1, HttpServletResponse response) throws Exception {
+        if (Judge.isEmpty(u1)) {
+            u1 = String.format("https://q1.qlogo.cn/g?b=qq&nk=%s&s=640", q1);
+        }
+        String host = request.getHeader("Host");
+        FileWithPath outFile = requestFile(true, "jpg");
+        BufferedImage bImage = ImageIO.read(PA[ApiToolController.RANDOM.nextInt(PA.length)]);
+        BufferedImage oImage = ImageIO.read(new URL(u1).openStream());
+        oImage = (BufferedImage) ImageDrawerUtils.image2Size(oImage, bImage.getWidth() / 6, bImage.getWidth() / 6);
+        oImage = (BufferedImage) ImageDrawerUtils.roundImage(oImage, 999);
+        bImage = ImageDrawerUtils.putImage(bImage, oImage, 10, bImage.getHeight() - oImage.getHeight() - 10);
+        ImageIO.write(bImage, "jpg", outFile.getFile());
+        return String.format(HTTP_FORMAT1, host, outFile.getName());
     }
 
 }
