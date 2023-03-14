@@ -1,12 +1,14 @@
 package io.github.kloping.mywebsite.controller;
 
 import com.madgag.gif.fmsware.AnimatedGifEncoder;
+import io.github.kloping.io.ReadUtils;
 import io.github.kloping.judge.Judge;
 import io.github.kloping.mywebsite.entitys.FileWithPath;
 import io.github.kloping.mywebsite.entitys.ImageE0;
 import io.github.kloping.mywebsite.utils.ImageDrawerUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.lang.Nullable;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,10 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 
 import static io.github.kloping.mywebsite.controller.ApiShowDetailController.HTTP_FORMAT1;
@@ -33,6 +32,27 @@ import static io.github.kloping.mywebsite.utils.ImageDrawerUtils.TONG_BASE_BYTES
 @RestController
 @RequestMapping("/api/image")
 public class ApiImageController {
+
+    public static File[] R0;
+    public static File[] R1;
+
+    @GetMapping("/rand0")
+    public void r0(HttpServletResponse response, @Nullable @RequestParam("p") Integer p) {
+        if (R0 == null) R0 = new File("./files/r0").listFiles();
+        if (R1 == null) R1 = new File("./files/r1").listFiles();
+        File file;
+        try {
+            if (p == 0) {
+                file = R0[ApiToolController.RANDOM.nextInt(R0.length)];
+            } else {
+                file = R1[ApiToolController.RANDOM.nextInt(R1.length)];
+            }
+            response.getOutputStream().write(ReadUtils.readAll(new FileInputStream(file)));
+            response.getOutputStream().close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @RequestMapping("/tong")
     public String tong(HttpServletRequest request, @Nullable @RequestParam("q1") String q1, @Nullable @RequestParam("q2") String q2, @Nullable @RequestParam("u1") String u1, @Nullable @RequestParam("u2") String u2, HttpServletResponse response) {
