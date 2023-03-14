@@ -1,11 +1,11 @@
 package io.github.kloping.mywebsite.controller;
 
 import com.madgag.gif.fmsware.AnimatedGifEncoder;
-import io.github.kloping.io.ReadUtils;
 import io.github.kloping.judge.Judge;
 import io.github.kloping.mywebsite.entitys.FileWithPath;
 import io.github.kloping.mywebsite.entitys.ImageE0;
 import io.github.kloping.mywebsite.utils.ImageDrawerUtils;
+import io.github.kloping.mywebsite.utils.MyUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.imageio.ImageIO;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
@@ -36,42 +37,25 @@ import static io.github.kloping.mywebsite.utils.ImageDrawerUtils.TONG_BASE_BYTES
 @RequestMapping("/api/image")
 public class ApiImageController {
 
-    public static String[] R0 = new String[]{
-            "https://s1.ax1x.com/2023/03/14/pplov3d.jpg",
-            "https://s1.ax1x.com/2023/03/14/pplTput.jpg",
-            "https://s1.ax1x.com/2023/03/14/pploxgA.jpg",
-            "https://s1.ax1x.com/2023/03/14/pplozjI.jpg",
-            "https://s1.ax1x.com/2023/03/14/pploj9H.jpg",
-            "https://s1.ax1x.com/2023/03/14/pplTFUS.jpg",
-            "https://s1.ax1x.com/2023/03/14/pplTiE8.jpg",
-            "https://s1.ax1x.com/2023/03/14/pplTCHf.jpg",
-            "https://s1.ax1x.com/2023/03/14/pplT9DP.jpg",
-            "https://p.xiaofankj.com.cn/images/2023/03/14/167878563864103c668265e.jpg",
-            "https://p.xiaofankj.com.cn/images/2023/03/14/167878564664103c6e4b525.jpg"
-    };
-    public static String[] R1 = new String[]{
-            "https://s1.ax1x.com/2023/03/14/ppl4lpn.jpg",
-            "https://s1.ax1x.com/2023/03/14/pplInRs.jpg",
-            "https://s1.ax1x.com/2023/03/14/pplIlLV.jpg",
-            "https://s1.ax1x.com/2023/03/14/pplIQs0.jpg",
-            "https://s1.ax1x.com/2023/03/14/pplIMMq.jpg",
-            "https://s1.ax1x.com/2023/03/14/pplIuzn.jpg",
-            "https://s1.ax1x.com/2023/03/14/pplI3ZT.png"
-    };
+    public static String[] R0 = new String[]{"https://s1.ax1x.com/2023/03/14/pplov3d.jpg", "https://s1.ax1x.com/2023/03/14/pplTput.jpg", "https://s1.ax1x.com/2023/03/14/pploxgA.jpg", "https://s1.ax1x.com/2023/03/14/pplozjI.jpg", "https://s1.ax1x.com/2023/03/14/pploj9H.jpg", "https://s1.ax1x.com/2023/03/14/pplTFUS.jpg", "https://s1.ax1x.com/2023/03/14/pplTiE8.jpg", "https://s1.ax1x.com/2023/03/14/pplTCHf.jpg", "https://s1.ax1x.com/2023/03/14/pplT9DP.jpg", "https://p.xiaofankj.com.cn/images/2023/03/14/167878563864103c668265e.jpg", "https://p.xiaofankj.com.cn/images/2023/03/14/167878564664103c6e4b525.jpg"};
+    public static String[] R1 = new String[]{"https://s1.ax1x.com/2023/03/14/ppl4lpn.jpg", "https://s1.ax1x.com/2023/03/14/pplInRs.jpg", "https://s1.ax1x.com/2023/03/14/pplIlLV.jpg", "https://s1.ax1x.com/2023/03/14/pplIQs0.jpg", "https://s1.ax1x.com/2023/03/14/pplIMMq.jpg", "https://s1.ax1x.com/2023/03/14/pplIuzn.jpg", "https://s1.ax1x.com/2023/03/14/pplI3ZT.png"};
+    public static final String R0_KEY = "rand-url";
 
     @GetMapping("/rand0")
-    public void r0(HttpServletResponse response, @Nullable @RequestParam("p") Integer p) {
-        File file;
+    public void r0(HttpServletRequest request, HttpServletResponse response, @Nullable @RequestParam("p") Integer p) {
         try {
-            if (p == 0) {
-                String url = R0[ApiToolController.RANDOM.nextInt(R0.length)];
-                response.getOutputStream().write(ReadUtils.readAll(new URL(url).openStream()));
-                response.getOutputStream().close();
-            } else {
-                String url = R1[ApiToolController.RANDOM.nextInt(R1.length)];
-                response.getOutputStream().write(ReadUtils.readAll(new URL(url).openStream()));
-                response.getOutputStream().close();
+            String url = MyUtils.getCookieValue(request, R0_KEY, "");
+            if (url.isEmpty()) {
+                if (p == 0) {
+                    url = R0[ApiToolController.RANDOM.nextInt(R0.length)];
+                } else {
+                    url = R1[ApiToolController.RANDOM.nextInt(R1.length)];
+                }
+                Cookie cookie = new Cookie(R0_KEY, url);
+                cookie.setMaxAge(10800);
+                response.addCookie(cookie);
             }
+            response.sendRedirect(url);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

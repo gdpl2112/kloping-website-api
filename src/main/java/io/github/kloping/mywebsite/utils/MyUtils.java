@@ -4,6 +4,8 @@ import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
@@ -17,6 +19,25 @@ import java.util.concurrent.Executors;
  * @author github-kloping
  */
 public class MyUtils {
+    /**
+     * 获取cookie
+     *
+     * @param request
+     * @param key     cookie value
+     * @param value   默认值
+     * @return
+     */
+    public static String getCookieValue(HttpServletRequest request, String key, String value) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies == null) return value;
+        for (Cookie cookie : cookies) {
+            if (cookie.getName().equals(key)) {
+                return cookie.getValue();
+            }
+        }
+        return value;
+    }
+
     /**
      * @param bufferedImage 图片
      * @param angel         旋转角度
