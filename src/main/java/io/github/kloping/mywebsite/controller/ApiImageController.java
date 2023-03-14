@@ -18,7 +18,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 
 import static io.github.kloping.mywebsite.controller.ApiShowDetailController.HTTP_FORMAT1;
@@ -33,22 +36,42 @@ import static io.github.kloping.mywebsite.utils.ImageDrawerUtils.TONG_BASE_BYTES
 @RequestMapping("/api/image")
 public class ApiImageController {
 
-    public static File[] R0;
-    public static File[] R1;
+    public static String[] R0 = new String[]{
+            "https://s1.ax1x.com/2023/03/14/pplov3d.jpg",
+            "https://s1.ax1x.com/2023/03/14/pplTput.jpg",
+            "https://s1.ax1x.com/2023/03/14/pploxgA.jpg",
+            "https://s1.ax1x.com/2023/03/14/pplozjI.jpg",
+            "https://s1.ax1x.com/2023/03/14/pploj9H.jpg",
+            "https://s1.ax1x.com/2023/03/14/pplTFUS.jpg",
+            "https://s1.ax1x.com/2023/03/14/pplTiE8.jpg",
+            "https://s1.ax1x.com/2023/03/14/pplTCHf.jpg",
+            "https://s1.ax1x.com/2023/03/14/pplT9DP.jpg",
+            "https://p.xiaofankj.com.cn/images/2023/03/14/167878563864103c668265e.jpg",
+            "https://p.xiaofankj.com.cn/images/2023/03/14/167878564664103c6e4b525.jpg"
+    };
+    public static String[] R1 = new String[]{
+            "https://s1.ax1x.com/2023/03/14/ppl4lpn.jpg",
+            "https://s1.ax1x.com/2023/03/14/pplInRs.jpg",
+            "https://s1.ax1x.com/2023/03/14/pplIlLV.jpg",
+            "https://s1.ax1x.com/2023/03/14/pplIQs0.jpg",
+            "https://s1.ax1x.com/2023/03/14/pplIMMq.jpg",
+            "https://s1.ax1x.com/2023/03/14/pplIuzn.jpg",
+            "https://s1.ax1x.com/2023/03/14/pplI3ZT.png"
+    };
 
     @GetMapping("/rand0")
     public void r0(HttpServletResponse response, @Nullable @RequestParam("p") Integer p) {
-        if (R0 == null) R0 = new File("./files/r0").listFiles();
-        if (R1 == null) R1 = new File("./files/r1").listFiles();
         File file;
         try {
             if (p == 0) {
-                file = R0[ApiToolController.RANDOM.nextInt(R0.length)];
+                String url = R0[ApiToolController.RANDOM.nextInt(R0.length)];
+                response.getOutputStream().write(ReadUtils.readAll(new URL(url).openStream()));
+                response.getOutputStream().close();
             } else {
-                file = R1[ApiToolController.RANDOM.nextInt(R1.length)];
+                String url = R1[ApiToolController.RANDOM.nextInt(R1.length)];
+                response.getOutputStream().write(ReadUtils.readAll(new URL(url).openStream()));
+                response.getOutputStream().close();
             }
-            response.getOutputStream().write(ReadUtils.readAll(new FileInputStream(file)));
-            response.getOutputStream().close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

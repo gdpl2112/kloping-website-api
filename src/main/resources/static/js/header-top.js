@@ -1,5 +1,5 @@
 $("body").append("\n" +
-    "<nav style='opacity: 0.7;border: 1px solid #01b1c7;' class=\"fixed-top navbar navbar-expand-lg navbar-light bg-light\">\n" +
+    "<nav style='opacity: 0.82;border: 1px solid #04e7ff;' class=\"fixed-top navbar navbar-expand-lg navbar-light bg-light\">\n" +
     "    <div class=\" navbar-brand navbar-header\">\n" +
     "        <img style=\"max-width: 50px\" class=\"navbar-brand\" src=\"//q1.qlogo.cn/g?b=qq&amp;nk=3474006766&amp;s=640\" alt=\"qq\">\n" +
     "    </div>\n" +
