@@ -21,10 +21,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
@@ -209,6 +211,23 @@ public class UtilsController {
         byte[] bytes = Base64.getDecoder().decode(data.getData().toString());
         String name = save(bytes, false);
         return name;
+    }
+
+    @PostMapping("/uploadImg0")
+    public String upload(@RequestParam("file") @Nullable MultipartFile imageFile) {
+        try {
+            if (imageFile != null && !imageFile.isEmpty()) {
+                FileWithPath fwp = UtilsController.requestFile(false, "jpg");
+                FileOutputStream fos = new FileOutputStream(fwp.getFile());
+                fos.write(imageFile.getBytes());
+                fos.close();
+                return "/" + fwp.getName();
+            } else {
+                return "error";
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @GetMapping("/transImg")

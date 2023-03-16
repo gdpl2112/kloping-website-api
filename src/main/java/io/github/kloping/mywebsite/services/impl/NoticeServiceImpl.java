@@ -7,13 +7,13 @@ import io.github.kloping.mywebsite.entitys.database.Notice;
 import io.github.kloping.mywebsite.mapper.NoticeMapper;
 import io.github.kloping.mywebsite.services.INoticeService;
 import io.github.kloping.url.UrlUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
@@ -114,9 +114,14 @@ public class NoticeServiceImpl implements INoticeService {
         }
     }
 
-    private void tips() throws UnsupportedEncodingException {
+    private void tips() throws Exception {
         Notice notice = mapper.getUtmost();
-        UrlUtils.getStringFromHttpUrl(url + "/uploadTips?data=" + URLEncoder.encode(JSON.toJSONString(notice), "UTF-8"));
+        String json = JSON.toJSONString(notice);
+        Document doc = Jsoup.connect(url + "/uploadTips")
+                .ignoreContentType(true).ignoreHttpErrors(true)
+                .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1661.41")
+                .requestBody(json).timeout(30000).post();
+        System.out.println(doc);
     }
 
     @Override
