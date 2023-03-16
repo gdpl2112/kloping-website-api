@@ -1,4 +1,4 @@
-package io.github.kloping.mywebsite;
+package io.github.kloping.mywebsite.config;
 
 import io.github.kloping.mywebsite.broadcast.InterceptorBroadcast;
 import io.github.kloping.mywebsite.controller.SystemController;

@@ -19,4 +19,12 @@ public interface NoticeMapper extends BaseMapper<Notice> {
      */
     @Select("SELECT id,state,views,title,icon,date,author_name,author_id,time FROM `notice` WHERE `state`=0  order by `time` desc;")
     List<Notice> ln();
+
+    /**
+     * 1
+     *
+     * @return
+     */
+    @Select("SELECT * FROM `notice` WHERE state=1 order by `id` desc LIMIT 1;")
+    Notice getUtmost();
 }

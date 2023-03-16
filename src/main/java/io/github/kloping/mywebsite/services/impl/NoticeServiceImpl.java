@@ -1,16 +1,19 @@
 package io.github.kloping.mywebsite.services.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.github.kloping.mywebsite.entitys.NoticePack;
 import io.github.kloping.mywebsite.entitys.database.Notice;
 import io.github.kloping.mywebsite.mapper.NoticeMapper;
 import io.github.kloping.mywebsite.services.INoticeService;
+import io.github.kloping.url.UrlUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
@@ -80,31 +83,40 @@ public class NoticeServiceImpl implements INoticeService {
         return noticePack;
     }
 
-    @Value("${upload.passwd:123456}")
-    String passwd;
     final SimpleDateFormat sf_0 = new SimpleDateFormat("yyyy-MM-dd:HH:mm:ss");
 
+    @Value("${auth.url}")
+    String url;
+
     @Override
-    public boolean save(String json) throws Throwable {
-        JSONObject j = JSON.parseObject(json);
-        if (j.getString("passwd").equals(passwd)) {
-            String author = j.getString("name");
-            String title = j.getString("title");
-            Long id = Long.valueOf(j.get("id").toString());
-            String html = j.get("code").toString();
-            String icon = j.get("icon").toString();
+    public boolean save(String img, String title, String body, UserDetails userDetails) throws Throwable {
+        try {
+            Long qid = Long.valueOf(userDetails.getUsername());
+            String name = UrlUtils.getStringFromHttpUrl(url + "/getName?qid=" + qid);
             Notice notice = new Notice()
                     .setId(null)
-                    .setAuthorId(id).setAuthorName(author)
-                    .setState(0).setTime(System.currentTimeMillis())
-                    .setDate(sf_0.format(new Date())).setTitle(title)
-                    .setHtml(html).setIcon(icon);
+                    .setAuthorId(qid)
+                    .setAuthorName(name)
+                    .setState(1)
+                    .setTime(System.currentTimeMillis())
+                    .setDate(sf_0.format(new Date()))
+                    .setTitle(title)
+                    .setHtml(body)
+                    .setIcon(img);
             mapper.insert(notice);
+            tips();
             notices.clear();
             notices2.clear();
             return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
-        return false;
+    }
+
+    private void tips() throws UnsupportedEncodingException {
+        Notice notice = mapper.getUtmost();
+        UrlUtils.getStringFromHttpUrl(url + "/uploadTips?data=" + URLEncoder.encode(JSON.toJSONString(notice), "UTF-8"));
     }
 
     @Override
@@ -119,11 +131,11 @@ public class NoticeServiceImpl implements INoticeService {
 
     @Override
     public boolean modify(Integer id, String passwd, String body) {
-        if (this.passwd.equals(passwd)) {
-            Notice notice = mapper.selectById(id);
-            notice.setHtml(body);
-            return mapper.updateById(notice) > 0;
-        }
+//        if (this.passwd.equals(passwd)) {
+//            Notice notice = mapper.selectById(id);
+//            notice.setHtml(body);
+//            return mapper.updateById(notice) > 0;
+//        }
         return false;
     }
 }

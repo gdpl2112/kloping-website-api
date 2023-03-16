@@ -1,7 +1,8 @@
 package io.github.kloping.mywebsite.services;
 
-import io.github.kloping.mywebsite.entitys.database.Notice;
 import io.github.kloping.mywebsite.entitys.NoticePack;
+import io.github.kloping.mywebsite.entitys.database.Notice;
+import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  * @author github.kloping
@@ -18,11 +19,14 @@ public interface INoticeService {
     /**
      * save a notice
      *
-     * @param json
+     * @param img
+     * @param title
+     * @param body
+     * @param userDetails
      * @return
      * @throws Throwable
      */
-    boolean save(String json) throws Throwable;
+    boolean save(String img, String title, String body, UserDetails userDetails) throws Throwable;
 
     /**
      * get one by id

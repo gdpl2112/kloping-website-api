@@ -2,11 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>发布公告</title>
-    <!--    <link rel="stylesheet" href="./css/bootstrap4.3.1.min.css">-->
-    <!--    <script src="https://unpkg.com/popper.js@1.14.7/dist/umd/popper.min.js"></script>-->
-    <!--    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>-->
-    <!--    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>-->
+    <title>发布帖子</title>
     <script src="./js/lib/axios.js"></script>
     <link rel="stylesheet" href="./css/bootstrap4.3.1.min.css">
     <script src="./js/jquery-3.3.1.min.js"></script>
@@ -14,42 +10,62 @@
     <script src="./js/bootstrap4.3.1.min.js"></script>
     <link href="./css/summernote-bs4.css" rel="stylesheet">
     <script src="./js/summernote-bs4.min.js"></script>
+    <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
-<div id="summernote"></div>
-<center>
-    <form>
-        <div class="form-group">
-            <label for="title">标题</label>
-            <input type="text" class="form-control" id="title"
-                   placeholder="标题" name="title">
-            <small id="titleHelp" class="form-text text-muted">公告标题</small>
+<script src="js/header-top.js"></script>
+<div class="container">
+    <div class="row align-items-center" style="">
+        <div class="col" style="opacity: 0.85;background-color: rgba(12,0,0,0.6);color: white">
+            <div style="margin-top: 120px"></div>
+            <hr>
+            <div id="summernote" style="margin-top: 120px"></div>
+            <form action="/upload" method="post">
+                <div class="form-group">
+                    <label for="title">标题</label>
+                    <input type="text" class="form-control" id="title"
+                           placeholder="标题" name="title">
+                    <small id="titleHelp" class="form-text text-muted">帖子标题,未设置时以'未定义的标题'</small>
+                </div>
+                <div class="form-group">
+                    <label for="inputIcon">帖子图标</label>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroupFileAddon01">上传</span>
+                        </div>
+                        <div class="custom-file">
+                            <input type="file" name="file"
+                                   accept="image/*" class="custom-file-input" id="inputIcon"
+                                   aria-describedby="inputGroupFileAddon01" alt="">
+                            <label class="custom-file-label" for="inputIcon">帖子图标</label>
+                        </div>
+                    </div>
+                    <small id="iconHelp"
+                           class="form-text text-muted">请上传帖子外显图标,未选择文件时则以发布者头像为图标</small>
+                </div>
+                <button type="button" onclick="upLoad()" class="btn btn-primary btn-block">上传</button>
+                <hr>
+            </form>
         </div>
-        <div class="form-group">
-            <label for="input_name">作者名:</label>
-            <input type="text" class="form-control" id="input_name"
-                   placeholder="名字" name="name">
-            <small id="nameHelp" class="form-text text-muted">输入你的昵称</small>
+    </div>
+</div>
+<div class="modal fade" id="tipsModal" tabindex="-1" aria-labelledby="tipsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="tipsModalLabel">提示</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div id="tips-content" class="modal-body text-danger">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">重试</button>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="input_id">作者id:</label>
-            <input type="text" class="form-control" id="input_id"
-                   placeholder="id" name="id">
-            <small id="idHelp" class="form-text text-muted">输入你的ID</small>
-        </div>
-        <div class="form-group">
-            <label for="input_icon">公告图标</label>
-            <input type="text" class="form-control" id="input_icon"
-                   placeholder="http://...jpg" name="id">
-            <small id="iconHelp" class="form-text text-muted">输入网络的图片地址</small>
-        </div>
-        <div class="form-group">
-            <label for="passwd">上传密码</label>
-            <input type="password" name="passwd" class="form-control" id="passwd" placeholder="Password">
-        </div>
-        <button type="button" onclick="upLoad()" class="btn btn-primary">上传</button>
-    </form>
-</center>
+    </div>
+</div>
 <script>
     let sm = $('#summernote');
     sm.summernote({
@@ -58,15 +74,30 @@
     });
 
     function upLoad() {
-        console.log("clicked")
-        let body = {};
-        body.title = $("#title").val()
-        body.name = $("#input_name").val()
-        body.passwd = $("#passwd").val()
-        body.id = $("#input_id").val()
-        body.code = sm.summernote('code');
-        body.icon = $("#input_icon").val()
-        axios.post("/upload", body).then(function (response) {
+        let fd = new FormData()
+        let files = $('#inputIcon')[0].files
+        let f0 = files[0]
+        let title = $("#title").val();
+        let code = sm.summernote('code');
+        if (f0.size > 3145728) {
+            $("#tips-content").html("上传的图标大于3MB,请重新选择")
+            $('#tipsModal').modal('show')
+            return
+        }
+        if (title.length < 2 || title.length >= 12) {
+            $("#tips-content").html("标题内容不得小于3或大于12")
+            $('#tipsModal').modal('show')
+            return
+        }
+        if (code.length <= 30) {
+            $("#tips-content").html("内容不得小于20")
+            $('#tipsModal').modal('show')
+            return
+        }
+        fd.append('file', f0)
+        fd.append('title', title)
+        fd.append('code', code)
+        axios.post("/upload", fd).then(function (response) {
             alert(response.data)
         }).catch(function (err) {
             alert(err);
