@@ -105,9 +105,6 @@
             axios.get("/getNotice0?pn=" + page).then(function (response) {
                 vm1.data = response.data
                 vm1.pn = page
-                // let sc1 = document.createElement("script")
-                // sc1.src = "/js/lib/dzzui.js"
-                // document.getElementsByTagName("body")[0].appendChild(sc1)
             }).catch(function (err) {
                 alert(err);
             })

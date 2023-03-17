@@ -22,7 +22,8 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content" id="modal-content-id">
             <div class="modal-body">
-                1. 该系统自带了防止负能量信息传出的屏障,但不完全保证无漏洞,在未知情况下使用该系统传播负能量言论/信息/谣言 而造成的 法律责任 该系统概不负责
+                1. 该系统自带了防止负能量信息传出的屏障,但不完全保证无漏洞,在未知情况下使用该系统传播负能量言论/信息/谣言
+                而造成的 法律责任 该系统概不负责
                 <br>
                 2. 若该系统侵犯了您的版权/权益 请速度联系作者 将尽快处理
                 <br>
@@ -34,7 +35,8 @@
                 <br>
                 6. 在为确认对方身份的情况下造成的钱财损失该系统概不负责
                 <br>
-                7. 该系统为您提供免费的服务,且不会对您进行任何强制性的收费,若该系统因您而受到了 严重影响/严重损坏 您有责任对其系统负责
+                7. 该系统为您提供免费的服务,且不会对您进行任何强制性的收费,若该系统因您而受到了 严重影响/严重损坏
+                您有责任对其系统负责
                 <br>
                 8. 由该系统引起的个人或群体纠纷或因其造成的财产损失,法律责任,该系统概不负责
                 <br>
@@ -43,7 +45,8 @@
                 --- 最后修改时间 2022/1/21
             </div>
             <div class="modal-footer">
-                <button type="button" data-dismiss="modal" aria-label="Close" class="close btn btn-primary">收到</button>
+                <button type="button" data-dismiss="modal" aria-label="Close" class="close btn btn-primary">收到
+                </button>
             </div>
         </div>
     </div>
@@ -102,26 +105,6 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal0">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">提示</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-            <p class="text-secondary" id="tips0"></p>
-
-            <div class="modal-body">
-                <input id="tips-input" type="text" class="form-control" aria-label="Sizing example input"
-                       aria-describedby="inputGroup-sizing-default">
-            </div>
-            <div class="modal-footer">
-                <button id="tips_but" type="button" class="btn btn-info" data-dismiss="modal">确定</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <script src="js/utils.js"></script>
 <script src="js/lib/dzzui.js"></script>
 <script>
@@ -161,48 +144,29 @@
         }, methods: {}
     });
 
-
-    let qid = -1
-    reqInputQid();
-
-    function reqInputQid() {
-        input0.val("")
-        $("#tips0").html("请确保该QQ号已加入<a href='https://jq.qq.com/?_wv=1027&k=clP6D5ih'>群</a>否则将无法接收验证码")
-        input0.placeholder = "QQ号"
-        $("#modal0").modal(`show`)
-        $("#tips_but").unbind('click').click(function () {
-            let s0 = input0.val();
-            qid = parseInt(s0)
-        })
-    }
-
     $("#comment_but").click(function () {
-        if (qid === -1) {
-            reqInputQid();
+        let d = $("#comment_input").val()
+        if (d.size === 0 || d.trim() === "") {
+            alert("内容不可空")
             return
         }
-        let d = $("#comment_input")
-        reqAuth(d.val());
-    })
-
-    function reqAuth(body) {
-        axios.get("/reqAuth?qid=" + qid).then(function (response) {
-            input0.val("")
-            $("#tips0").html("请输入接受到的验证码")
-            input0.placeholder = "验证码"
-            $("#modal0").modal(`show`)
-            $("#tips_but").unbind('click').click(function () {
-                let s0 = input0.val();
-                axios.post("pcm?nid=" + id + "&qid=" + qid + "&body=" + body + "&pwd=" + s0).then(function (response) {
+        axios.get("/login_state").then(function (response) {
+            if (false === response.data) {
+                location.href = "/login.html"
+            } else {
+                let fd = new FormData()
+                fd.append("nid", id)
+                fd.append("body", d)
+                axios.post("/pcm", fd).then(function (response) {
                     vm2.cs.push(response.data)
                 }).catch(function (err) {
                     alert(err);
                 })
-            })
+            }
         }).catch(function (err) {
             alert(err);
         })
-    }
+    })
 </script>
 <script src="./js/footer-bottom.js"></script>
 </body>

@@ -7,6 +7,8 @@ import io.github.kloping.url.UrlUtils;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -46,4 +48,11 @@ public class UserController {
         }
         return "ok";
     }
+
+    @GetMapping("/login_state")
+    public String state(
+            @AuthenticationPrincipal UserDetails userDetails) {
+        return userDetails == null ? "false" : "true";
+    }
+
 }

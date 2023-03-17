@@ -66,6 +66,14 @@ public class NoticeServiceImpl implements INoticeService {
         return exportPack(list, pn, false);
     }
 
+    /**
+     * 清空内容
+     *
+     * @param list
+     * @param pn
+     * @param k
+     * @return
+     */
     public NoticePack exportPack(List<Notice> list, int pn, boolean k) {
         List<Notice> list0 = new LinkedList<>();
         int i = pn * MAX;
@@ -130,6 +138,16 @@ public class NoticeServiceImpl implements INoticeService {
         queryWrapper.eq("id", id);
         Notice notice = mapper.selectOne(queryWrapper);
         notice.setViews(notice.getViews() + 1);
+        for (Notice n0 : notices) {
+            if (n0.getId().intValue() == notice.getId().intValue()) {
+                n0.setViews(notice.getViews());
+            }
+        }
+        for (Notice n0 : notices2) {
+            if (n0.getId().intValue() == notice.getId().intValue()) {
+                n0.setViews(notice.getViews());
+            }
+        }
         mapper.updateById(notice);
         return notice;
     }

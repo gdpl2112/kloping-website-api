@@ -7,6 +7,10 @@ import io.github.kloping.mywebsite.entitys.NoticePack;
 import io.github.kloping.mywebsite.entitys.database.Notice;
 import io.github.kloping.mywebsite.mapper.NoticeMapper;
 import io.github.kloping.mywebsite.services.INoticeService;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.Nullable;
@@ -16,6 +20,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Base64;
 
 /**
  * @author github.kloping
@@ -49,6 +55,8 @@ public class NoticeController {
             @RequestParam("title") @Nullable String title,
             @RequestParam("code") String body
     ) {
+        if (userDetails == null) return "login state false";
+        body = uploadImg(body);
         try {
             String img = "";
             if (imageFile != null && !imageFile.isEmpty()) {
@@ -67,6 +75,27 @@ public class NoticeController {
             e.printStackTrace();
             return e.getMessage();
         }
+    }
+
+    public String uploadImg(String body) {
+        Document document = Jsoup.parse(body);
+        Elements es = document.getElementsByTag("img");
+        for (Element e : es) {
+            try {
+                String base64 = e.attr("src");
+                base64 = base64.substring(base64.indexOf("base64,") + 7);
+                byte[] bytes = Base64.getDecoder().decode(base64);
+                FileWithPath fwp = UtilsController.requestFile(false, "jpg");
+                FileOutputStream fos = new FileOutputStream(fwp.getFile());
+                fos.write(bytes);
+                fos.close();
+                e.attr("src", "/" + fwp.getName());
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+        body = document.body().html();
+        return body;
     }
 
     @PostMapping("/modify")
