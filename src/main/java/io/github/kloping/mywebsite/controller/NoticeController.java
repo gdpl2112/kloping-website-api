@@ -23,6 +23,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Base64;
 
+import static io.github.kloping.mywebsite.services.impl.NoticeServiceImpl.notices;
+import static io.github.kloping.mywebsite.services.impl.NoticeServiceImpl.notices2;
+
 /**
  * @author github.kloping
  */
@@ -44,7 +47,7 @@ public class NoticeController {
     }
 
     @GetMapping("/getNoticeById")
-    public Notice get1(@RequestParam Integer id) {
+    public Notice get1(@RequestParam Integer id, @AuthenticationPrincipal UserDetails userDetails) {
         return service.get0(id);
     }
 
@@ -123,6 +126,8 @@ public class NoticeController {
             Notice notice = mapper.selectById(id);
             notice.setState(0);
             mapper.updateById(notice);
+            notices.clear();
+            notices2.clear();
             return "ok";
         } catch (Exception e) {
             e.printStackTrace();
