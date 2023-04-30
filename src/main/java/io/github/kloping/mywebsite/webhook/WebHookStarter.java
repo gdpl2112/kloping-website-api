@@ -40,7 +40,7 @@ public class WebHookStarter implements Runnable, WebHookBroadcast.OrderReqReceiv
             Integer j = Double.valueOf(amount).intValue();
             Long qid = Long.valueOf(remark);
             StringBuilder sb = new StringBuilder();
-            sb.append("<At:").append(qid).append(">\n").append("您的");
+            sb.append("<At:").append(qid).append(">.\n").append("您的");
             switch (j) {
                 case 5:
                     sb.append("33w");
