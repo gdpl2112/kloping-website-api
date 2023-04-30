@@ -19,6 +19,7 @@ public class WebHookStarter implements Runnable, WebHookBroadcast.OrderReqReceiv
             throw new RuntimeException(e);
         }
         WebHookBroadcast.INSTANCE.add(this);
+        System.out.println("add Receiver");
     }
 
     String url;
@@ -26,6 +27,7 @@ public class WebHookStarter implements Runnable, WebHookBroadcast.OrderReqReceiv
 
     @Override
     public void onReceive(OrderReq req) {
+        System.out.println("handler req => " + req);
         if (req == null) return;
         String amount = req.getData().getOrder().getTotal_amount().trim();
         String remark = req.getData().getOrder().getRemark().trim();
