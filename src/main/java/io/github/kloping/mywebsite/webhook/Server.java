@@ -1,8 +1,12 @@
 package io.github.kloping.mywebsite.webhook;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
 import io.github.kloping.io.ReadUtils;
+import io.github.kloping.mywebsite.broadcast.WebHookBroadcast;
+import io.github.kloping.mywebsite.webhook.e0.OrderReq;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -25,6 +29,12 @@ public class Server {
 
     public static void handle(HttpExchange exchange) throws IOException {
         String body = ReadUtils.readAll(exchange.getRequestBody(), "utf-8");
+        try {
+            JSONObject jo = JSON.parseObject(body);
+            WebHookBroadcast.INSTANCE.broadcast(jo.toJavaObject(OrderReq.class));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         handleSuccessResponse(exchange, "{\"ec\":200,\"em\":\"\"}");
     }
 
