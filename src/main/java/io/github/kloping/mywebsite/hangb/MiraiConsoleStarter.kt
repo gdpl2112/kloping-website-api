@@ -14,7 +14,7 @@ import java.nio.file.Paths
 /**
  * @author github.kloping
  */
-object HangStarter {
+object MiraiConsoleStarter {
     const val path = "work";
 
     @OptIn(ConsoleExperimentalApi::class, ConsoleTerminalExperimentalApi::class)

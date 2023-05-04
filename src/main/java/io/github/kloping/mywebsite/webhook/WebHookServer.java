@@ -16,13 +16,13 @@ import java.nio.charset.StandardCharsets;
 /**
  * @author github.kloping
  */
-public class Server {
+public class WebHookServer {
     public static final Integer PORT = 10516;
     public static final String URL = "/";
 
     public static void main(String[] args) throws Exception {
         HttpServer server = HttpServer.create(new InetSocketAddress(PORT), 0);
-        server.createContext(URL, Server::handle);
+        server.createContext(URL, WebHookServer::handle);
         server.start();
         System.out.println("webhook server start ok");
     }

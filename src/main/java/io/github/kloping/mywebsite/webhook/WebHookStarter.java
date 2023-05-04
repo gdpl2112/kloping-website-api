@@ -14,7 +14,7 @@ public class WebHookStarter implements Runnable, WebHookBroadcast.OrderReqReceiv
     @Override
     public void run() {
         try {
-            Server.main(new String[]{});
+            WebHookServer.main(new String[]{});
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -30,17 +30,25 @@ public class WebHookStarter implements Runnable, WebHookBroadcast.OrderReqReceiv
         System.out.println("handler req => " + req);
         if (req == null) return;
         try {
+            if (!req.getData().getOrder().getPlan_title().equals("腐竹")) {
+                return;
+            }
             String amount = req.getData().getOrder().getTotal_amount().trim();
             String remark = req.getData().getOrder().getRemark().trim();
+            if (remark == null || remark.isEmpty()) {
+                remark = req.getData().getOrder().getAddress_address();
+            }
             if (url == null)
                 url = MyWebSiteApplication.applicationContext.getEnvironment().getProperty("auth.url").toString();
             if (pwd == null)
                 pwd = MyWebSiteApplication.applicationContext.getEnvironment().getProperty("auth.pwd").toString();
-            Integer sc = 0;
+
             Integer j = Double.valueOf(amount).intValue();
             Long qid = Long.valueOf(remark);
+
             StringBuilder sb = new StringBuilder();
             sb.append("<At:").append(qid).append(">.\n").append("您的");
+            Integer sc = 0;
             switch (j) {
                 case 5:
                     sb.append("33w");
@@ -54,9 +62,10 @@ public class WebHookStarter implements Runnable, WebHookBroadcast.OrderReqReceiv
                     sb.append("127w");
                     sc = 127;
                     break;
+                default:
+                    break;
             }
             sb.append("积分已到账\n感谢您对`爱发电`的支持\n感谢您的充值");
-
             UrlUtils.getStringFromHttpUrl(url + "/addScore?qid=" + qid + "&pwd=" + pwd + "&s=" + (sc * 10000));
             UrlUtils.getStringFromHttpUrl(url + "/say?gid=278681553&pwd=" + pwd + "&s=" + URLEncoder.encode(sb.toString()));
         } catch (Exception e) {

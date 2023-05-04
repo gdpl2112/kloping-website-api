@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * @author github.kloping
  */
-public class WebHookBroadcast extends Broadcast {
+public class WebHookBroadcast extends Broadcast<WebHookBroadcast.OrderReqReceiver> {
     public WebHookBroadcast() {
         super("webhook");
     }
@@ -17,29 +17,28 @@ public class WebHookBroadcast extends Broadcast {
     public static final WebHookBroadcast INSTANCE = new WebHookBroadcast();
 
     public synchronized void broadcast(OrderReq orderReq) {
-        Iterator<OrderReqReceiver> iterator = receivers.iterator();
-        while (iterator.hasNext()) {
-            try {
-                OrderReqReceiver receiver = iterator.next();
-                receiver.onReceive(orderReq);
-            } catch (Throwable throwable) {
-                throwable.printStackTrace();
+        submit(() -> {
+            Iterator<OrderReqReceiver> iterator = receivers.iterator();
+            while (iterator.hasNext()) {
+                try {
+                    OrderReqReceiver receiver = iterator.next();
+                    receiver.onReceive(orderReq);
+                } catch (Throwable throwable) {
+                    throwable.printStackTrace();
+                }
             }
-        }
+        });
     }
 
     private List<OrderReqReceiver> receivers = new ArrayList<>();
 
     @Override
-    public boolean add(Receiver receiver) {
-        if (receiver instanceof OrderReqReceiver) {
-            return receivers.add((OrderReqReceiver) receiver);
-        }
-        return false;
+    public boolean add(OrderReqReceiver receiver) {
+        return receivers.add(receiver);
     }
 
     @Override
-    public boolean remove(Receiver receiver) {
+    public boolean remove(OrderReqReceiver receiver) {
         return receivers.remove(receiver);
     }
 
