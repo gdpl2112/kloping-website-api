@@ -11,13 +11,11 @@ import io.github.kloping.mywebsite.plugins.interfaces.*;
 import io.github.kloping.mywebsite.services.impl.ParseGifImgImpl;
 import io.github.kloping.mywebsite.services.impl.VideoGetterIqiyiImpl;
 import io.github.kloping.mywebsite.services.impl.VideoGetterTencentImpl;
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.AbstractMap;
+import java.util.Base64;
 import java.util.Map;
 
 /**
@@ -102,7 +100,7 @@ public class Source {
      */
     public static String encodeBySunMisc(String str) {
         try {
-            return new BASE64Encoder().encode(str.getBytes("UTF-8"));
+            return Base64.getEncoder().encodeToString(str.getBytes("UTF-8"));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             return "";
@@ -116,13 +114,8 @@ public class Source {
      * @return
      */
     public static String decodeBySunMisc(String str) {
-        try {
-            byte[] result = new BASE64Decoder().decodeBuffer(str);
-            return new String(result);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return "";
-        }
+        byte[] result = Base64.getDecoder().decode(str);
+        return new String(result);
     }
 
     public static boolean checkUrl(String urlString) {

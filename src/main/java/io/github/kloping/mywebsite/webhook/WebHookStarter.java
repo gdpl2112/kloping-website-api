@@ -29,13 +29,13 @@ public class WebHookStarter implements Runnable, WebHookBroadcast.OrderReqReceiv
     public void onReceive(OrderReq req) {
         System.out.println("handler req => " + req);
         if (req == null) return;
-        String amount = req.getData().getOrder().getTotal_amount().trim();
-        String remark = req.getData().getOrder().getRemark().trim();
-        if (url == null)
-            url = MyWebSiteApplication.applicationContext.getEnvironment().getProperty("auth.url").toString();
-        if (pwd == null)
-            pwd = MyWebSiteApplication.applicationContext.getEnvironment().getProperty("auth.pwd").toString();
         try {
+            String amount = req.getData().getOrder().getTotal_amount().trim();
+            String remark = req.getData().getOrder().getRemark().trim();
+            if (url == null)
+                url = MyWebSiteApplication.applicationContext.getEnvironment().getProperty("auth.url").toString();
+            if (pwd == null)
+                pwd = MyWebSiteApplication.applicationContext.getEnvironment().getProperty("auth.pwd").toString();
             Integer sc = 0;
             Integer j = Double.valueOf(amount).intValue();
             Long qid = Long.valueOf(remark);
@@ -59,8 +59,7 @@ public class WebHookStarter implements Runnable, WebHookBroadcast.OrderReqReceiv
 
             UrlUtils.getStringFromHttpUrl(url + "/addScore?qid=" + qid + "&pwd=" + pwd + "&s=" + (sc * 10000));
             UrlUtils.getStringFromHttpUrl(url + "/say?gid=278681553&pwd=" + pwd + "&s=" + URLEncoder.encode(sb.toString()));
-
-        } catch (NumberFormatException e) {
+        } catch (Exception e) {
             System.err.println("订单信息错误");
             throw new RuntimeException(e);
         }

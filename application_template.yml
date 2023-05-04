@@ -6,12 +6,17 @@ spring:
   web:
     resources:
       static-locations: classpath:/static,file:./files,file:./temp
+  mvc:
+  servlet:
+    multipart:
+      max-file-size: 3MB        # 设置单个文件最大大小为10MB
+      max-request-size: 30MB    # 设置多个文件大小为100MB
 
 server:
   additionalPorts: 80
 
 upload:
-  passwd: 443212
+  passwd: 123456
 
 bottle:
   max:

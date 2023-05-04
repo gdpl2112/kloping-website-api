@@ -2,6 +2,7 @@ package io.github.kloping.mywebsite;
 
 import io.github.kloping.common.Public;
 import io.github.kloping.file.FileUtils;
+import io.github.kloping.mywebsite.hangb.HangStarter;
 import io.github.kloping.mywebsite.webhook.WebHookStarter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -38,15 +39,15 @@ public class MyWebSiteApplication implements WebServerFactoryCustomizer<Configur
     public static void main(String[] args) {
         onCreate();
         applicationContext = SpringApplication.run(MyWebSiteApplication.class, args);
-        System.out.println("start succes -v 3-12");
         io.github.kloping.mywebsite.plugins.Source.before();
+        System.out.println("start succes -v 5-4");
+
         String name = ManagementFactory.getRuntimeMXBean().getName();
         String pid = name.split("@")[0];
         FileUtils.putStringInFile(pid, new File("./web.pid"));
+
         Public.EXECUTOR_SERVICE.submit(new WebHookStarter());
-
-
-        System.out.println();
+        Public.EXECUTOR_SERVICE.submit(() -> HangStarter.main(args));
     }
 
     @Override

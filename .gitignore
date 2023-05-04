@@ -1,6 +1,6 @@
 web.pid
 files
-
+work
 application.yml
 HELP.md
 target/
