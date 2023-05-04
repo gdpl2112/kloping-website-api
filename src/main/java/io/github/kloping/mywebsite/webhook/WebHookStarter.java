@@ -35,7 +35,7 @@ public class WebHookStarter implements Runnable, WebHookBroadcast.OrderReqReceiv
             }
             String amount = req.getData().getOrder().getTotal_amount().trim();
             if (amount == null || amount.isEmpty()) {
-                amount = req.getData().getOrder().getShow_amount();
+                amount = req.getData().getOrder().getShow_amount().trim();
             }
             String remark = req.getData().getOrder().getRemark().trim();
             if (remark == null || remark.isEmpty()) {
