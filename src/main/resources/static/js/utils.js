@@ -58,3 +58,11 @@ function setCookie(name, value) {
     exp.setTime(exp.getTime() + Days * 24 * 60 * 60 * 1000);
     document.cookie = name + "=" + escape(value) + ";expires=" + exp.toGMTString();
 }
+
+/**
+ * @param {String} text 需要复制的内容
+ * @return {Boolean} 复制成功:true或者复制失败:false  执行完函数后，按ctrl + v试试
+ */
+function copyText(text){
+    navigator.clipboard.writeText(copyText.value);
+}

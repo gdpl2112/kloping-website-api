@@ -1,8 +1,8 @@
 package io.github.kloping.mywebsite.controller;
 
 import io.github.kloping.mywebsite.broadcast.InterceptorBroadcast;
-import io.github.kloping.mywebsite.entitys.database.Verify0Entity;
 import io.github.kloping.mywebsite.entitys.VerifyFile;
+import io.github.kloping.mywebsite.entitys.database.Verify0Entity;
 import io.github.kloping.mywebsite.mapper.Verify0Mapper;
 import io.github.kloping.mywebsite.utils.MyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +45,13 @@ public class Verify0Controller implements InterceptorBroadcast.InterceptorReceiv
             return System.currentTimeMillis() < entity.getExpire();
         }
         return false;
+    }
+
+    @RequestMapping("/getVerify0")
+    public Verify0Entity gv0(@RequestParam("code") String code) {
+        Verify0Entity entity = mapper.selectByCode(code);
+        if (entity != null) return entity;
+        else return new Verify0Entity().setCode("abcd").setExpire(1L);
     }
 
     public static final File SOURCE_DIR = new File("./files");

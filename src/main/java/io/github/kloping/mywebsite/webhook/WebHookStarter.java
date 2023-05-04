@@ -41,6 +41,8 @@ public class WebHookStarter implements Runnable, WebHookBroadcast.OrderReqReceiv
             if (remark == null || remark.isEmpty()) {
                 remark = req.getData().getOrder().getAddress_address();
             }
+            Integer month = req.getData().getOrder().getMonth().intValue();
+
             if (url == null)
                 url = MyWebSiteApplication.applicationContext.getEnvironment().getProperty("auth.url").toString();
             if (pwd == null)
@@ -68,7 +70,8 @@ public class WebHookStarter implements Runnable, WebHookBroadcast.OrderReqReceiv
                 default:
                     break;
             }
-            sb.append("积分已到账\n感谢您对`爱发电`的支持\n感谢您的充值");
+            sc *= month;
+            sb.append("*").append(month).append("积分已到账\n感谢您对`爱发电`的支持\n感谢您的充值");
             UrlUtils.getStringFromHttpUrl(url + "/addScore?qid=" + qid + "&pwd=" + pwd + "&s=" + (sc * 10000));
             UrlUtils.getStringFromHttpUrl(url + "/say?gid=278681553&pwd=" + pwd + "&s=" + URLEncoder.encode(sb.toString()));
         } catch (Exception e) {
