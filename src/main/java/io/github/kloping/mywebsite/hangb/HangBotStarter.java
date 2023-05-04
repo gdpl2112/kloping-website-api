@@ -9,8 +9,8 @@ import io.github.kloping.mywebsite.webhook.e0.OrderReq;
  */
 public class HangBotStarter {
     public static void main(String[] args) {
-        Public.EXECUTOR_SERVICE.submit(() -> MiraiConsoleStarter.main(args));
-        WebHookBroadcast.INSTANCE.add(HangBotStarter::onReceive);
+//        Public.EXECUTOR_SERVICE.submit(() -> MiraiConsoleStarter.main(args));
+//        WebHookBroadcast.INSTANCE.add(HangBotStarter::onReceive);
     }
 
     public static void onReceive(OrderReq req) {
