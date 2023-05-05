@@ -16,6 +16,171 @@
     <title>kloping代挂平台</title>
 </head>
 <body>
+<center style="margin-top: 120px;color: white;background-color: rgba(28,3,24,0.4)"><h1> kloping代挂平台</h1></center>
+<script src="/js/header-top.js"></script>
+<br>
+<div class="container" id="main"
+     style="padding-top: 25px;padding-bottom: 25px;color: #e50475;border-radius: 15px;background-color: rgba(142,211,180,0.4);text-align: center;">
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-8 input-group mb-3">
+            <input id="Dqid" type="number" class="form-control" placeholder="请输入您的QQ"
+                   aria-label=""
+                   aria-describedby="select-b0">
+            <div class="input-group-append">
+                <input v-on:click="select()" class="btn btn-outline-primary" type="button" id="select-b0" value="查询"/>
+            </div>
+        </div>
+    </div>
+    <div v-show="alk">
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-8 input-group mb-3">
+                <label for="prot">登录协议</label>
+                <select class="form-control" id="prot">
+                    <option>ANDROID_WATCH</option>
+                    <option>ANDROID_PAD</option>
+                    <option>MACOS</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-8 input-group mb-3">
+                <label for="ltype">登录方式</label>
+                <select class="form-control" id="ltype">
+                    <option>扫码</option>
+                    <option>密码</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-8 input-group ">
+                <input id="Dpwd" type="text" class="form-control" placeholder="请输入您的密码"
+                       aria-label=""
+                       aria-describedby="login-b0">
+                <div class="input-group-append">
+                    <input v-on:click="logind()" class="btn btn-outline-primary" type="button" id="login-b0"
+                           value="登录"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--=======================-->
+<div class="modal fade" id="tipsModal" tabindex="-1" aria-labelledby="tipsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="tipsModalLabel">提示</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div id="tips-content" class="modal-body">
 
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" data-dismiss="modal">ok</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/js/utils.js"></script>
+<script>
+    let vm1 = new Vue({
+        el: "#main",
+        created: function () {
+            axios.get("/getWsUrl").then(function (response) {
+                vm1.wurl = response.data
+            }).catch(function (err) {
+                alert(err);
+            })
+        }, data: {
+            alk: false,
+            wsObj: null,
+            wurl: ""
+        }, methods: {
+            select: function () {
+                axios.get("/vb0?qid=" + $("#Dqid").val()).then(function (response) {
+                    vm1.alk = response.data
+                    if (vm1.alk) {
+                        $("#tips-content").html("查询成功! <br>授权有效<br>(✿✿ヽ(°▽°)ノ✿撒花)")
+                        $('#tipsModal').modal('show')
+                    } else {
+                        $("#tips-content").html(`查询完成! 授权无效<br>请到<a href="https://afdian.net/a/kloping">爱发电</a>购买授权`)
+                        $('#tipsModal').modal('show')
+                    }
+                }).catch(function (err) {
+                    alert(err);
+                })
+            },
+            logind: function () {
+                let data = {}
+                data.protocol = $("#prot").val()
+                data.stype = $("#ltype").val()
+                data.pwd = $("#Dpwd").val()
+                data.qid = $("#Dqid").val()
+                setCookie("upqid", data.qid)
+                let state = -1;
+                if (vm1.wsObj == null || vm1.wsObj.readyState !== 1) {
+                    vm1.wsObj = new WebSocket(vm1.wurl);
+                    vm1.wsObj.onopen = function () {
+                        vm1.wsObj.send("1")
+                        vm1.wsObj.send(JSON.stringify(data))
+                    };
+                    vm1.wsObj.onmessage = function (ev) {
+                        if (state === -1) {
+                            switch (ev.data) {
+                                case "-14":
+                                    $("#tipsModalLabel").html(`登录中...`)
+                                    $("#tips-content").html(`<div class="d-flex justify-content-center"><div class="spinner-border" role="status"><span class="sr-only">登录中...</span></div></div>`)
+                                    $('#tipsModal').modal('show')
+                                    break;
+                                case "-15":
+                                    $("#tipsModalLabel").html(`提示`)
+                                    $("#tips-content").html(`<div class="alert alert-danger" role="alert">×授权失效</div>`)
+                                    $('#tipsModal').modal('show')
+                                    break;
+                                case "201":
+                                    state = 201;
+                                    break
+                                case "200":
+                                    $("#tipsModalLabel").html(`提示`)
+                                    $("#tips-content").html(`<div class="alert alert-success" role="alert">√登录成功</div>`)
+                                    $('#tipsModal').modal('show')
+                                    break;
+                                case "500":
+                                    $("#tipsModalLabel").html(`提示`)
+                                    $("#tips-content").html(`<div class="alert alert-danger" role="alert">×登录失败</div>`)
+                                    $('#tipsModal').modal('show')
+                                    break
+                            }
+                        } else {
+                            switch (state) {
+                                case 201:
+                                    $("#tipsModalLabel").html(`请扫描二维码`)
+                                    $("#tips-content").html(`<img style="width: 100px;height: 100px" class="card-img-top" style="" src="` + ev.data + `"/>`)
+                                    $('#tipsModal').modal('show')
+                                    state = -1;
+                                    break
+                            }
+                        }
+                    };
+                    vm1.wsObj.onclose = function (ev) {
+                        console.log("连接断开");
+                    };
+                    vm1.wsObj.onerror = function (ev) {
+                        console.log("未知错误:" + ev);
+                    };
+                }
+            }
+        }
+    });
+    $("#Dqid").val(getCookie("upqid"))
+</script>
+<script src="/js/footer-bottom.js"></script>
 </body>
 </html>

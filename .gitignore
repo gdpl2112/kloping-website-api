@@ -1,6 +1,7 @@
 web.pid
 files
 work
+cache
 application.yml
 HELP.md
 target/

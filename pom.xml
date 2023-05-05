@@ -22,7 +22,7 @@
         <mirai-version>2.15.0-M1</mirai-version>
         <java.version>11</java.version>
         <spring-native.version>0.10.3</spring-native.version>
-        <kotlin.version>1.6.0-RC</kotlin.version>
+        <kotlin.version>1.8.0</kotlin.version>
     </properties>
     <repositories>
         <repository>
@@ -31,6 +31,16 @@
         </repository>
     </repositories>
     <dependencies>
+        <dependency>
+            <groupId>net.mamoe.yamlkt</groupId>
+            <artifactId>yamlkt</artifactId>
+            <version>0.12.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven.resolver</groupId>
+            <artifactId>maven-resolver-spi</artifactId>
+            <version>1.7.3</version>
+        </dependency>
         <!--mirai-->
         <dependency>
             <groupId>net.mamoe</groupId>
@@ -53,6 +63,10 @@
             <version>${mirai-version}</version>
         </dependency>
         <!--end-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>

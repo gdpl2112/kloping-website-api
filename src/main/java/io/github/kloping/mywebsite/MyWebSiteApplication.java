@@ -9,8 +9,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.server.ConfigurableWebServerFactory;
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.socket.server.standard.ServerEndpointExporter;
 
 import java.io.File;
 import java.lang.management.ManagementFactory;
@@ -48,6 +50,10 @@ public class MyWebSiteApplication implements WebServerFactoryCustomizer<Configur
 
         Public.EXECUTOR_SERVICE.submit(new WebHookStarter());
         Public.EXECUTOR_SERVICE.submit(() -> HangBotStarter.main(args));
+    }
+    @Bean
+    public ServerEndpointExporter serverEndpointExporter() {
+        return new ServerEndpointExporter();
     }
 
     @Override
