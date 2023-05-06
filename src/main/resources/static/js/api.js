@@ -42,8 +42,10 @@ function load() {
             e.css("background", colors[n])
             e.css("color", "#000000");
         }
+
         let sc1 = document.createElement("script")
-        sc1.src = "/js/lib/dzzui.js"
+        sc1.src = "https://api.vvhan.com/api/yinghua"
         document.getElementsByTagName("body")[0].appendChild(sc1)
+
     }, 1000)
 }

@@ -1,7 +1,8 @@
 package io.github.kloping.mywebsite.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import io.github.kloping.mywebsite.entitys.ApiDetail;
+import io.github.kloping.judge.Judge;
 import io.github.kloping.mywebsite.entitys.database.BottleMessage;
 import io.github.kloping.mywebsite.entitys.database.Illegal;
 import io.github.kloping.mywebsite.entitys.runcode.CodeContent;
@@ -11,6 +12,9 @@ import io.github.kloping.mywebsite.mapper.BottleMessageMapper;
 import io.github.kloping.mywebsite.mapper.IllegalMapper;
 import io.github.kloping.mywebsite.plugins.Source;
 import io.github.kloping.mywebsite.utils.ImageDrawer;
+import io.github.kloping.url.UrlUtils;
+import org.jsoup.Connection;
+import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.Nullable;
@@ -18,15 +22,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.security.SecureRandom;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 /**
  * @author github.kloping
@@ -34,6 +37,38 @@ import java.util.Random;
 @RestController
 @RequestMapping("/api")
 public class ApiToolController {
+
+    @GetMapping("/ocr")
+    public List<String> ocr(
+            @RequestParam("url") @Nullable String url,
+            @RequestParam("file") @Nullable MultipartFile imageFile
+    ) {
+        try {
+            byte[] bytes = null;
+            if (imageFile != null && !imageFile.isEmpty()) {
+                bytes = imageFile.getBytes();
+            } else if (Judge.isNotEmpty(url)) {
+                bytes = UrlUtils.getBytesFromHttpUrl(url);
+            } else return new ArrayList<>();
+            String json = Jsoup.connect("http://www.iinside.cn:7001/api_req/")
+                    .method(Connection.Method.POST)
+                    .ignoreContentType(true).ignoreHttpErrors(true)
+                    .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 Edg/109.0.1518.78")
+                    .header("Accept", "application/json, */*")
+                    .data("image_ocr_pp", "wx.png", new ByteArrayInputStream(bytes), "application/octet-stream")
+                    .data("password", "8907")
+                    .data("reqmode", "ocr_pp")
+                    .execute().body();
+            List<String> list = new ArrayList<>();
+            for (Object o : JSON.parseObject(json).getJSONArray("data")) {
+                list.add(o.toString());
+            }
+            return list;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+    }
 
     @Autowired
     BottleMessageMapper bottleMessageMapper;
@@ -132,4 +167,5 @@ public class ApiToolController {
         String name = ImageDrawer.drawerShenInfo(info);
         return "http://kloping.top/" + name;
     }
+
 }

@@ -58,7 +58,8 @@ $("body").append(`
             </li>
         </ul>
        <div class="form-inline my-2 my-lg-0">
-            <a href="/dg.html"> 
+            <a href="#"> 
+<!--            <a href="/dg.html"> -->
             <button class="btn btn-outline-success my-2 my-sm-0" type="button">QQ代挂</button>
             </a>       
         </div>

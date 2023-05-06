@@ -36,11 +36,38 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade modal-dialog-scrollable"
+     id="ulogM" data-backdrop="static"
+     data-keyboard="false" tabindex="-1" aria-labelledby="ulogMLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ulogMLabel">更新日志</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                2023/5.6: VIP点歌 恢复正常;新增OCR API;背景特效修改
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" data-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#ulogM').modal('show')
+</script>
 <div id="music" key="635c8492de645" api="https://music.cxinyun.cn"></div>
 <script id="xplayer" src="https://music.cxinyun.cn/Static/player4/js/player.js"></script>
 <script src="/js/player.js"></script>
+
 <script src="/js/api.js"></script>
 <script src="/js/footer-bottom.js"></script>
+
 </body>
 </html>
 
