@@ -49,7 +49,7 @@ public class MyWebSiteApplication implements WebServerFactoryCustomizer<Configur
         FileUtils.putStringInFile(pid, new File("./web.pid"));
 
         Public.EXECUTOR_SERVICE.submit(new WebHookStarter());
-        Public.EXECUTOR_SERVICE.submit(() -> HangBotStarter.main(args));
+//        Public.EXECUTOR_SERVICE.submit(() -> HangBotStarter.main(args));
     }
     @Bean
     public ServerEndpointExporter serverEndpointExporter() {
