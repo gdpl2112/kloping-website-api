@@ -38,7 +38,7 @@ import java.util.*;
 @RequestMapping("/api")
 public class ApiToolController {
 
-    @GetMapping("/ocr")
+    @RequestMapping("/ocr")
     public List<String> ocr(
             @RequestParam("url") @Nullable String url,
             @RequestParam("file") @Nullable MultipartFile imageFile
