@@ -1,12 +1,17 @@
 package io.github.kloping.mywebsite.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import io.github.kloping.mywebsite.MyWebSiteApplication;
+import io.github.kloping.mywebsite.broadcast.WebHookBroadcast;
 import io.github.kloping.mywebsite.entitys.database.UserTemp;
 import io.github.kloping.mywebsite.entitys.database.Verify0Entity;
 import io.github.kloping.mywebsite.mapper.UserTempMapper;
 import io.github.kloping.mywebsite.mapper.Verify0Mapper;
 import io.github.kloping.mywebsite.utils.EmailSender;
 import io.github.kloping.mywebsite.utils.KaptchaUtils;
+import io.github.kloping.mywebsite.webhook.e0.OrderReq;
+import io.github.kloping.url.UrlUtils;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,6 +21,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.URLEncoder;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -25,6 +31,51 @@ import java.util.UUID;
  */
 @RestController
 public class UserController {
+    public UserController() {
+        WebHookBroadcast.INSTANCE.add(this::onReceive);
+    }
+
+    private void onReceive(OrderReq req) {
+        if (req == null) return;
+        try {
+            if (!req.getData().getOrder().getPlan_title().equals("获得授权码")) {
+                return;
+            }
+            String remark = req.getData().getOrder().getRemark().trim();
+            Integer month = req.getData().getOrder().getMonth().intValue();
+
+            UserTemp temp = userTempMapper.selectById(remark);
+            StringBuilder sb = new StringBuilder();
+            if (temp != null) {
+                Verify0Entity entity = verify0Mapper.selectByCode(temp.getAuth());
+                if (entity == null) {
+                    entity.setCode(UUID.randomUUID().toString());
+                    entity.setExpire(System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000);
+                    verify0Mapper.insert(entity);
+                }
+                entity.setExpire(entity.getExpire() + 1000 * 60 * 60 * 24 * 30);
+                verify0Mapper.updateById(entity);
+                sb.append(temp.getEid()).append("\n")
+                        .append(temp.getQid()).append("\n")
+                        .append(temp.getNickname()).append("\n")
+                        .append("购买授权成功").append("\n");
+            } else {
+                if (url == null) {
+                    url = MyWebSiteApplication.applicationContext.getEnvironment().getProperty("auth.url").toString();
+                }
+                if (pwd == null) {
+                    pwd = MyWebSiteApplication.applicationContext.getEnvironment().getProperty("auth.pwd").toString();
+                }
+                sb.append("<At:3474006766>.\n")
+                        .append("请注意!授权码信息收集错误\n")
+                        .append(JSON.toJSON(req));
+            }
+            UrlUtils.getStringFromHttpUrl(url + "/say?gid=570700910&pwd=" + pwd + "&s=" + URLEncoder.encode(sb.toString()));
+        } catch (Exception e) {
+            System.err.println("订单信息错误");
+            throw new RuntimeException(e);
+        }
+    }
 
     @Value("${auth.url}")
     String url;
@@ -49,8 +100,7 @@ public class UserController {
         if (pwd == null || pwd.isEmpty() || pwd.length() > 12 || pwd.length() <= 6) return "密码长度不能大于12或小于6";
         if (!eid2code.get(eid).equals(code)) return "验证码错误";
         name = (name == null || name.trim().isEmpty()) ? "默认昵称" : name;
-        UserTemp userTemp = new UserTemp().setEid(eid).setQid(Long.valueOf(qid)).setNickname(name).setPwd(pwd).setAuth("")
-                .setRegt(System.currentTimeMillis());
+        UserTemp userTemp = new UserTemp().setEid(eid).setQid(Long.valueOf(qid)).setNickname(name).setPwd(pwd).setAuth("").setRegt(System.currentTimeMillis());
         userTempMapper.insert(userTemp);
         eid2code.remove(eid);
         return "注册成功";
@@ -103,4 +153,6 @@ public class UserController {
         }
         return null;
     }
+
+
 }

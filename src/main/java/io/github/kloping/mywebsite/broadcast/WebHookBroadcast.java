@@ -17,6 +17,7 @@ public class WebHookBroadcast extends Broadcast<WebHookBroadcast.OrderReqReceive
     public static final WebHookBroadcast INSTANCE = new WebHookBroadcast();
 
     public synchronized void broadcast(OrderReq orderReq) {
+        System.out.println("handler req => " + orderReq);
         submit(() -> {
             Iterator<OrderReqReceiver> iterator = receivers.iterator();
             while (iterator.hasNext()) {

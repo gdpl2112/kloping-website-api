@@ -27,7 +27,6 @@ public class WebHookStarter implements Runnable, WebHookBroadcast.OrderReqReceiv
 
     @Override
     public void onReceive(OrderReq req) {
-        System.out.println("handler req => " + req);
         if (req == null) return;
         try {
             if (!req.getData().getOrder().getPlan_title().equals("腐竹")) {
