@@ -2,10 +2,14 @@ package io.github.kloping.mywebsite.controller;
 
 import io.github.kloping.mywebsite.broadcast.InterceptorBroadcast;
 import io.github.kloping.mywebsite.entitys.VerifyFile;
+import io.github.kloping.mywebsite.entitys.database.UserTemp;
 import io.github.kloping.mywebsite.entitys.database.Verify0Entity;
+import io.github.kloping.mywebsite.mapper.UserTempMapper;
 import io.github.kloping.mywebsite.mapper.Verify0Mapper;
 import io.github.kloping.mywebsite.utils.MyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -50,6 +54,17 @@ public class Verify0Controller implements InterceptorBroadcast.InterceptorReceiv
     @RequestMapping("/getVerify0")
     public Verify0Entity gv0(@RequestParam("code") String code) {
         Verify0Entity entity = mapper.selectByCode(code);
+        if (entity != null) return entity;
+        else return new Verify0Entity().setCode("abcd").setExpire(1L);
+    }
+
+    @Autowired
+    UserTempMapper userTempMapper;
+
+    @RequestMapping("/userv")
+    public Verify0Entity userv( @AuthenticationPrincipal UserDetails userDetails) {
+        UserTemp userTemp = userTempMapper.selectById(userDetails.getUsername());
+        Verify0Entity entity = mapper.selectByCode(userTemp.getAuth());
         if (entity != null) return entity;
         else return new Verify0Entity().setCode("abcd").setExpire(1L);
     }

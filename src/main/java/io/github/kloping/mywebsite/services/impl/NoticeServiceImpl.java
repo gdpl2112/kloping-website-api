@@ -4,7 +4,9 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.github.kloping.mywebsite.entitys.NoticePack;
 import io.github.kloping.mywebsite.entitys.database.Notice;
+import io.github.kloping.mywebsite.entitys.database.UserTemp;
 import io.github.kloping.mywebsite.mapper.NoticeMapper;
+import io.github.kloping.mywebsite.mapper.UserTempMapper;
 import io.github.kloping.mywebsite.services.INoticeService;
 import io.github.kloping.url.UrlUtils;
 import org.jsoup.Jsoup;
@@ -96,11 +98,15 @@ public class NoticeServiceImpl implements INoticeService {
     @Value("${auth.url}")
     String url;
 
+    @Autowired
+    UserTempMapper userTempMapper;
+
     @Override
     public boolean save(String img, String title, String body, UserDetails userDetails) throws Throwable {
         try {
-            Long qid = Long.valueOf(userDetails.getUsername());
-            String name = UrlUtils.getStringFromHttpUrl(url + "/getName?qid=" + qid);
+            UserTemp userTemp = userTempMapper.selectById(userDetails.getUsername());
+            Long qid = userTemp.getQid();
+            String name = userTemp.getNickname();
             Notice notice = new Notice()
                     .setId(null)
                     .setAuthorId(qid)

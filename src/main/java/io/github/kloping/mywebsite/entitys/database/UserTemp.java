@@ -10,7 +10,10 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 public class UserTemp {
-    @TableId("qid")
+    @TableId("eid")
+    private String eid;
+    private String pwd;
+    private String nickname;
     private Long qid;
-    private Integer code;
+    private String auth;
 }

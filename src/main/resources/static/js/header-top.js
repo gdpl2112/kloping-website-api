@@ -58,9 +58,8 @@ $("body").append(`
             </li>
         </ul>
        <div class="form-inline my-2 my-lg-0">
-            <a href="#"> 
-<!--            <a href="/dg.html"> -->
-            <button class="btn btn-outline-success my-2 my-sm-0" type="button">QQ代挂</button>
+            <a href="/v0.html"> 
+            <button class="btn btn-outline-success my-2 my-sm-0" type="button">个人中心</button>
             </a>       
         </div>
          <div class="form-inline my-2 my-lg-0">

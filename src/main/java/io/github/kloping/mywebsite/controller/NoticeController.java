@@ -5,7 +5,9 @@ import com.alibaba.fastjson.JSONObject;
 import io.github.kloping.mywebsite.entitys.FileWithPath;
 import io.github.kloping.mywebsite.entitys.NoticePack;
 import io.github.kloping.mywebsite.entitys.database.Notice;
+import io.github.kloping.mywebsite.entitys.database.UserTemp;
 import io.github.kloping.mywebsite.mapper.NoticeMapper;
+import io.github.kloping.mywebsite.mapper.UserTempMapper;
 import io.github.kloping.mywebsite.services.INoticeService;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -51,6 +53,9 @@ public class NoticeController {
         return service.get0(id);
     }
 
+    @Autowired
+    UserTempMapper userTempMapper;
+
     @PostMapping("/upload")
     public String upload(
             @AuthenticationPrincipal UserDetails userDetails,
@@ -69,7 +74,9 @@ public class NoticeController {
                 fos.close();
                 img = "/" + fwp.getName();
             } else {
-                img = "https://q1.qlogo.cn/g?b=qq&nk=" + userDetails.getUsername() + "&s=640";
+                UserTemp userTemp = userTempMapper.selectById(userDetails.getUsername());
+                Long qid = userTemp.getQid();
+                img = "https://q1.qlogo.cn/g?b=qq&nk=" + qid + "&s=640";
             }
             title = title == null ? "未定义的标题" : title;
             body += "<br><hr>";

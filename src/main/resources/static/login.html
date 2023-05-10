@@ -25,26 +25,22 @@
             <hr>
             <form id="login_form" action="/login" method="post">
                 <div class="form-group mx-sm-5">
-                    <label for="qid">QQ</label>
-                    <input name="username" type="number" class="form-control" id="qid" aria-describedby="qidHelp"
-                           placeholder="请输入QQ号">
-                    <small id="qidHelp" class="form-text text-dark">输入QQ号,且该QQ已经入kloping官群</small>
+                    <label for="eid">邮箱或QQ</label>
+                    <input name="username" type="text" class="form-control" id="eid" aria-describedby="eidHelp"
+                           placeholder="请输入QQ或邮箱">
+                    <small id="eidHelp" class="form-text text-dark">输入邮箱/QQ</small>
                 </div>
                 <div class="form-group mx-sm-5">
-                    <label for="captcha">验证码</label>
+                    <label for="captcha">密码</label>
                     <div class="input-group">
                         <input name="password" type="number" class="form-control" id="captcha"
-                               placeholder="请输入验证码"
+                               placeholder="请输入您的密码"
                                aria-describedby="send_cap">
-                        <div class="input-group-append">
-                            <button class="btn btn-outline-primary" type="button" @click="requestCode()" id="send_cap">
-                                发送验证码
-                            </button>
-                        </div>
                     </div>
-                    <small class="form-text text-dark">验证码在下次发送之前都可用</small>
+                    <small class="form-text text-dark">请输入您的密码</small>
                 </div>
                 <button type="submit" class="btn btn-primary">登录</button>
+                <button @click="gotoReg()" type="button" class="btn btn-primary">注册</button>
             </form>
             <hr>
         </div>

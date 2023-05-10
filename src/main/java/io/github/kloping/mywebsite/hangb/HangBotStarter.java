@@ -16,6 +16,8 @@ import net.mamoe.mirai.event.EventHandler;
 import net.mamoe.mirai.event.GlobalEventChannel;
 import net.mamoe.mirai.event.SimpleListenerHost;
 import net.mamoe.mirai.event.events.BotOnlineEvent;
+import net.mamoe.mirai.event.events.FriendMessageEvent;
+import net.mamoe.mirai.event.events.GroupMessageEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -36,6 +38,16 @@ public class HangBotStarter extends SimpleListenerHost {
     @EventHandler
     public void onEvent(BotOnlineEvent event) {
         LoginStateBroadcast.INSTANCE.broadcast(event.getBot().getId(), null, 1, "");
+    }
+
+    @EventHandler
+    public void onEvent(FriendMessageEvent event) {
+
+    }
+
+    @EventHandler
+    public void onEvent(GroupMessageEvent event) {
+
     }
 
     public static void main(String[] args) {

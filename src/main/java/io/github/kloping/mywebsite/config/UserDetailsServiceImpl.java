@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.github.kloping.mywebsite.entitys.database.UserTemp;
 import io.github.kloping.mywebsite.mapper.UserTempMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,10 +28,19 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        QueryWrapper<UserTemp> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("qid", username);
-        UserTemp temp = mapper.selectOne(queryWrapper);
-        if (temp == null) return null;
-        return new User(username, temp.getCode().toString(), AuthorityUtils.commaSeparatedStringToAuthorityList("user"));
+        UserTemp temp = null;
+        QueryWrapper<UserTemp> queryWrapper = null;
+        queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("eid", username);
+        temp = mapper.selectOne(queryWrapper);
+        if (temp == null) {
+            queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("qid", username);
+            temp = mapper.selectOne(queryWrapper);
+            if (temp == null) {
+                return null;
+            }
+        }
+        return new User(temp.getEid(), temp.getPwd().toString(), AuthorityUtils.commaSeparatedStringToAuthorityList("user"));
     }
 }

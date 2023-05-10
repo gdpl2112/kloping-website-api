@@ -21,6 +21,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         NEED_AUTH_PAGES.add("/upload.html");
         NEED_AUTH_PAGES.add("/upload");
         NEED_AUTH_PAGES.add("/pcm");
+        NEED_AUTH_PAGES.add("/v0.html");
+        NEED_AUTH_PAGES.add("/user");
     }
 
     @Override

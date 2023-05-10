@@ -72,6 +72,20 @@
     </div>
 </div>
 
+<div class="modal fade" id="tipsModal" tabindex="-1" aria-labelledby="tipsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="tipsModalLabel">评论中...</h5>
+            </div>
+            <div id="tips-content" class="modal-body text-danger">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="/js/utils.js"></script>
 <script src="https://api.vvhan.com/api/yinghua"></script>
 <script>
@@ -121,12 +135,19 @@
             if (false === response.data) {
                 location.href = "/login.html"
             } else {
+                $('#tipsModal').modal('show')
                 let fd = new FormData()
                 fd.append("nid", id)
                 fd.append("body", d)
                 axios.post("/pcm", fd).then(function (response) {
                     vm2.cs.push(response.data)
+                    setTimeout(function () {
+                        $('#tipsModal').modal('hide')
+                    }, 500)
                 }).catch(function (err) {
+                    setTimeout(function () {
+                        $('#tipsModal').modal('hide')
+                    }, 500)
                     alert(err);
                 })
             }
