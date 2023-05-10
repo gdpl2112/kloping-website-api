@@ -16,4 +16,5 @@ public class UserTemp {
     private String nickname;
     private Long qid;
     private String auth;
+    private Long regt;
 }

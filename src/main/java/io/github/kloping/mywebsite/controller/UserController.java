@@ -49,7 +49,8 @@ public class UserController {
         if (pwd == null || pwd.isEmpty() || pwd.length() > 12 || pwd.length() <= 6) return "密码长度不能大于12或小于6";
         if (!eid2code.get(eid).equals(code)) return "验证码错误";
         name = (name == null || name.trim().isEmpty()) ? "默认昵称" : name;
-        UserTemp userTemp = new UserTemp().setEid(eid).setQid(Long.valueOf(qid)).setNickname(name).setPwd(pwd).setAuth("");
+        UserTemp userTemp = new UserTemp().setEid(eid).setQid(Long.valueOf(qid)).setNickname(name).setPwd(pwd).setAuth("")
+                .setRegt(System.currentTimeMillis());
         userTempMapper.insert(userTemp);
         eid2code.remove(eid);
         return "注册成功";
