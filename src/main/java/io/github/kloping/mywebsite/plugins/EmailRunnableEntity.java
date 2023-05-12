@@ -72,7 +72,7 @@ public class EmailRunnableEntity implements EmailReceivesBroadcast.EmailReceives
                 System.out.println("say =>> ");
                 System.out.println(sb.toString());
                 Map<String, String> map = new LinkedHashMap<>();
-                map.put("gid", "570700910");
+                map.put("gid", "794238572");
                 map.put("pwd", pwd);
                 map.put("s", sb.toString());
                 MyUtils.post(url + "/say", map);
