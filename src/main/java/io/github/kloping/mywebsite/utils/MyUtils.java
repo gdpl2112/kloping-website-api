@@ -1,5 +1,8 @@
 package io.github.kloping.mywebsite.utils;
 
+import org.jsoup.Connection;
+import org.jsoup.Jsoup;
+
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriteParam;
@@ -12,6 +15,7 @@ import java.awt.image.ColorModel;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -238,5 +242,12 @@ public class MyUtils {
             is.close();
             os.close();
         }
+    }
+
+    public static byte[] post(String url, Map<String, String> km) throws IOException {
+        return Jsoup.connect(url).ignoreHttpErrors(true).ignoreContentType(true)
+                .data(km).userAgent(
+                        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36 Edg/113.0.1774.35"
+                ).method(Connection.Method.POST).execute().bodyAsBytes();
     }
 }

@@ -4,7 +4,7 @@ import com.sun.mail.pop3.POP3Message;
 import io.github.kloping.MySpringTool.annotations.Entity;
 import io.github.kloping.mywebsite.MyWebSiteApplication;
 import io.github.kloping.mywebsite.broadcast.EmailReceivesBroadcast;
-import io.github.kloping.url.UrlUtils;
+import io.github.kloping.mywebsite.utils.MyUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -13,9 +13,10 @@ import org.jsoup.safety.Safelist;
 import javax.mail.Address;
 import javax.mail.BodyPart;
 import javax.mail.internet.MimeMultipart;
-import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author github.kloping
@@ -70,7 +71,11 @@ public class EmailRunnableEntity implements EmailReceivesBroadcast.EmailReceives
                 }
                 System.out.println("say =>> ");
                 System.out.println(sb.toString());
-                UrlUtils.getStringFromHttpUrl(url + "/say?gid=570700910&pwd=" + pwd + "&s=" + URLEncoder.encode(sb.toString()));
+                Map<String, String> map = new LinkedHashMap<>();
+                map.put("gid", "570700910");
+                map.put("pwd", pwd);
+                map.put("s", sb.toString());
+                MyUtils.post(url + "/say", map);
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -19,6 +19,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URLEncoder;
@@ -90,8 +91,7 @@ public class UserController {
     public static final Map<String, String> eid2code = new LinkedHashMap<>();
 
     @RequestMapping("/reg")
-    public String req(@Param("eid") String eid, @Param("qid") String qid, @Param("pwd") String pwd, @Param("name") String name, @Param("code") String code
-
+    public String req(@RequestParam("eid") String eid, @RequestParam("qid") String qid, @RequestParam("pwd") String pwd, @RequestParam("name") String name, @RequestParam("code") String code
     ) {
         if (userTempMapper.selectById(eid) != null) return "邮箱已注册!";
         QueryWrapper<UserTemp> qw = new QueryWrapper<>();
@@ -107,7 +107,7 @@ public class UserController {
     }
 
     @GetMapping("/req0")
-    public String req0(@Param("eid") String eid) {
+    public String req0(@RequestParam("eid") String eid) {
         if (eid2cd.containsKey(eid)) {
             if (eid2cd.get(eid) + 60000 > System.currentTimeMillis()) {
                 return "请求验证码失败;请稍后重试!";
