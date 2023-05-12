@@ -55,7 +55,7 @@ public class MyWebSiteApplication implements WebServerFactoryCustomizer<Configur
 
         Public.EXECUTOR_SERVICE.submit(new WebHookStarter());
 //        Public.EXECUTOR_SERVICE.submit(() -> HangBotStarter.main(args));
-        FrameUtils.SERVICE.scheduleWithFixedDelay(EmailReceivesBroadcast.INSTANCE, 0, 20, TimeUnit.MINUTES);
+        FrameUtils.SERVICE.scheduleWithFixedDelay(EmailReceivesBroadcast.INSTANCE, 0, 2, TimeUnit.MINUTES);
     }
 
     @Override
