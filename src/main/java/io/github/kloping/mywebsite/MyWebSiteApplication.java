@@ -4,7 +4,9 @@ import com.google.code.kaptcha.impl.DefaultKaptcha;
 import com.google.code.kaptcha.util.Config;
 import io.github.kloping.MySpringTool.annotations.Bean;
 import io.github.kloping.common.Public;
+import io.github.kloping.date.FrameUtils;
 import io.github.kloping.file.FileUtils;
+import io.github.kloping.mywebsite.broadcast.EmailReceivesBroadcast;
 import io.github.kloping.mywebsite.hangb.HangBotStarter;
 import io.github.kloping.mywebsite.webhook.WebHookStarter;
 import org.springframework.boot.SpringApplication;
@@ -14,13 +16,13 @@ import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Import;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.socket.server.standard.ServerEndpointExporter;
 
 import java.io.File;
 import java.lang.management.ManagementFactory;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.TimeUnit;
 
 import static io.github.kloping.mywebsite.Source.onCreate;
 
@@ -53,6 +55,7 @@ public class MyWebSiteApplication implements WebServerFactoryCustomizer<Configur
 
         Public.EXECUTOR_SERVICE.submit(new WebHookStarter());
 //        Public.EXECUTOR_SERVICE.submit(() -> HangBotStarter.main(args));
+        FrameUtils.SERVICE.scheduleWithFixedDelay(EmailReceivesBroadcast.INSTANCE, 0, 20, TimeUnit.MINUTES);
     }
 
     @Override
