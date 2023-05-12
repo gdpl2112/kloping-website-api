@@ -68,6 +68,8 @@ public class EmailRunnableEntity implements EmailReceivesBroadcast.EmailReceives
                 if (pwd == null) {
                     pwd = MyWebSiteApplication.applicationContext.getEnvironment().getProperty("auth.pwd").toString();
                 }
+                System.out.println("say =>> ");
+                System.out.println(sb.toString());
                 UrlUtils.getStringFromHttpUrl(url + "/say?gid=570700910&pwd=" + pwd + "&s=" + URLEncoder.encode(sb.toString()));
             }
         } catch (Exception e) {
