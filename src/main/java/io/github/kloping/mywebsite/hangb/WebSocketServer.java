@@ -43,7 +43,6 @@ public class WebSocketServer implements LoginStateBroadcast.LoginStateReceiver {
     //验证码
     public static final int LOGIN_STATE2 = 202;
 
-
     public WebSocketServer() {
         System.out.println("create one wss");
         LoginStateBroadcast.INSTANCE.add(this);

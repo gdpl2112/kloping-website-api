@@ -7,7 +7,6 @@ import io.github.kloping.common.Public;
 import io.github.kloping.date.FrameUtils;
 import io.github.kloping.file.FileUtils;
 import io.github.kloping.mywebsite.broadcast.EmailReceivesBroadcast;
-import io.github.kloping.mywebsite.hangb.HangBotStarter;
 import io.github.kloping.mywebsite.webhook.WebHookStarter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -56,6 +55,7 @@ public class MyWebSiteApplication implements WebServerFactoryCustomizer<Configur
         Public.EXECUTOR_SERVICE.submit(new WebHookStarter());
 //        Public.EXECUTOR_SERVICE.submit(() -> HangBotStarter.main(args));
         FrameUtils.SERVICE.scheduleWithFixedDelay(EmailReceivesBroadcast.INSTANCE, 0, 2, TimeUnit.MINUTES);
+
     }
 
     @Override

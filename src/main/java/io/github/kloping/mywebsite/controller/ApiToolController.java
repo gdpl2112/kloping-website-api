@@ -3,11 +3,13 @@ package io.github.kloping.mywebsite.controller;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.github.kloping.judge.Judge;
+import io.github.kloping.mywebsite.entitys.AddressCode;
 import io.github.kloping.mywebsite.entitys.database.BottleMessage;
 import io.github.kloping.mywebsite.entitys.database.Illegal;
 import io.github.kloping.mywebsite.entitys.runcode.CodeContent;
 import io.github.kloping.mywebsite.entitys.runcode.CodeEntity;
 import io.github.kloping.mywebsite.entitys.yuanShen.YuanShenPlayerInfo;
+import io.github.kloping.mywebsite.mapper.AddressCodeMapper;
 import io.github.kloping.mywebsite.mapper.BottleMessageMapper;
 import io.github.kloping.mywebsite.mapper.IllegalMapper;
 import io.github.kloping.mywebsite.plugins.Source;
@@ -39,10 +41,7 @@ import java.util.*;
 public class ApiToolController {
 
     @RequestMapping("/ocr")
-    public List<String> ocr(
-            @RequestParam("url") @Nullable String url,
-            @RequestParam("file") @Nullable MultipartFile imageFile
-    ) {
+    public List<String> ocr(@RequestParam("url") @Nullable String url, @RequestParam("file") @Nullable MultipartFile imageFile) {
         try {
             byte[] bytes = null;
             if (imageFile != null && !imageFile.isEmpty()) {
@@ -50,15 +49,7 @@ public class ApiToolController {
             } else if (Judge.isNotEmpty(url)) {
                 bytes = UrlUtils.getBytesFromHttpUrl(url);
             } else return new ArrayList<>();
-            String json = Jsoup.connect("http://www.iinside.cn:7001/api_req/")
-                    .method(Connection.Method.POST)
-                    .ignoreContentType(true).ignoreHttpErrors(true)
-                    .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 Edg/109.0.1518.78")
-                    .header("Accept", "application/json, */*")
-                    .data("image_ocr_pp", "wx.png", new ByteArrayInputStream(bytes), "application/octet-stream")
-                    .data("password", "8907")
-                    .data("reqmode", "ocr_pp")
-                    .execute().body();
+            String json = Jsoup.connect("http://www.iinside.cn:7001/api_req/").method(Connection.Method.POST).ignoreContentType(true).ignoreHttpErrors(true).header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 Edg/109.0.1518.78").header("Accept", "application/json, */*").data("image_ocr_pp", "wx.png", new ByteArrayInputStream(bytes), "application/octet-stream").data("password", "8907").data("reqmode", "ocr_pp").execute().body();
             List<String> list = new ArrayList<>();
             for (Object o : JSON.parseObject(json).getJSONArray("data")) {
                 list.add(o.toString());
@@ -77,17 +68,10 @@ public class ApiToolController {
     IllegalMapper illegalMapper;
 
     @GetMapping("/throwBottle")
-    public Object throwBottle(
-            @RequestParam("gid") Long gid,
-            @RequestParam("sid") Long sid,
-            @RequestParam("message") String message,
-            @RequestParam("name") @Nullable String name
-    ) {
-        if (gid == null || sid == null || message == null || message.isEmpty())
-            return "参数不能为空";
+    public Object throwBottle(@RequestParam("gid") Long gid, @RequestParam("sid") Long sid, @RequestParam("message") String message, @RequestParam("name") @Nullable String name) {
+        if (gid == null || sid == null || message == null || message.isEmpty()) return "参数不能为空";
         BottleMessage bottle = new BottleMessage();
-        bottle.setGid(gid).setSid(sid).setMessage(message).setName(name).setTime(System.currentTimeMillis())
-                .setState(0);
+        bottle.setGid(gid).setSid(sid).setMessage(message).setName(name).setTime(System.currentTimeMillis()).setState(0);
         for (Illegal illegal : illegalMapper.selectAll()) {
             if (message.contains(illegal.getContent())) return "经系统检测该内容存在敏感字符,不得扔入大海";
         }
@@ -109,8 +93,7 @@ public class ApiToolController {
         List<BottleMessage> list = bottleMessageMapper.selectList(queryWrapper);
         if (list.isEmpty()) {
             bottle = new BottleMessage();
-            bottle.setName("默认昵称").setId(0).setGid(0L).setSid(0L).setTime(System.currentTimeMillis())
-                    .setState(0).setId(-1).setMessage("空瓶子");
+            bottle.setName("默认昵称").setId(0).setGid(0L).setSid(0L).setTime(System.currentTimeMillis()).setState(0).setId(-1).setMessage("空瓶子");
             return bottle;
         }
         Integer r = RANDOM.nextInt(list.size());
@@ -123,15 +106,8 @@ public class ApiToolController {
         }
     }
 
-
     @GetMapping("/runCode")
-    public Object run(
-            @RequestParam("l") String l,
-            @RequestParam("file") String f,
-            @RequestParam("content") String c,
-            @RequestParam("version") String v,
-            @RequestParam("stdin") String i
-    ) {
+    public Object run(@RequestParam("l") String l, @RequestParam("file") String f, @RequestParam("content") String c, @RequestParam("version") String v, @RequestParam("stdin") String i) {
         CodeContent content = new CodeContent();
         content.setContent(c);
         content.setName(f);
@@ -161,11 +137,21 @@ public class ApiToolController {
     }
 
     @GetMapping("/shenInfo")
-    public String info(@RequestParam("uid") String uid,
-                       @RequestParam("server") Integer server, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public String info(@RequestParam("uid") String uid, @RequestParam("server") Integer server, HttpServletRequest request, HttpServletResponse response) throws Exception {
         YuanShenPlayerInfo info = Source.daidr.info(uid, server, HEADERS0);
         String name = ImageDrawer.drawerShenInfo(info);
         return "http://kloping.top/" + name;
     }
 
+    @Autowired
+    AddressCodeMapper acMapper;
+
+    @RequestMapping("/acode")
+    public Object aCode(@RequestParam("name") String name) {
+        QueryWrapper<AddressCode> qw = new QueryWrapper<>();
+        qw.likeRight("c_name", name);
+        List<AddressCode> list = acMapper.selectList(qw);
+        if (!list.isEmpty()) return list.get(0);
+        else return "{}";
+    }
 }
