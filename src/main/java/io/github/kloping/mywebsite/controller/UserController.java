@@ -12,7 +12,6 @@ import io.github.kloping.mywebsite.utils.EmailSender;
 import io.github.kloping.mywebsite.utils.KaptchaUtils;
 import io.github.kloping.mywebsite.webhook.e0.OrderReq;
 import io.github.kloping.url.UrlUtils;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -132,6 +131,7 @@ public class UserController {
     @GetMapping("/user")
     public UserTemp user(@AuthenticationPrincipal UserDetails userDetails) {
         UserTemp userTemp = userTempMapper.selectById(userDetails.getUsername());
+        userTemp.setPwd("");
         return userTemp;
     }
 
