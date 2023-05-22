@@ -28,6 +28,7 @@ public class EmailRunnableEntity implements EmailReceivesBroadcast.EmailReceives
 
     static {
         SENTABLE_NAME.add("HRS <notifications@github.com>");
+        SENTABLE_NAME.add("<notifications@github.com>");
     }
 
     private String url;
@@ -43,7 +44,7 @@ public class EmailRunnableEntity implements EmailReceivesBroadcast.EmailReceives
     public void onReceive(POP3Message message) {
         try {
             Address address = message.getFrom()[0];
-            if (SENTABLE_NAME.contains(address.toString())) {
+            if (canSend(address)) {
                 StringBuilder sb = new StringBuilder();
                 sb.append(message.getSubject()).append("\n");
                 sb.append(address.toString()).append("\n");
@@ -80,6 +81,15 @@ public class EmailRunnableEntity implements EmailReceivesBroadcast.EmailReceives
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private boolean canSend(Address address) {
+        String ads = address.toString();
+        for (String a : SENTABLE_NAME) {
+            if (a.equals(ads)) return true;
+            else if (ads.contains(a)) return true;
+        }
+        return false;
     }
 
     public static String toPlainText(final String html) {
