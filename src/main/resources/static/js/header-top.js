@@ -30,9 +30,9 @@ $("body").append(`
         </div>
     </div>
 </div>
-<nav style='opacity: 0.82;border: 1px solid #04e7ff;' class="fixed-top navbar navbar-expand-lg navbar-light bg-light">
+<nav style='opacity: 0.72;border: 1px solid #04e7ff;' class="fixed-top navbar navbar-expand-lg navbar-light bg-light">
     <div class=" navbar-brand navbar-header">
-        <img style="max-width: 50px" class="navbar-brand" src="//q1.qlogo.cn/g?b=qq&amp;nk=3474006766&amp;s=640" alt="qq">
+        <img style="opacity: 0.86;max-width: 50px" class="navbar-brand" src="//q1.qlogo.cn/g?b=qq&amp;nk=3474006766&amp;s=640" alt="qq">
     </div>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>

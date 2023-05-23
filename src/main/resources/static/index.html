@@ -19,10 +19,10 @@
 <script src="/js/header-top.js"></script>
 <div id="con0" class="container" style="width: 100%; opacity: 85%;margin-top: 150px">
     <div v-on:click="tog(d.id)" v-for="d in data.notices">
-        <div class="row shadow-lg p-3 mb-5 bg-white rounded alert-info" style="margin-top: 10px">
-            <div class="col-3 align-middle">
+        <div class="row shadow-lg p-3 mb-5 bg-white rounded alert-info" style="margin-top: 10px;opacity: 0.78">
+            <div class="col-3 align-middle" style="display: inline-block;">
                 <img referrer="no-referrer" class="card-img-top img-responsive center-block"
-                     :src="d.icon" style="display: inline-block;max-width: 100px"
+                     :src="d.icon" style="display: inline-block;width: 90%;height: 90%"
                      alt=".">
             </div>
             <div class="col-9">
