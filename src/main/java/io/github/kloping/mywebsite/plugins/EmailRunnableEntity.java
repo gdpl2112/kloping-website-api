@@ -55,9 +55,10 @@ public class EmailRunnableEntity implements EmailReceivesBroadcast.EmailReceives
                         BodyPart bodyPart = mimeMultipart.getBodyPart(index);
                         String type = bodyPart.getContentType();
                         Object object = bodyPart.getContent();
-                        if (type.contains("text/plain")) {
-                            sb.append(object.toString()).append("\n");
-                        } else if (type.contains("text/html")) {
+//                        if (type.contains("text/plain")) {
+//                            sb.append(object.toString()).append("\n");
+//                        } else
+                            if (type.contains("text/html")) {
                             sb.append(toPlainText(object.toString())).append("\n");
                         }
                     }
