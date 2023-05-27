@@ -6,6 +6,7 @@ import io.github.kloping.judge.Judge;
 import io.github.kloping.mywebsite.entitys.AddressCode;
 import io.github.kloping.mywebsite.entitys.database.BottleMessage;
 import io.github.kloping.mywebsite.entitys.database.Illegal;
+import io.github.kloping.mywebsite.entitys.medias.position.PositionInfo;
 import io.github.kloping.mywebsite.entitys.runcode.CodeContent;
 import io.github.kloping.mywebsite.entitys.runcode.CodeEntity;
 import io.github.kloping.mywebsite.entitys.yuanShen.YuanShenPlayerInfo;
@@ -13,6 +14,7 @@ import io.github.kloping.mywebsite.mapper.AddressCodeMapper;
 import io.github.kloping.mywebsite.mapper.BottleMessageMapper;
 import io.github.kloping.mywebsite.mapper.IllegalMapper;
 import io.github.kloping.mywebsite.plugins.Source;
+import io.github.kloping.mywebsite.services.IgetLngLat;
 import io.github.kloping.mywebsite.utils.ImageDrawer;
 import io.github.kloping.url.UrlUtils;
 import org.jsoup.Connection;
@@ -146,12 +148,23 @@ public class ApiToolController {
     @Autowired
     AddressCodeMapper acMapper;
 
+    @Autowired
+    IgetLngLat igetLngLat;
+
     @RequestMapping("/acode")
     public Object aCode(@RequestParam("name") String name) {
         QueryWrapper<AddressCode> qw = new QueryWrapper<>();
         qw.likeRight("c_name", name);
         List<AddressCode> list = acMapper.selectList(qw);
         if (!list.isEmpty()) return list.get(0);
-        else return "{}";
+        else {
+            try {
+                PositionInfo info = igetLngLat.get(name);
+                return info.getDetail().getAdcode();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return "{}";
+            }
+        }
     }
 }

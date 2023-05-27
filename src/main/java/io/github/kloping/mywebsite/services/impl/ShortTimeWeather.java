@@ -7,7 +7,6 @@ import io.github.kloping.mywebsite.services.IShortTimeWeather;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
 /**
@@ -18,31 +17,19 @@ public class ShortTimeWeather implements IShortTimeWeather {
     @Override
     public WeatherM getWeather(String lng, String lat) {
         try {
-            String urlStr = String.format(BASEU1, lng, lat);
-            Connection connection = Jsoup.connect(urlStr)
-                    .ignoreContentType(true)
-                    .header("Accept", "*/*")
+            String urlStr = String.format(BASEU1, lat, lng, System.currentTimeMillis());
+            Connection connection = Jsoup.connect(urlStr).ignoreContentType(true).header("Accept", "*/*")
                     .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36 Edg/94.0.992.50");
-            ;
             Document document = connection.get();
-            Elements elementsM = document.getElementsByTag("article");
-            Elements elements;
-            elements = elementsM.get(0).getElementsByClass("c-gap-right-small");
-            String m2 = elements.get(1).text();
-            elements = document.getElementsByTag("script");
-            String jsonStr = elements.get(7).toString();
-            int i1 = jsonStr.indexOf(">");
-            int i2 = jsonStr.lastIndexOf("<");
-            jsonStr = jsonStr.substring(i1 + 1, i2);
+            String jsonStr = document.body().text();
+            int r = jsonStr.indexOf("{");
+            int e = jsonStr.lastIndexOf("}");
+            jsonStr = jsonStr.substring(r, e + 1);
             JSONObject jsonObject = JSON.parseObject(jsonStr);
-
             WeatherM weatherM = new WeatherM();
-            String[] strings = jsonObject.getJSONObject("data").getJSONObject("weatherCloud").getJSONArray("imgArr").toArray(new String[0]);
-            weatherM.setIntro(jsonObject.getJSONObject("data").getJSONObject("nowcasting").getString("description"));
-            weatherM.setName(jsonObject.getJSONObject("data").getJSONObject("nowcasting").getString("showCounty"));
+            weatherM.setIntro(jsonObject.getString("msg"));
             weatherM.setLng(lng);
             weatherM.setLat(lat);
-            weatherM.setName(m2);
             return weatherM;
         } catch (Exception e) {
             e.printStackTrace();
@@ -50,7 +37,6 @@ public class ShortTimeWeather implements IShortTimeWeather {
         return null;
     }
 
-    private static final String BASEU1 =
-            "https://m.baidu.com/sf?pd=life_compare_weather&openapi=1&dspName=iphone&from_sf=1&resource_id=5135&weatherId=101220704&lng=%s&lat=%s&word=短时预报&title=短时预报&lid=9186109434066578388&referlid=9186109434066578388&ms=1&frsrcid=4982&frorder=1";
+    private static final String BASEU1 = "http://d3.weather.com.cn/webgis_rain_new/webgis/minute?lat=%s&lon=%s&callback=fc5m&_=%s";
 
 }

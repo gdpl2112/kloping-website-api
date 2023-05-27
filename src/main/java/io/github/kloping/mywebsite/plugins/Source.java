@@ -43,9 +43,6 @@ public class Source {
     public static QQMusic qqMusic;
 
     @AutoStand
-    public static BaiduMap baiduMap;
-
-    @AutoStand
     public static BaiduImage baiduImage;
 
     @AutoStand

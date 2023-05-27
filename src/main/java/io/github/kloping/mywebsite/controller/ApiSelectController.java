@@ -1,16 +1,13 @@
 package io.github.kloping.mywebsite.controller;
 
-import io.github.kloping.mywebsite.entitys.medias.PositionM;
 import io.github.kloping.mywebsite.entitys.medias.WeatherDetail;
 import io.github.kloping.mywebsite.entitys.medias.WeatherM;
-import io.github.kloping.mywebsite.services.IGetSongById;
+import io.github.kloping.mywebsite.entitys.medias.position.PositionInfo;
 import io.github.kloping.mywebsite.services.IShortTimeWeather;
 import io.github.kloping.mywebsite.services.IWeather;
 import io.github.kloping.mywebsite.services.IgetLngLat;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,11 +31,12 @@ public class ApiSelectController {
     @RequestMapping("/shortWeather")
     public WeatherM shortWea(HttpServletRequest request, String address) {
         try {
-            PositionM positionM = getLngLat.get(address);
-            String lng = positionM.getResult().getLocation().getLng().toString();
-            String lat = positionM.getResult().getLocation().getLat().toString();
+            PositionInfo info = getLngLat.get(address);
+            String lng = info.getDetail().getPointx();
+            String lat = info.getDetail().getPointy();
             WeatherM weatherM = shortTimeWeather.getWeather(lng, lat);
-            weatherM.setLevel(positionM.getResult().getLevel());
+            weatherM.setName(info.getAllName());
+            weatherM.setLevel("暂无数据");
             return weatherM;
         } catch (Exception e) {
             e.printStackTrace();
