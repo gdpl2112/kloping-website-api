@@ -17,15 +17,15 @@
 </head>
 <body id="body" class="page-header-fixed">
 <script src="/js/header-top.js"></script>
-<div id="con0" class="container" style="width: 100%; opacity: 85%;margin-top: 150px">
-    <div v-on:click="tog(d.id)" v-for="d in data.notices">
-        <div class="row shadow-lg p-3 mb-5 bg-white rounded alert-info" style="margin-top: 10px;opacity: 0.78">
-            <div class="col-3 align-middle" style="display: inline-block;">
+<div id="con0" class="container" style="width: 100%;margin-top: 150px">
+    <div v-on:click="tog(d.id)" v-for="d in data.notices" style=" opacity: 82%;">
+        <div class="row shadow-lg p-3 mb-5 bg-white rounded alert-info" style="margin-top: 10px;">
+            <div class="col-3 align-middle" style="display: inline-block;opacity: 100%;">
                 <img referrer="no-referrer" class="card-img-top img-responsive center-block"
-                     :src="d.icon" style="display: inline-block;max-width: 120px"
+                     :src="d.icon" style="display: inline-block;max-width: 120px; "
                      alt=".">
             </div>
-            <div class="col-9">
+            <div class="col-9" style=" opacity: 75%;">
                 <h5 class="card-title" v-text="d.title"></h5>
                 <p class="card-text" v-text="d.authorName"></p>
                 <span class="bi-eye" v-text="d.views"> </span>
