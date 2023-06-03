@@ -26,7 +26,7 @@ import static io.github.kloping.mywebsite.Source.onCreate;
 @SpringBootApplication
 @Import({TomcatUtil.class})
 @CrossOrigin
-public class MyWebSiteApplication implements WebServerFactoryCustomizer<ConfigurableWebServerFactory> {
+public class MyWebSiteApplication {
 
     public static ConfigurableApplicationContext applicationContext;
 
@@ -43,11 +43,6 @@ public class MyWebSiteApplication implements WebServerFactoryCustomizer<Configur
         Public.EXECUTOR_SERVICE.submit(new WebHookStarter());
 //        Public.EXECUTOR_SERVICE.submit(() -> HangBotStarter.main(args));
         FrameUtils.SERVICE.scheduleWithFixedDelay(EmailReceivesBroadcast.INSTANCE, 0, 2, TimeUnit.MINUTES);
-    }
-
-    @Override
-    public void customize(ConfigurableWebServerFactory factory) {
-        factory.setPort(20080);
     }
 
     @Bean
