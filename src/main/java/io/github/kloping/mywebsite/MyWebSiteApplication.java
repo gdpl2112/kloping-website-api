@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.io.File;
 import java.lang.management.ManagementFactory;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
@@ -36,7 +34,7 @@ public class MyWebSiteApplication implements WebServerFactoryCustomizer<Configur
         onCreate();
         applicationContext = SpringApplication.run(MyWebSiteApplication.class, args);
         io.github.kloping.mywebsite.plugins.Source.before();
-        System.out.println("start succes -v 5-27");
+        System.out.println("start succes -v 6-3");
 
         String name = ManagementFactory.getRuntimeMXBean().getName();
         String pid = name.split("@")[0];
@@ -45,12 +43,11 @@ public class MyWebSiteApplication implements WebServerFactoryCustomizer<Configur
         Public.EXECUTOR_SERVICE.submit(new WebHookStarter());
 //        Public.EXECUTOR_SERVICE.submit(() -> HangBotStarter.main(args));
         FrameUtils.SERVICE.scheduleWithFixedDelay(EmailReceivesBroadcast.INSTANCE, 0, 2, TimeUnit.MINUTES);
-
     }
 
     @Override
     public void customize(ConfigurableWebServerFactory factory) {
-        factory.setPort(20041);
+        factory.setPort(84);
     }
 
     @Bean
