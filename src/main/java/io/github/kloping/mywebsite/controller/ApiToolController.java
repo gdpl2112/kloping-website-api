@@ -57,7 +57,7 @@ public class ApiToolController {
                 list.add(o.toString());
             }
             return list;
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return new ArrayList<>();
         }

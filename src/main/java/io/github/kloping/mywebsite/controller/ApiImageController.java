@@ -94,7 +94,8 @@ public class ApiImageController {
     }
 
     @RequestMapping("/yao2yao")
-    public String yao2yao(HttpServletRequest request, @RequestParam("qid") @Nullable String q1, @RequestParam("u1") @Nullable String u1, HttpServletResponse response) throws Exception {
+    public String yao2yao(HttpServletRequest request, @RequestParam("qid") @Nullable String q1,
+                          @RequestParam("u1") @Nullable String u1, HttpServletResponse response) throws Exception {
         if (Judge.isEmpty(u1)) {
             u1 = String.format("https://q1.qlogo.cn/g?b=qq&nk=%s&s=640", q1);
         }

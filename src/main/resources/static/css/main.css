@@ -23,3 +23,8 @@ audio {
         -o-background-size: cover;
     }
 }
+
+#pio {
+    height: 240px;
+    vertical-align: middle
+}

@@ -1,4 +1,5 @@
 $("body").append(`
+
 <div class="modal fade" id="agreement-tips" tabindex="-1" role="dialog" aria-labelledby="agreement-tips-title"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -30,14 +31,12 @@ $("body").append(`
         </div>
     </div>
 </div>
-<nav style='opacity: 0.72;border: 1px solid #04e7ff;' class="fixed-top navbar navbar-expand-lg navbar-light bg-light">
-    <div class=" navbar-brand navbar-header">
-        <img style="opacity: 0.86;max-width: 50px" class="navbar-brand" src="//q1.qlogo.cn/g?b=qq&amp;nk=3474006766&amp;s=640" alt="qq">
+<nav id="hn0" class="fixed-top navbar navbar-expand-lg navbar-light">
+    <div class="navbar-brand navbar-header">
+        <a href="/">
+            <img style="opacity: 0.86;max-width: 50px" class="navbar-brand" src="/icon.jpg" alt="qq"> kloping's web 
+        </a>
     </div>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <a class="navbar-brand text-success" href="/">首页</a>
     <div class="collapse navbar-collapse" id="navbarContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
@@ -45,23 +44,30 @@ $("body").append(`
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false">
-                    关于我们
+                    关于
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" target="_blank" href="https://jq.qq.com/?_wv=1027&amp;k=clP6D5ih">加入群聊</a>
-                    <a class="dropdown-item" target="_blank" href="//wpa.qq.com/msgrd?v=3&amp;uin=3474006766&amp;site=qq&amp;menu=yes">联系作者</a>
-                    <a class="dropdown-item" target="_blank" href="//github.com/kloping">github主页</a>
+                    <a class="dropdown-item" target="_blank" href="//wpa.qq.com/msgrd?v=3&amp;uin=3474006766&amp;site=qq&amp;menu=yes">
+                    <img style="opacity: 0.86;max-width: 35px"  alt="qq" loading="lazy" src="https://s.nmxc.ltd/sakurairo_vision/@2.6/display_icon/sora/qq.png">
+                    QQ
+                    </a>
+                    <a class="dropdown-item" target="_blank" href="//github.com/kloping">
+                    <img style="opacity: 0.86;max-width: 35px"  alt="github" loading="lazy" src="https://s.nmxc.ltd/sakurairo_vision/@2.6/display_icon/sora/github.png">
+                    github
+                    </a>
                 </div>
             </li>
-            <li class="nav-item">
-                <a type="button" class="nav-link btn btn-info" data-toggle="modal" data-target="#agreement-tips">使用协议</a>
+            &nbsp;&nbsp;
+            <li class="nav-item" >
+                <a style="color: #91f5c3" type="button" class="nav-link btn btn-primary" data-toggle="modal" data-target="#agreement-tips">使用协议</a>
             </li>
         </ul>
        <div class="form-inline my-2 my-lg-0">
             <a href="/v0.html"> 
-            <button class="btn btn-outline-success my-2 my-sm-0" type="button">个人中心</button>
+            <button class="btn btn-outline-success" type="button">个人中心</button>
             </a>       
         </div>
+        &nbsp;
          <div class="form-inline my-2 my-lg-0">
             <a href="/upload.html"> 
             <button class="btn btn-outline-success my-2 my-sm-0" type="button">发布帖子</button>
@@ -69,6 +75,19 @@ $("body").append(`
         </div>
     </div>
 </nav>
+
+
+<style>
+    #hn0{
+        transition: all 1s ease !important;
+        border: 1.5px solid transparent;
+        background-color: rgba(255,255,255,.0);
+        border-radius: 7px;
+    }
+    #hn0:hover{
+        background-color: rgba(255,255,255, .9)
+    }
+</style>
 `
 );
 

@@ -13,19 +13,71 @@
     <script src="/js/popper1.14.1.min.js"></script>
     <script src="/js/bootstrap4.3.1.min.js"></script>
     <link rel="stylesheet" href="/css/main.css">
+    <style>
+        img:hover {
+            animation: move .3s linear forwards;
+        }
+
+        @keyframes move {
+            0% {
+                transform: scale(1);
+            }
+
+            100% {
+                transform: scale(1.1);
+            }
+        }
+
+        a:link {
+            color: #b845e7;
+            text-decoration: none;
+        }
+        /* 未访问的链接 */
+        a:visited {
+            color: rgba(195, 97, 234, 0.85);
+            text-decoration: line-through;
+        }
+        /* 已访问的链接 */
+        a:hover {
+            color: #9e47ce;
+            text-decoration: underline;
+        }
+        /* 鼠标移动到链接上 */
+        a:active {
+            color: #ff5fff;
+        }
+        /* 选定的链接 */
+    </style>
     <title>若生er,WebSite</title>
 </head>
 <body id="body" class="page-header-fixed">
 <script src="/js/header-top.js"></script>
-<div id="con0" class="container" style="width: 100%;margin-top: 150px">
-    <div v-on:click="tog(d.id)" v-for="d in data.notices" style=" opacity: 82%;">
-        <div class="row shadow-lg p-3 mb-5 bg-white rounded alert-info" style="margin-top: 10px;">
-            <div class="col-3 align-middle" style="display: inline-block;opacity: 100%;">
+<style>
+
+    .notice-div0 {
+        transition: all 1s ease !important;
+        border: 1.5px solid transparent;
+        background-color: rgba(255, 255, 255, 0.30);
+        border-radius: 12px;
+        opacity: 82%;
+        color: rgba(0, 0, 0, 0.85);
+    }
+
+    .notice-div0:hover {
+        background-color: rgba(255, 255, 255, 0.96);
+        opacity: 98%;
+        color: rgba(0, 0, 0, 0.98);
+    }
+</style>
+<div id="con0" class="container" style="width: 90%;margin-top: 120px">
+    <div v-on:click="tog(d.id)" v-for="d in data.notices">
+        <div class="row shadow-lg p-3 mb-5 rounded notice-div0" style="margin-top: 10px;">
+            <div class="col-3 align-middle" style="display: inline-block;">
                 <img referrer="no-referrer" class="card-img-top img-responsive center-block"
                      :src="d.icon" style="display: inline-block;max-width: 120px; "
                      alt=".">
             </div>
-            <div class="col-9" style=" opacity: 75%;">
+            <div class="col-9">
                 <h5 class="card-title" v-text="d.title"></h5>
                 <p class="card-text" v-text="d.authorName"></p>
                 <span class="bi-eye" v-text="d.views"> </span>
@@ -33,6 +85,7 @@
             </div>
         </div>
     </div>
+    <hr>
     <br>
     <div class="row">
         <div class="col-4"></div>
@@ -59,6 +112,7 @@
         <div class="col-4"></div>
     </div>
 </div>
+
 <script src="/js/utils.js"></script>
 <script src="/js/player.js"></script>
 <script>
@@ -92,5 +146,16 @@
 <script src="/js/footer-bottom.js"></script>
 <div id="music" key="635c8492de645" api="https://music.cxinyun.cn"></div>
 <script id="xplayer" src="https://music.cxinyun.cn/Static/player4/js/player.js"></script>
+
+<footer>
+    <script src="/live2d/TweenLite.js"></script>
+    <script src="/live2d/live2dcubismcore.min.js"></script>
+    <script src="/live2d/pixi.min.js"></script>
+    <script src="/live2d/cubism4.min.js"></script>
+    <link href="/live2d/pio.css" rel="stylesheet" type="text/css"/>
+    <script src="/live2d/pio.js"></script>
+    <script src="/live2d/pio_sdk4.js"></script>
+    <script src="/live2d/load.js"></script>
+</footer>
 </body>
 </html>

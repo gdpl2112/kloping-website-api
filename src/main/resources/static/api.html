@@ -13,7 +13,20 @@
     <script src="/js/popper1.14.1.min.js"></script>
     <script src="/js/bootstrap4.3.1.min.js"></script>
     <link rel="stylesheet" href="/css/main.css">
+    <style>
+        .apiE {
+            transition: all 0.8s ease !important;
+            border: 1.5px solid transparent;
+            border-radius: 12px;
+            opacity: 65%;
+            scale: 90%;
+        }
 
+        .apiE:hover {
+            scale: 105%;
+            opacity: 98%;
+        }
+    </style>
     <title>免费api API列表-若生</title>
 </head>
 <body id="body" class="page-header-fixed">
@@ -24,13 +37,15 @@
 <center><h3 style="background: rgba(254,253,255,0.3)"> 接口仅用于娱乐 禁止用于非法用途 </h3></center>
 <div class="container">
     <div class="row" id="api_list">
-        <div class="card apiE" style="margin: 5px; border: 1px solid #361cab;border-radius: 10px"
+        <div class="card apiE" style="margin: 5px; border-radius: 10px"
              v-for="(e,i) in list">
-            <div class="card-body">
-                <h5 class="card-title" v-text="e.name">Card title</h5>
-                <p class="card-text" v-text="e.desc">card's content.</p>
-                <a href="#" v-on:click="mDetail(e.name)" :class="'card-link '+'btn'+' btn-'+e.state">去看看</a>
-            </div>
+            <a href="#" v-on:click="mDetail(e.name)">
+                <div class="card-body">
+                    <h5 style="color: black" class="card-title"
+                        v-text="e.name + (e.state === 'success' ? ' ' : ('('+e.state+')'))">Card title</h5>
+                    <p style="color:#606060;" class="card-text" v-text="e.desc">card's content.</p>
+                </div>
+            </a>
         </div>
     </div>
 </div>
@@ -72,6 +87,16 @@
 <script src="/js/api.js"></script>
 <script src="/js/footer-bottom.js"></script>
 
+<footer>
+    <script src="/live2d/TweenLite.js"></script>
+    <script src="/live2d/live2dcubismcore.min.js"></script>
+    <script src="/live2d/pixi.min.js"></script>
+    <script src="/live2d/cubism4.min.js"></script>
+    <link href="/live2d/pio.css" rel="stylesheet" type="text/css"/>
+    <script src="/live2d/pio.js"></script>
+    <script src="/live2d/pio_sdk4.js"></script>
+    <script src="/live2d/load.js"></script>
+</footer>
 </body>
 </html>
 
