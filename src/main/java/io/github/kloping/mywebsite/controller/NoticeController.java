@@ -75,8 +75,7 @@ public class NoticeController {
                 img = "/" + fwp.getName();
             } else {
                 UserTemp userTemp = userTempMapper.selectById(userDetails.getUsername());
-                Long qid = userTemp.getQid();
-                img = "https://q1.qlogo.cn/g?b=qq&nk=" + qid + "&s=640";
+                img = userTemp.getIcon();
             }
             title = title == null ? "未定义的标题" : title;
             body += "<br><hr>";

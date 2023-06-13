@@ -18,6 +18,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
+    public static final String EMAIL_TYPE = "email";
+    public static final String GITHUB_TYPE = "github";
+
     @Autowired
     PasswordEncoder passwordEncoder;
 
@@ -41,6 +44,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 return null;
             }
         }
-        return new User(temp.getEid(), temp.getPwd().toString(), AuthorityUtils.commaSeparatedStringToAuthorityList("user"));
+        if (EMAIL_TYPE.equals(temp.getType())) {
+            return new User(temp.getEid(), temp.getPwd().toString(),
+                    AuthorityUtils.commaSeparatedStringToAuthorityList("user"));
+        } else return null;
     }
 }

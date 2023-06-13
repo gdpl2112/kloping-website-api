@@ -41,11 +41,10 @@ public class CommentController {
             @AuthenticationPrincipal UserDetails userDetails,
             HttpServletRequest request) {
         UserTemp userTemp = userTempMapper.selectById(userDetails.getUsername());
-        Long qid = userTemp.getQid();
         Comment comment = new Comment();
         comment.setState(0).setTime(System.currentTimeMillis()).setContent(body)
                 .setNoticeId(nid).setNickName(userTemp.getNickname())
-                .setIcon("http://q.qlogo.cn/headimg_dl?dst_uin=" + qid + "&spec=640");
+                .setIcon(userTemp.getIcon());
         return service.put(comment) > 0 ? comment : null;
     }
 

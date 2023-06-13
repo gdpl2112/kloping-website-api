@@ -28,6 +28,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import static io.github.kloping.mywebsite.config.UserDetailsServiceImpl.EMAIL_TYPE;
+
 /**
  * @author github.kloping
  */
@@ -94,8 +96,7 @@ public class UserController {
     public static final Map<String, String> eid2code = new LinkedHashMap<>();
 
     @RequestMapping("/reg")
-    public String req(@RequestParam("eid") String eid, @RequestParam("qid") String qid, @RequestParam("pwd") String pwd, @RequestParam("name") String name, @RequestParam("code") String code
-    ) {
+    public String req(@RequestParam("eid") String eid, @RequestParam("qid") String qid, @RequestParam("pwd") String pwd, @RequestParam("name") String name, @RequestParam("code") String code) {
         if (userTempMapper.selectById(eid) != null) return "邮箱已注册!";
         QueryWrapper<UserTemp> qw = new QueryWrapper<>();
         qw.eq("qid", qid);
@@ -103,7 +104,10 @@ public class UserController {
         if (pwd == null || pwd.isEmpty() || pwd.length() > 12 || pwd.length() <= 6) return "密码长度不能大于12或小于6";
         if (!eid2code.get(eid).equals(code)) return "验证码错误";
         name = (name == null || name.trim().isEmpty()) ? "默认昵称" : name;
-        UserTemp userTemp = new UserTemp().setEid(eid).setQid(Long.valueOf(qid)).setNickname(name).setPwd(pwd).setAuth("").setRegt(System.currentTimeMillis());
+        UserTemp userTemp = new UserTemp().setEid(eid)
+                .setQid(Long.valueOf(qid)).setNickname(name).setPwd(pwd).setAuth("")
+                .setRegt(System.currentTimeMillis()).setType(EMAIL_TYPE)
+                .setIcon("http://q.qlogo.cn/headimg_dl?dst_uin=" + qid + "&spec=640");
         userTempMapper.insert(userTemp);
         eid2code.remove(eid);
         return "注册成功";

@@ -1,10 +1,6 @@
 package io.github.kloping.mywebsite.plugins.interfaces;
 
-import io.github.kloping.MySpringTool.annotations.PathValue;
-import io.github.kloping.MySpringTool.annotations.http.CookieValue;
-import io.github.kloping.MySpringTool.annotations.http.GetPath;
-import io.github.kloping.MySpringTool.annotations.http.Headers;
-import io.github.kloping.MySpringTool.annotations.http.HttpClient;
+import io.github.kloping.MySpringTool.annotations.http.*;
 import org.jsoup.nodes.Document;
 
 import java.util.Map;
@@ -21,7 +17,7 @@ public interface Empty {
      * @return
      */
     @GetPath("")
-    public Document empty(@PathValue String path);
+    Document empty(@PathValue String path);
 
     /**
      * aa
@@ -31,7 +27,7 @@ public interface Empty {
      * @return
      */
     @GetPath("")
-    public Document empty(@PathValue String path, @Headers Map<String, String> headers);
+    Document empty(@PathValue String path, @Headers Map<String, String> headers);
 
     /**
      * aa
@@ -42,5 +38,5 @@ public interface Empty {
      * @return
      */
     @GetPath("")
-    public Document empty(@PathValue String path, @Headers Map<String, String> headers, @CookieValue Map.Entry<String, String> cookie);
+    Document empty(@PathValue String path, @Headers Map<String, String> headers, @CookieValue Map.Entry<String, String> cookie);
 }

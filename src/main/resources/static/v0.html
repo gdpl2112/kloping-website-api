@@ -24,7 +24,9 @@
         <div style="border-radius: 15px;background-color: rgba(142,211,180,0.4);text-align: center;"
              class=" col-8">
             <br>
-            <img style="max-width: 75px" :src="`http://q.qlogo.cn/headimg_dl?dst_uin=`+user.qid+`&spec=640`" alt="icon">
+            <img style="max-width: 75px"
+                 :src="user.icon"
+                 alt="icon">
             <br>
             <div class="media-body">
                 <div class="input-group">
@@ -47,6 +49,14 @@
                     </div>
                     <input type="text" aria-label="name" class="form-control" :value="user.qid">
                 </div>
+
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">注册方式</span>
+                    </div>
+                    <input type="text" aria-label="name" class="form-control" :value="user.type">
+                </div>
+
             </div>
             <br>
         </div>

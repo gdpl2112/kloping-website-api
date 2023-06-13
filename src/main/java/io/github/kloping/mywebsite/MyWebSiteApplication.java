@@ -10,10 +10,10 @@ import io.github.kloping.mywebsite.broadcast.EmailReceivesBroadcast;
 import io.github.kloping.mywebsite.webhook.WebHookStarter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.web.server.ConfigurableWebServerFactory;
-import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Import;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.io.File;
@@ -26,6 +26,8 @@ import static io.github.kloping.mywebsite.Source.onCreate;
 @SpringBootApplication
 @Import({TomcatUtil.class})
 @CrossOrigin
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class MyWebSiteApplication {
 
     public static ConfigurableApplicationContext applicationContext;

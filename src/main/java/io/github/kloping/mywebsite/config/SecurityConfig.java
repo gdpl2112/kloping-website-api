@@ -32,18 +32,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginProcessingUrl("/login")
                 .failureForwardUrl("/fail")
                 .failureUrl("/login.html?tips=error")
-                .defaultSuccessUrl("/")
-                .and()
-                .logout()
-                .logoutUrl("/logout")
-                .and()
-                .authorizeRequests()
-                .mvcMatchers(NEED_AUTH_PAGES.toArray(new String[0]))
-                .authenticated()
-                .anyRequest()
-                .permitAll()
-                .and()
-                .csrf().disable();
+                .defaultSuccessUrl("/");
+
+        http.logout().logoutUrl("/logout");
+
+        http.authorizeRequests().mvcMatchers(NEED_AUTH_PAGES.toArray(new String[0])).authenticated()
+                .anyRequest().permitAll();
+
+        http.csrf().disable();
     }
 
     @Bean

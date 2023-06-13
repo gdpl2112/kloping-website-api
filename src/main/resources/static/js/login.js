@@ -19,6 +19,9 @@ let vm1 = new Vue({
     }, methods: {
         gotoReg() {
             location.href = "/register.html"
+        },
+        gotoGithub() {
+            location.href = "https://github.com/login/oauth/authorize?client_id=6316ca5eff5a1c74c2f3&redirect_uri=http://localhost/github/uauth&scope=user&state=1"
         }
     }
 });

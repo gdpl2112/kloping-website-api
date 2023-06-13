@@ -20,7 +20,7 @@
 <br>
 <br>
 <div style="background-color: rgba(250,253,255,0.3)">
-    <center><h1>错误的请求</h1></center>
+    <center><h1 id="tips">错误</h1></center>
     <center><h1>5秒后转到首页</h1></center>
     <center>
         <button type="button" class="btn btn-info" onclick="jump()">立即跳转</button>
@@ -32,9 +32,15 @@
 
         setTimeout(function () {
             location.href = "/index.html"
-        },5000)
+        }, 5000)
+
+        const paramsStr = window.location.search
+        const params = new URLSearchParams(paramsStr)
+        let tips = params.get('tips')
+        if (tips === undefined || tips === "")
+            tips = "错误";
+        $("#tips").html(tips)
     </script>
 </div>
-
 </body>
 </html>
