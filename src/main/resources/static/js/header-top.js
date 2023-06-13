@@ -34,7 +34,8 @@ $("body").append(`
 <nav id="hn0" class="fixed-top navbar navbar-expand-lg navbar-light">
     <div class="navbar-brand navbar-header">
         <a href="/">
-            <img style="opacity: 0.86;max-width: 50px" class="navbar-brand" src="/icon.jpg" alt="qq"> kloping's web 
+            <img style="opacity: 0.86;max-width: 50px; border-radius: 999px"
+                 class="navbar-brand" src="/icon.jpg" alt="qq"> kloping's web
         </a>
     </div>
     <div class="collapse navbar-collapse" id="navbarContent">
@@ -48,12 +49,12 @@ $("body").append(`
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" target="_blank" href="//wpa.qq.com/msgrd?v=3&amp;uin=3474006766&amp;site=qq&amp;menu=yes">
-                    <img style="opacity: 0.86;max-width: 35px"  alt="qq" loading="lazy" src="https://s.nmxc.ltd/sakurairo_vision/@2.6/display_icon/sora/qq.png">
-                    QQ
+                        <img style="opacity: 0.86;max-width: 35px"  alt="qq" loading="lazy" src="https://s.nmxc.ltd/sakurairo_vision/@2.6/display_icon/sora/qq.png">
+                        QQ
                     </a>
                     <a class="dropdown-item" target="_blank" href="//github.com/kloping">
-                    <img style="opacity: 0.86;max-width: 35px"  alt="github" loading="lazy" src="https://s.nmxc.ltd/sakurairo_vision/@2.6/display_icon/sora/github.png">
-                    github
+                        <img style="opacity: 0.86;max-width: 35px"  alt="github" loading="lazy" src="https://s.nmxc.ltd/sakurairo_vision/@2.6/display_icon/sora/github.png">
+                        github
                     </a>
                 </div>
             </li>
@@ -62,16 +63,16 @@ $("body").append(`
                 <a style="color: #91f5c3" type="button" class="nav-link btn btn-primary" data-toggle="modal" data-target="#agreement-tips">使用协议</a>
             </li>
         </ul>
-       <div class="form-inline my-2 my-lg-0">
-            <a href="/v0.html"> 
-            <button class="btn btn-outline-success" type="button">个人中心</button>
-            </a>       
+        <div class="form-inline my-2 my-lg-0">
+            <a href="/v0.html">
+                <button class="btn btn-outline-success" type="button">个人中心</button>
+            </a>
         </div>
         &nbsp;
-         <div class="form-inline my-2 my-lg-0">
-            <a href="/upload.html"> 
-            <button class="btn btn-outline-success my-2 my-sm-0" type="button">发布帖子</button>
-            </a>       
+        <div class="form-inline my-2 my-lg-0">
+            <a href="/upload.html">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="button">发布帖子</button>
+            </a>
         </div>
     </div>
 </nav>
@@ -83,11 +84,34 @@ $("body").append(`
         border: 1.5px solid transparent;
         background-color: rgba(255,255,255,.0);
         border-radius: 7px;
+        animation: normal1 .3s linear forwards;
     }
     #hn0:hover{
+        animation: hover1 .3s linear forwards;
         background-color: rgba(255,255,255, .9)
     }
+    
+        
+    @keyframes normal1 {
+        0% {
+            transform: scale(1);
+        }
+    
+        100% {
+            transform: scale(0.98);
+        }
+    }
+    @keyframes hover1 {
+        0% {
+            transform: scale(0.98);
+        }
+    
+        100% {
+            transform: scale(1.00);
+        }
+    }
 </style>
+
 `
 );
 

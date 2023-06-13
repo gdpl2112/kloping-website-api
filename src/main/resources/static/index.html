@@ -14,20 +14,6 @@
     <script src="/js/bootstrap4.3.1.min.js"></script>
     <link rel="stylesheet" href="/css/main.css">
     <style>
-        img:hover {
-            animation: move .3s linear forwards;
-        }
-
-        @keyframes move {
-            0% {
-                transform: scale(1);
-            }
-
-            100% {
-                transform: scale(1.1);
-            }
-        }
-
         a:link {
             color: #b845e7;
             text-decoration: none;
@@ -53,7 +39,6 @@
 <body id="body" class="page-header-fixed">
 <script src="/js/header-top.js"></script>
 <style>
-
     .notice-div0 {
         transition: all 1s ease !important;
         border: 1.5px solid transparent;
@@ -61,12 +46,14 @@
         border-radius: 12px;
         opacity: 82%;
         color: rgba(0, 0, 0, 0.85);
+        animation: a_normal .3s linear forwards;
     }
 
     .notice-div0:hover {
         background-color: rgba(255, 255, 255, 0.96);
         opacity: 98%;
         color: rgba(0, 0, 0, 0.98);
+        animation: a_hover .3s linear forwards;
     }
 </style>
 <div id="con0" class="container" style="width: 90%;margin-top: 120px">

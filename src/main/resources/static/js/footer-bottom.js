@@ -21,16 +21,11 @@ axios.get("/getHost?url=" + document.location).then(function (response) {
         <h5 style='color: white' data-toggle="tooltip" data-placement="top" title="添加友链,请联系作者">
             友情链接
         </h5>
-        <div class="container justify-content-center">
+        <div id="f-link-d0" class="container justify-content-center">
             <div class="row justify-content-center">
-                <a style="color: #f2d2f6" href="//kloping.top" class="alert-link col-3">
-                    <img class="yl-img" src="/icon.jpg" alt=""/>
-                    SLEF
-                </a>
-                <a style="color: #83b7ff" href="https://rainchan.win/" class="alert-link">
-                    <img class="yl-img"
-                         src="https://gravatar.loli.net/avatar/f7e8af6d341b76ad3de6757a8f86f2b4?d=mp&v=1.3.10" alt=""/>
-                    RainChan的小博客
+                <a v-for="e in arr" :style="'color:'+e.color" :href="e.url" class="alert-link col-3">
+                    <img class="yl-img" :src="e.icon" alt=""/>
+                    {{e.name}}
                 </a>
             </div>
         </div>
@@ -51,8 +46,20 @@ axios.get("/getHost?url=" + document.location).then(function (response) {
     }
 </style>
     `);
+
+    let vm1 = new Vue({
+        el: "#f-link-d0",
+        created: function () {
+            axios.get("/flinks").then(function (response) {
+                vm1.arr = response.data
+            }).catch(function (err) {
+                alert(err);
+            })
+        }, data: {
+            arr: []
+        }, methods: {}
+    });
+
 }).catch(function (err) {
     alert(err);
 })
-
-

@@ -28,3 +28,23 @@ audio {
     height: 240px;
     vertical-align: middle
 }
+
+
+@keyframes a_normal {
+    0% {
+        transform: scale(1.02);
+    }
+
+    100% {
+        transform: scale(0.98);
+    }
+}
+@keyframes a_hover {
+    0% {
+        transform: scale(0.98);
+    }
+
+    100% {
+        transform: scale(1.02);
+    }
+}

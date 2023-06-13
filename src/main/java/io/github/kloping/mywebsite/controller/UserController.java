@@ -4,15 +4,16 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.github.kloping.mywebsite.MyWebSiteApplication;
 import io.github.kloping.mywebsite.broadcast.WebHookBroadcast;
+import io.github.kloping.mywebsite.entitys.database.FriendLink;
 import io.github.kloping.mywebsite.entitys.database.UserTemp;
 import io.github.kloping.mywebsite.entitys.database.Verify0Entity;
+import io.github.kloping.mywebsite.mapper.FriendLinkMapper;
 import io.github.kloping.mywebsite.mapper.UserTempMapper;
 import io.github.kloping.mywebsite.mapper.Verify0Mapper;
 import io.github.kloping.mywebsite.utils.EmailSender;
 import io.github.kloping.mywebsite.utils.KaptchaUtils;
 import io.github.kloping.mywebsite.webhook.e0.OrderReq;
 import io.github.kloping.url.UrlUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URLEncoder;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -31,8 +33,11 @@ import java.util.UUID;
  */
 @RestController
 public class UserController {
-    public UserController() {
+    public UserController(FriendLinkMapper friendLinkMapper, UserTempMapper userTempMapper, Verify0Mapper verify0Mapper) {
+        this.friendLinkMapper = friendLinkMapper;
         WebHookBroadcast.INSTANCE.add(this::onReceive);
+        this.userTempMapper = userTempMapper;
+        this.verify0Mapper = verify0Mapper;
     }
 
     private void onReceive(OrderReq req) {
@@ -83,8 +88,7 @@ public class UserController {
     @Value("${auth.pwd}")
     String pwd;
 
-    @Autowired
-    UserTempMapper userTempMapper;
+    final UserTempMapper userTempMapper;
 
     public static final Map<String, Long> eid2cd = new LinkedHashMap<>();
     public static final Map<String, String> eid2code = new LinkedHashMap<>();
@@ -135,8 +139,7 @@ public class UserController {
         return userTemp;
     }
 
-    @Autowired
-    Verify0Mapper verify0Mapper;
+    final Verify0Mapper verify0Mapper;
 
     @GetMapping("/req-try")
     public Verify0Entity rt(@AuthenticationPrincipal UserDetails userDetails) {
@@ -155,4 +158,21 @@ public class UserController {
     }
 
 
+    final FriendLinkMapper friendLinkMapper;
+
+    private List<FriendLink> links = null;
+
+    @GetMapping("/flinks")
+    public List<FriendLink> friendLinkList() {
+        synchronized (friendLinkMapper) {
+            if (links == null) {
+                links = friendLinkMapper.selectList(null);
+            }
+            int size = friendLinkMapper.selectCount(null);
+            if (links.size() != size) {
+                links = friendLinkMapper.selectList(null);
+            }
+        }
+        return links;
+    }
 }
