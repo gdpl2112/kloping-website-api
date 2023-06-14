@@ -36,7 +36,7 @@ public class MyWebSiteApplication {
         onCreate();
         applicationContext = SpringApplication.run(MyWebSiteApplication.class, args);
         io.github.kloping.mywebsite.plugins.Source.before();
-        System.out.println("start succes -v 6-3");
+        System.out.println("start succes -v 6-9");
 
         String name = ManagementFactory.getRuntimeMXBean().getName();
         String pid = name.split("@")[0];

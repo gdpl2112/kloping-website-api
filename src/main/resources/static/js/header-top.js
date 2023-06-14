@@ -59,6 +59,10 @@ $("body").append(`
                 </div>
             </li>
             &nbsp;&nbsp;
+             <li class="nav-item active">
+                <button id="jump-fl" type="button" class="btn btn-outline-info my-2 my-sm-0" >友链</button>
+            </li>
+            &nbsp;&nbsp;
             <li class="nav-item" >
                 <a style="color: #91f5c3" type="button" class="nav-link btn btn-primary" data-toggle="modal" data-target="#agreement-tips">使用协议</a>
             </li>
@@ -77,7 +81,13 @@ $("body").append(`
     </div>
 </nav>
 
-
+<script>
+    $("#jump-fl").click(function (){
+        $("html, body").animate({
+            scrollTop: $("#f-link-d0").offset().top }, {duration: 500,easing: "swing"});
+            return false;
+    })
+</script>
 <style>
     #hn0{
         transition: all 1s ease !important;
@@ -110,6 +120,7 @@ $("body").append(`
             transform: scale(1.00);
         }
     }
+    
 </style>
 
 `

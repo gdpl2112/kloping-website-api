@@ -2,6 +2,7 @@ package io.github.kloping.mywebsite.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import io.github.kloping.judge.Judge;
 import io.github.kloping.mywebsite.MyWebSiteApplication;
 import io.github.kloping.mywebsite.broadcast.WebHookBroadcast;
 import io.github.kloping.mywebsite.entitys.database.FriendLink;
@@ -97,13 +98,16 @@ public class UserController {
 
     @RequestMapping("/reg")
     public String req(@RequestParam("eid") String eid, @RequestParam("qid") String qid, @RequestParam("pwd") String pwd, @RequestParam("name") String name, @RequestParam("code") String code) {
-        if (userTempMapper.selectById(eid) != null) return "邮箱已注册!";
+        if (Judge.isEmpty(name) || name.length() < 4 || name.length() > 10) return "昵称为空或长度违规";
+        if (userTempMapper.selectById(name) != null) return "昵称已注册!";
+        QueryWrapper<UserTemp> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("eid", eid);
+        if (userTempMapper.selectOne(queryWrapper) != null) return "邮箱已注册!";
         QueryWrapper<UserTemp> qw = new QueryWrapper<>();
         qw.eq("qid", qid);
         if (userTempMapper.selectOne(qw) != null) return "QQ已被绑定!";
         if (pwd == null || pwd.isEmpty() || pwd.length() > 12 || pwd.length() <= 6) return "密码长度不能大于12或小于6";
         if (!eid2code.get(eid).equals(code)) return "验证码错误";
-        name = (name == null || name.trim().isEmpty()) ? "默认昵称" : name;
         UserTemp userTemp = new UserTemp().setEid(eid)
                 .setQid(Long.valueOf(qid)).setNickname(name).setPwd(pwd).setAuth("")
                 .setRegt(System.currentTimeMillis()).setType(EMAIL_TYPE)
