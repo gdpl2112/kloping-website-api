@@ -10,9 +10,9 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 public class UserTemp {
-    @TableId("eid")
     private String eid;
     private String pwd;
+    @TableId
     private String nickname;
     private Long qid;
     private String icon;

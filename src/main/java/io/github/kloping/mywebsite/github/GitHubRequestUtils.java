@@ -7,6 +7,7 @@ import io.github.kloping.mywebsite.utils.SSLSocketClientUtil;
 import org.jsoup.Connection;
 import org.jsoup.helper.HttpConnection;
 import org.jsoup.nodes.Document;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -15,12 +16,18 @@ import java.util.Map;
 
 @Component
 public class GitHubRequestUtils {
+    @Value("${proxy.url}")
+    String url;
+
+    @Value("${proxy.port}")
+    Integer port;
+
     private Connection connection;
 
     {
         connection = new HttpConnection();
         connection.ignoreHttpErrors(true).ignoreContentType(true);
-        connection.proxy("192.168.1.110", 20032)
+        connection.proxy("47.100.93.243", 20032)
                 .sslSocketFactory(SSLSocketClientUtil.getSocketFactory(SSLSocketClientUtil.getX509TrustManager()));
     }
 

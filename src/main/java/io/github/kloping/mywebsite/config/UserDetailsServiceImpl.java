@@ -35,11 +35,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (temp == null) {
             return null;
         }
+        String id = temp.getNickname();
         if (EMAIL_TYPE.equals(temp.getType())) {
-            return new User(temp.getEid(), passwordEncoder.encode(temp.getPwd()),
+            return new User(id, passwordEncoder.encode(temp.getPwd()),
                     AuthorityUtils.commaSeparatedStringToAuthorityList("user"));
         } else if (GITHUB_TYPE.equals(temp.getType())) {
-            return new User(temp.getEid(),
+            return new User(id,
                     passwordEncoder.encode(GithubCodeAuthenticationProvider.EID2TOKEN.get(username)),
                     AuthorityUtils.commaSeparatedStringToAuthorityList("user"));
         } else return null;
