@@ -31,6 +31,7 @@ $("body").append(`
         </div>
     </div>
 </div>
+
 <nav id="hn0" class="fixed-top navbar navbar-expand-lg navbar-light">
     <div class="navbar-brand navbar-header">
         <a href="/">
@@ -38,13 +39,19 @@ $("body").append(`
                  class="navbar-brand" src="/icon.jpg" alt="qq"> kloping's web
         </a>
     </div>
-    <div class="collapse navbar-collapse" id="navbarContent">
+     <button class="navbar-toggler" type="button" data-toggle="collapse" 
+     data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" 
+     aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
                 <a class="nav-link" href="/api">API</a>
             </li>
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false">
+                <a class="nav-link dropdown-toggle" href="#"
+                 id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false">
                     关于
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -58,24 +65,21 @@ $("body").append(`
                     </a>
                 </div>
             </li>
-            &nbsp;&nbsp;
-             <li class="nav-item active">
-                <button id="jump-fl" type="button" class="btn btn-outline-info my-2 my-sm-0" >友链</button>
+             <li class="nav-item mr-sm-2" style="margin-right: 8px">
+                <a href="" id="jump-fl" class="nav-link">友链</a>
             </li>
-            &nbsp;&nbsp;
-            <li class="nav-item" >
-                <a style="color: #91f5c3" type="button" class="nav-link btn btn-primary" data-toggle="modal" data-target="#agreement-tips">使用协议</a>
+            <li class="nav-item">
+                <a style="color: #91f5c3" type="button" 
+                class="nav-link btn btn-primary mr-sm-2" 
+                data-toggle="modal" data-target="#agreement-tips">使用协议</a>
             </li>
         </ul>
         <div class="form-inline my-2 my-lg-0">
-            <a href="/v0.html">
+            <a href="/v0.html" class="mr-sm-2 my-2 my-sm-0" style="margin-right: 8px">
                 <button class="btn btn-outline-success" type="button">个人中心</button>
             </a>
-        </div>
-        &nbsp;
-        <div class="form-inline my-2 my-lg-0">
-            <a href="/upload.html">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="button">发布帖子</button>
+            <a href="/upload.html" class=" my-2 my-sm-0">
+                <button class="btn btn-outline-success" type="button">发布帖子</button>
             </a>
         </div>
     </div>
