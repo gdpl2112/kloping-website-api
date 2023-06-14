@@ -24,12 +24,14 @@ public class GithubCodeAuthenticationProcessingFilter extends AbstractAuthentica
 
     private String clientId;
     private String clientSecret;
+    private String redirectUri;
     private GitHubRequestUtils utils;
 
-    public GithubCodeAuthenticationProcessingFilter(String clientId, String clientSecret, GitHubRequestUtils utils) {
+    public GithubCodeAuthenticationProcessingFilter(String clientId, String clientSecret, String redirectUri, GitHubRequestUtils utils) {
         super(DEFAULT_ANT_PATH_REQUEST_MATCHER);
         this.clientId = clientId;
         this.clientSecret = clientSecret;
+        this.redirectUri = redirectUri;
         this.utils = utils;
     }
 
@@ -51,7 +53,7 @@ public class GithubCodeAuthenticationProcessingFilter extends AbstractAuthentica
             accessTokenDTO.setClient_id(clientId);
             accessTokenDTO.setClient_secret(clientSecret);
             accessTokenDTO.setCode(code);
-            accessTokenDTO.setRedirect_uri("http://localhost");
+            accessTokenDTO.setRedirect_uri(redirectUri);
             accessTokenDTO.setState(state);
             String result = utils.getAccessToken(accessTokenDTO);
             if (result == null) {

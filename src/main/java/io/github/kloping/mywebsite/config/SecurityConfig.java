@@ -43,6 +43,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Value("${spring.security.oauth2.client.registration.github.clientSecret}")
     String clientSecret;
 
+    @Value("${spring.security.oauth2.client.registration.github.redirectUri}")
+    String redirectUri;
+
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
@@ -68,7 +71,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
 
         GithubCodeAuthenticationProcessingFilter githubCodeAuthenticationFilter =
-                new GithubCodeAuthenticationProcessingFilter(clientId, clientSecret, utils);
+                new GithubCodeAuthenticationProcessingFilter(clientId, clientSecret, redirectUri, utils);
 
         githubCodeAuthenticationFilter.setAuthenticationManager(authenticationManagerBean());
         githubCodeAuthenticationFilter.setAuthenticationSuccessHandler(new GithubCodeAuthenticationSuccessHandler());

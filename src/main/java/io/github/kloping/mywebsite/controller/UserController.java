@@ -15,6 +15,7 @@ import io.github.kloping.mywebsite.utils.EmailSender;
 import io.github.kloping.mywebsite.utils.KaptchaUtils;
 import io.github.kloping.mywebsite.webhook.e0.OrderReq;
 import io.github.kloping.url.UrlUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
