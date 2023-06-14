@@ -58,6 +58,7 @@ public class GithubCodeAuthenticationProcessingFilter extends AbstractAuthentica
                 response.sendRedirect("/error.html?tips=An exception occurred while connecting to the github server, please try again later");
                 return null;
             }
+            System.out.println(result);
             JSONObject jo = JSON.parseObject(result);
             String access_token = jo.getString("access_token");
             if (Judge.isEmpty(access_token)) {
