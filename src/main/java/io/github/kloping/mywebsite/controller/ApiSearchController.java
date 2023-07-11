@@ -270,7 +270,7 @@ public class ApiSearchController {
                     song.setImgUrl(d0.getString("pic"));
                     song.setLyric("vip歌曲暂不提供歌词");
                     song.setSongUrl(UtilsController.getRedirectUrl(
-                            "https://api.hamm.cn/song/play?mid=" + song.getId()));
+                            "https://api.hamm.cn/song/play?mid=" + song.getId(),"https://music.hamm.cn/"));
                     s0.add(song);
                     if (s0.size() >= num)
                         break;

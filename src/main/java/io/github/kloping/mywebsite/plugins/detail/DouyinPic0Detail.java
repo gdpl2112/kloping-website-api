@@ -26,7 +26,9 @@ public class DouyinPic0Detail {
 
     static {
         HEADERS.put("Accept", "text/html");
-        HEADERS.put("Cookie", "passport_csrf_token=d6f12dea0669c0a05b2231f0726388de; passport_csrf_token_default=d6f12dea0669c0a05b2231f0726388de; msToken=WGFUmzoGiAnpucQk0PpRr-rcVtofjaRFVzo9rfI3QOwq92veGUsyxDQnZ6rehVEIJIVrt7xpbmVbPzc97rLbqYrHgmblK81wTH2OHcMub29voi7nYyGWaw6FirTDuFkw; __ac_nonce=063ca4b2c00cfbb63b160; __ac_signature=_02B4Z6wo00f0199Ya.gAAIDAitrgZ4lSzb.feG9AAJQlRCuzDfuW-PO0GalLYs59AfMb9EePG5V5YV8oy26aTfuX.RTEyLVedHNX2VbL.u3neW2rgGWlHZ57i-TW7YGMa-wN7aOvYTAgu1tC14; __ac_referer=__ac_blank");
+        HEADERS.put("Cookie", "passport_csrf_token=d6f12dea0669c0a05b2231f0726388de; " +
+                "passport_csrf_token_default=d6f12dea0669c0a05b2231f0726388de; " +
+                "msToken=WGFUmzoGiAnpucQk0PpRr-rcVtofjaRFVzo9rfI3QOwq92veGUsyxDQnZ6rehVEIJIVrt7xpbmVbPzc97rLbqYrHgmblK81wTH2OHcMub29voi7nYyGWaw6FirTDuFkw; __ac_nonce=063ca4b2c00cfbb63b160; __ac_signature=_02B4Z6wo00f0199Ya.gAAIDAitrgZ4lSzb.feG9AAJQlRCuzDfuW-PO0GalLYs59AfMb9EePG5V5YV8oy26aTfuX.RTEyLVedHNX2VbL.u3neW2rgGWlHZ57i-TW7YGMa-wN7aOvYTAgu1tC14; __ac_referer=__ac_blank");
     }
 
     public static String[] getPics(String url) throws IOException {

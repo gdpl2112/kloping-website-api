@@ -43,7 +43,6 @@ public class MyWebSiteApplication {
         FileUtils.putStringInFile(pid, new File("./web.pid"));
 
         Public.EXECUTOR_SERVICE.submit(new WebHookStarter());
-//        Public.EXECUTOR_SERVICE.submit(() -> HangBotStarter.main(args));
         FrameUtils.SERVICE.scheduleWithFixedDelay(EmailReceivesBroadcast.INSTANCE, 0, 2, TimeUnit.MINUTES);
     }
 
