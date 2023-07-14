@@ -14,11 +14,11 @@ import java.io.IOException;
 
 @Component
 public class GitHubRequestUtils {
-    @Value("${proxy.url}")
-    String url;
-
-    @Value("${proxy.port}")
-    Integer port;
+//    @Value("${proxy.url}")
+//    String url;
+//
+//    @Value("${proxy.port}")
+//    Integer port;
 
     private Connection getConnection() {
         Connection connection = new HttpConnection();
