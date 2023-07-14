@@ -23,8 +23,8 @@ public class GitHubRequestUtils {
     private Connection getConnection() {
         Connection connection = new HttpConnection();
         connection.ignoreHttpErrors(true).ignoreContentType(true);
-        connection.proxy(url, port)
-                .sslSocketFactory(SSLSocketClientUtil.getSocketFactory(SSLSocketClientUtil.getX509TrustManager()));
+//        connection.proxy(url, port)
+//                .sslSocketFactory(SSLSocketClientUtil.getSocketFactory(SSLSocketClientUtil.getX509TrustManager()));
         return connection;
     }
 
