@@ -11,8 +11,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 @Component
 public class GitHubRequestUtils {
@@ -27,7 +25,7 @@ public class GitHubRequestUtils {
     {
         connection = new HttpConnection();
         connection.ignoreHttpErrors(true).ignoreContentType(true);
-        connection.proxy("47.100.93.243", 20032)
+        connection.proxy(url, port)
                 .sslSocketFactory(SSLSocketClientUtil.getSocketFactory(SSLSocketClientUtil.getX509TrustManager()));
     }
 
