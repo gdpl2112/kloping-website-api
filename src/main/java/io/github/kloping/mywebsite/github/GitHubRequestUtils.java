@@ -20,19 +20,18 @@ public class GitHubRequestUtils {
     @Value("${proxy.port}")
     Integer port;
 
-    private Connection connection;
-
-    {
-        connection = new HttpConnection();
+    private Connection getConnection() {
+        Connection connection = new HttpConnection();
         connection.ignoreHttpErrors(true).ignoreContentType(true);
         connection.proxy(url, port)
                 .sslSocketFactory(SSLSocketClientUtil.getSocketFactory(SSLSocketClientUtil.getX509TrustManager()));
+        return connection;
     }
 
     public String getAccessToken(AccessTokenDTO dto) {
         Document doc = null;
         try {
-            doc = connection.url("https://github.com/login/oauth/access_token")
+            doc = getConnection().url("https://github.com/login/oauth/access_token")
                     .header("accept", "application/json")
                     .data("client_id", dto.getClient_id())
                     .data("client_secret", dto.getClient_secret())
@@ -54,11 +53,11 @@ public class GitHubRequestUtils {
     }
 
     public GithubUser getUser(String accessToken) {
-        connection.url("https://api.github.com/user?access_token=" + accessToken)
+        Connection con = getConnection().url("https://api.github.com/user?access_token=" + accessToken)
                 .header("accept", "application/json")
                 .header("Authorization", "token " + accessToken);
         try {
-            Document doc = connection.get();
+            Document doc = con.get();
             String data = doc.body().text();
             GithubUser githubUser = JSON.parseObject(data, GithubUser.class);
             return githubUser;
