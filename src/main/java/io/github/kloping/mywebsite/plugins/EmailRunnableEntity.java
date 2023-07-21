@@ -27,7 +27,6 @@ public class EmailRunnableEntity implements EmailReceivesBroadcast.EmailReceives
     public static final List<String> SENTABLE_NAME = new ArrayList<>();
 
     static {
-        SENTABLE_NAME.add("HRS <notifications@github.com>");
         SENTABLE_NAME.add("<notifications@github.com>");
     }
 
