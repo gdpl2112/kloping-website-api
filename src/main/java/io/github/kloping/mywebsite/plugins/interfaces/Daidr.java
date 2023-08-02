@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * @author github.kloping
  */
-@HttpClient("https://api.daidr.me/")
+@HttpClient("https://up.api.daidr.me/")
 public interface Daidr {
     /**
      * info

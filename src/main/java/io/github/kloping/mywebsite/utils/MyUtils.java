@@ -250,4 +250,23 @@ public class MyUtils {
                         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36 Edg/113.0.1774.35"
                 ).method(Connection.Method.POST).execute().bodyAsBytes();
     }
+
+    public static String getTimeFormat0(long l) {
+        int hour = 0;
+        int min = 0;
+        int sec = 0;
+        while (l > 3600000) {
+            hour++;
+            l -= 3600000;
+        }
+        while (l > 1000) {
+            sec++;
+            if (sec == 60) {
+                min++;
+                sec = 0;
+            }
+            l -= 1000;
+        }
+        return String.format("%s小时%s分钟%s秒", hour, min, sec);
+    }
 }

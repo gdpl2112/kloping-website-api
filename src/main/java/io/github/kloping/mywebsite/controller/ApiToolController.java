@@ -1,6 +1,7 @@
 package io.github.kloping.mywebsite.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.github.kloping.judge.Judge;
 import io.github.kloping.mywebsite.entitys.AddressCode;
@@ -16,6 +17,7 @@ import io.github.kloping.mywebsite.mapper.IllegalMapper;
 import io.github.kloping.mywebsite.plugins.Source;
 import io.github.kloping.mywebsite.services.IgetLngLat;
 import io.github.kloping.mywebsite.utils.ImageDrawer;
+import io.github.kloping.mywebsite.utils.MyUtils;
 import io.github.kloping.url.UrlUtils;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -166,5 +168,35 @@ public class ApiToolController {
                 return "{}";
             }
         }
+    }
+
+    @Autowired
+    UtilsController utilsController;
+
+    private static final String SLEEP_KEY = "sleep0";
+
+    @RequestMapping("/sleep/start")
+    public Object sleepStart(@RequestParam("id") String id) {
+        JSONObject jo = new JSONObject();
+        String out = utilsController.put(id, String.valueOf(System.currentTimeMillis()), SLEEP_KEY);
+        if (out == null) {
+            jo.put("start", 1);
+            jo.put("desc", "已记录开始时间!");
+        } else {
+            jo.put("start", 2);
+            jo.put("desc", "已重新记录开始时间!");
+        }
+        jo.put("state", 200);
+        return jo;
+    }
+
+    @RequestMapping("/sleep/end")
+    public String sleepEnd(@RequestParam("id") String id) {
+        JSONObject jo = new JSONObject();
+        String time0 = utilsController.get(id, SLEEP_KEY);
+        if (Judge.isEmpty(time0)) return "未记录开始时间,无法计算!";
+        Long time = Long.parseLong(time0);
+        String end = MyUtils.getTimeFormat0(System.currentTimeMillis() - time);
+        return end;
     }
 }
