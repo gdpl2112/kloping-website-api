@@ -179,7 +179,7 @@ public class ApiToolController {
     public Object sleepStart(@RequestParam("id") String id) {
         JSONObject jo = new JSONObject();
         String out = utilsController.put(id, String.valueOf(System.currentTimeMillis()), SLEEP_KEY);
-        if (out == null) {
+        if ("OK".equals(out)) {
             jo.put("start", 1);
             jo.put("desc", "已记录开始时间!");
         } else {
@@ -195,6 +195,7 @@ public class ApiToolController {
         JSONObject jo = new JSONObject();
         String time0 = utilsController.get(id, SLEEP_KEY);
         if (Judge.isEmpty(time0)) return "未记录开始时间,无法计算!";
+        utilsController.del(id, SLEEP_KEY);
         Long time = Long.parseLong(time0);
         String end = MyUtils.getTimeFormat0(System.currentTimeMillis() - time);
         return end;
