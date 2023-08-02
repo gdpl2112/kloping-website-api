@@ -231,11 +231,16 @@ public class ApiSearchController {
         HEADERS.put("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 Edg/109.0.1518.78");
     }
 
+    public static final Map<String, Songs> VSS_MAP = new HashMap<>();
+
     @RequestMapping("vipSong")
     public Songs vipSongs(HttpServletRequest request, @RequestParam("keyword") String keyword
             , @RequestParam(required = false, value = "n") String numStr
     ) throws ScriptException, IOException {
         synchronized (HEADERS) {
+            if (VSS_MAP.containsKey(keyword)) {
+                return VSS_MAP.get(keyword);
+            }
             Songs songs = new Songs();
             Document doc = Jsoup.
                     connect("https://zj.v.api.aa1.cn/api/qqmusic/?songName=" + keyword + "&singerName=&playlistId=&pageNum=1&pageSize=2&type=qq")
@@ -261,6 +266,7 @@ public class ApiSearchController {
             songs.setNum(list.size());
             songs.setKeyword(keyword);
             songs.setData(list.toArray(new Song[0]));
+            VSS_MAP.put(keyword, songs);
             return songs;
         }
     }
