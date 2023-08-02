@@ -1,11 +1,11 @@
 package io.github.kloping.mywebsite.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import io.github.kloping.mywebsite.entitys.VideoAnimeSource;
 import io.github.kloping.mywebsite.entitys.medias.Result;
 import io.github.kloping.mywebsite.entitys.medias.Song;
 import io.github.kloping.mywebsite.entitys.medias.Songs;
-import io.github.kloping.mywebsite.plugins.Source;
 import io.github.kloping.mywebsite.services.*;
 import io.github.kloping.mywebsite.services.impl.ParseGifImgImpl;
 import io.github.kloping.mywebsite.services.impl.ParseGifImgImpl0;
@@ -228,12 +228,6 @@ public class ApiSearchController {
     private static final Map<String, String> HEADERS = new LinkedHashMap<>();
 
     static {
-        HEADERS.put("accept", "application/json, text/plain, */*");
-        HEADERS.put("accept-encoding", "gzip, deflate, br");
-        HEADERS.put("accept-language", "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6");
-        HEADERS.put("content-type", "application/json");
-        HEADERS.put("origin", "https://music.hamm.cn");
-        HEADERS.put("referer", "https://music.hamm.cn/");
         HEADERS.put("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 Edg/109.0.1518.78");
     }
 
@@ -242,43 +236,31 @@ public class ApiSearchController {
             , @RequestParam(required = false, value = "n") String numStr
     ) throws ScriptException, IOException {
         synchronized (HEADERS) {
-            int num = 2;
-            try {
-                num = Integer.parseInt(numStr.trim());
-            } catch (Exception e) {
-            }
             Songs songs = new Songs();
-            songs.setKeyword(keyword);
-            songs.setState(0);
-            songs.setType("normal");
-            songs.setTime(System.currentTimeMillis());
-            songs.setNum(num);
-            List<Song> s0 = new LinkedList<>();
-            JSONObject body = new JSONObject();
-            body.put("page", "1");
-            body.put("keyword", keyword);
-
-            JSONObject data = Source.hamm.search(HEADERS, body.toJSONString());
-
-            if (data.getInteger("code") == 200) {
-                for (Object e0 : data.getJSONObject("data").getJSONArray("list")) {
-                    JSONObject d0 = (JSONObject) e0;
-                    Song song = new Song();
-                    song.setId(d0.get("mid").toString());
-                    song.setAuthor_name(d0.getString("artist"));
-                    song.setMedia_name(d0.getString("album"));
-                    song.setImgUrl(d0.getString("pic"));
-                    song.setLyric("vip歌曲暂不提供歌词");
-                    song.setSongUrl(UtilsController.getRedirectUrl(
-                            "https://api.hamm.cn/song/play?mid=" + song.getId(),"https://music.hamm.cn/"));
-                    s0.add(song);
-                    if (s0.size() >= num)
-                        break;
-                }
-            } else {
-                System.err.println("获取vip失败=>" + keyword);
+            Document doc = Jsoup.
+                    connect("https://zj.v.api.aa1.cn/api/qqmusic/?songName=" + keyword + "&singerName=&playlistId=&pageNum=1&pageSize=2&type=qq")
+                    .headers(HEADERS)
+                    .ignoreContentType(true).ignoreHttpErrors(true).get();
+            String text = doc.body().text();
+            JSONObject jo = JSON.parseObject(text);
+            List<Song> list = new ArrayList<>();
+            for (Object o : jo.getJSONArray("list")) {
+                JSONObject j1 = (JSONObject) o;
+                Song song = new Song();
+                song.setSongUrl(j1.getString("url"));
+                song.setImgUrl(j1.getString("cover"));
+                song.setLyric("");
+                song.setMedia_name(j1.getString("name"));
+                song.setAuthor_name(j1.getString("singer"));
+                song.setId("0");
+                list.add(song);
             }
-            songs.setData(s0.toArray(new Song[s0.size()]));
+            songs.setType("qq");
+            songs.setTime(System.currentTimeMillis());
+            songs.setState(200);
+            songs.setNum(list.size());
+            songs.setKeyword(keyword);
+            songs.setData(list.toArray(new Song[0]));
             return songs;
         }
     }
