@@ -20,7 +20,7 @@ import static io.github.kloping.mywebsite.utils.EmailSender.SENDER;
 public class EmailReceivesBroadcast extends Broadcast<EmailReceivesBroadcast.EmailReceivesReceiver> implements Runnable {
     public static final EmailReceivesBroadcast INSTANCE = new EmailReceivesBroadcast();
     public static final String HOST = "outlook.office365.com";
-    public static final String EMAILID = "./email.id";
+    public static final String EMAIL_ID = "./email.id";
     private String user = SENDER;
     private String password = PASSWORD;
     private String host = HOST;
@@ -75,7 +75,7 @@ public class EmailReceivesBroadcast extends Broadcast<EmailReceivesBroadcast.Ema
     public void run() {
         try {
             if (id == null) {
-                String ids = FileUtils.getStringFromFile(EMAILID).trim();
+                String ids = FileUtils.getStringFromFile(EMAIL_ID).trim();
                 if (Judge.isNotEmpty(ids)) {
                     id = Integer.valueOf(ids);
                 }
@@ -95,7 +95,7 @@ public class EmailReceivesBroadcast extends Broadcast<EmailReceivesBroadcast.Ema
                     message = folder.getMessages(new int[]{nid})[0];
                 } catch (MessagingException | ArrayIndexOutOfBoundsException e) {
                     id = nid - 1;
-                    FileUtils.putStringInFile(id.toString(), new File(EMAILID));
+                    FileUtils.putStringInFile(id.toString(), new File(EMAIL_ID));
                     break;
                 }
                 int mid = message.getMessageNumber();
