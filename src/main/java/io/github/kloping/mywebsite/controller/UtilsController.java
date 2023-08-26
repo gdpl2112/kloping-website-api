@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import io.github.kloping.date.DateUtils;
 import io.github.kloping.file.FileUtils;
 import io.github.kloping.io.ReadUtils;
+import io.github.kloping.judge.Judge;
 import io.github.kloping.mywebsite.entitys.FileWithPath;
 import io.github.kloping.mywebsite.entitys.OnlyData;
 import io.github.kloping.mywebsite.entitys.baiduShitu.BaiduShitu;
@@ -240,17 +241,22 @@ public class UtilsController {
     }
 
     @GetMapping("/transImg")
-    public void proxy(@RequestParam("url") String url, HttpServletRequest request, HttpServletResponse response) {
+    public String proxy(@RequestParam("url") String url, @Nullable @RequestParam("type") String type, HttpServletResponse response) {
         try {
             Connection connection = null;
             connection = org.jsoup.Jsoup.connect(url).ignoreContentType(true).ignoreHttpErrors(true).header("Host", new URL(url).getHost()).header("accept-encoding", "gzip, deflate, br").userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Safari/537.36 Edg/100.0.1185.50").method(Connection.Method.GET);
             Connection.Response resp = connection.execute();
             byte[] bytes = resp.bodyAsBytes();
             String name = save(bytes, true);
-            response.sendRedirect("/" + name);
+            if (Judge.isEmpty(type)) {
+                response.sendRedirect("/" + name);
+            } else if ("url".equals(type)) {
+                return "http://kloping.top/" + name;
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     @GetMapping("/transImg2")
