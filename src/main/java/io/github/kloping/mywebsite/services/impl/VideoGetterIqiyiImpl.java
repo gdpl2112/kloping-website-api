@@ -12,7 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import static io.github.kloping.mywebsite.plugins.Source.empty;
+import static io.github.kloping.mywebsite.plugins.PluginsSource.empty;
 
 /**
  * @author github.kloping

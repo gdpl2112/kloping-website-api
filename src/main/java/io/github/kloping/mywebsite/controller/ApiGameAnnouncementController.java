@@ -1,6 +1,5 @@
 package io.github.kloping.mywebsite.controller;
 
-import io.github.kloping.mywebsite.entitys.ApiDetail;
 import io.github.kloping.mywebsite.entitys.pvpQqCom.Response0;
 import io.github.kloping.mywebsite.entitys.pvpSkin.Pcblzlby_c6;
 import io.github.kloping.mywebsite.entitys.pvpSkin.PvpSkin;
@@ -9,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import static io.github.kloping.mywebsite.plugins.Source.getPvpNews;
-import static io.github.kloping.mywebsite.plugins.Source.pvpQq;
+import static io.github.kloping.mywebsite.plugins.PluginsSource.getPvpNews;
+import static io.github.kloping.mywebsite.plugins.PluginsSource.pvpQq;
 
 /**
  * @author github.kloping

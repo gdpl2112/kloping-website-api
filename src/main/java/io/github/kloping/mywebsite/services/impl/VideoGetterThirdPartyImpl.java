@@ -2,7 +2,7 @@ package io.github.kloping.mywebsite.services.impl;
 
 import io.github.kloping.mywebsite.entitys.VideoAnimeDetail;
 import io.github.kloping.mywebsite.entitys.VideoAnimeSource;
-import io.github.kloping.mywebsite.plugins.Source;
+import io.github.kloping.mywebsite.plugins.PluginsSource;
 import io.github.kloping.mywebsite.services.IVideoGetter;
 import io.github.kloping.number.NumberUtils;
 import org.jsoup.nodes.Document;
@@ -26,7 +26,7 @@ public class VideoGetterThirdPartyImpl implements IVideoGetter {
     public VideoAnimeSource[] search(String keyword) {
         if (HIST.containsKey(keyword)) return HIST.get(keyword);
         List<VideoAnimeSource> sources = new ArrayList<>();
-        Document doc0 = Source.vopipi.doc(keyword);
+        Document doc0 = PluginsSource.vopipi.doc(keyword);
         Element p0 = doc0.getElementsByClass("stui-vodlist clearfix").get(0);
         for (Element child : p0.children()) {
             VideoAnimeSource source = new VideoAnimeSource();
@@ -49,7 +49,7 @@ public class VideoGetterThirdPartyImpl implements IVideoGetter {
 
     @Override
     public VideoAnimeSource get(String keyword, String url) {
-        Document doc0 = Source.vopipi.doc(keyword);
+        Document doc0 = PluginsSource.vopipi.doc(keyword);
         Element p0 = doc0.getElementsByClass("stui-vodlist clearfix").get(0);
         for (Element child : p0.children()) {
             Element na = child.getElementsByClass("stui-vodlist__thumb lazyload").get(0);
@@ -75,7 +75,7 @@ public class VideoGetterThirdPartyImpl implements IVideoGetter {
 
     private VideoAnimeDetail[] getDetails(String url0) {
         List<VideoAnimeDetail> sources = new ArrayList<>();
-        Document document = Source.vopipi.details(url0);
+        Document document = PluginsSource.vopipi.details(url0);
         Element e0 = document.getElementsByClass("item active").get(0);
         Element e1 = e0.getElementsByClass("play-content").get(0);
         for (Element element : e1.getElementsByTag("li")) {

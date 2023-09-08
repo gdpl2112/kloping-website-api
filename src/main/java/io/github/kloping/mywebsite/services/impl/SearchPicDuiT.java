@@ -8,8 +8,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
 
-import static io.github.kloping.mywebsite.plugins.Source.duiTangImage;
-import static io.github.kloping.mywebsite.plugins.Source.getEntry;
+import static io.github.kloping.mywebsite.plugins.PluginsSource.duiTangImage;
+import static io.github.kloping.mywebsite.plugins.PluginsSource.getEntry;
 
 /**
  * @author github-kloping

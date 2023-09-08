@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
-import static io.github.kloping.mywebsite.plugins.Source.kugou;
+import static io.github.kloping.mywebsite.plugins.PluginsSource.kugou;
 
 /**
  * @author github-kloping

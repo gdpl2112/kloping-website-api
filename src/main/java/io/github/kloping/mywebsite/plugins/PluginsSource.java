@@ -23,11 +23,11 @@ import java.util.Map;
  * @version 1.0
  */
 @CommentScan(path = "io.github.kloping.mywebsite.plugins")
-public class Source {
+public class PluginsSource {
 
     public static void before() {
-        StarterApplication.SCAN_LOADER = Source.class.getClassLoader();
-        StarterApplication.run(Source.class);
+        StarterApplication.SCAN_LOADER = PluginsSource.class.getClassLoader();
+        StarterApplication.run(PluginsSource.class);
     }
 
     @AutoStand
@@ -86,6 +86,7 @@ public class Source {
 
     @AutoStand
     public static RunAll runAll;
+
 
     public static ParseGifImgImpl parseGifImg = new ParseGifImgImpl();
 

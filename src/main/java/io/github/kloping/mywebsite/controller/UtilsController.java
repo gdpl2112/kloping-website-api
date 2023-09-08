@@ -36,7 +36,7 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import static io.github.kloping.mywebsite.plugins.Source.iBaiduShitu;
+import static io.github.kloping.mywebsite.plugins.PluginsSource.iBaiduShitu;
 
 /**
  * @author github-kloping

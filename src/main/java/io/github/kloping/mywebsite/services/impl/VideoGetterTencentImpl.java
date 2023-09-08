@@ -20,7 +20,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.Map.Entry;
 
-import static io.github.kloping.mywebsite.plugins.Source.*;
+import static io.github.kloping.mywebsite.plugins.PluginsSource.*;
 
 /**
  * @author github.kloping

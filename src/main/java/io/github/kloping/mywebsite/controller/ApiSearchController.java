@@ -3,9 +3,13 @@ package io.github.kloping.mywebsite.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import io.github.kloping.mywebsite.entitys.VideoAnimeSource;
+import io.github.kloping.mywebsite.entitys.baiduShitu.BaiduShitu;
+import io.github.kloping.mywebsite.entitys.baiduShitu.response.BaiduShituResponse;
 import io.github.kloping.mywebsite.entitys.medias.Result;
 import io.github.kloping.mywebsite.entitys.medias.Song;
 import io.github.kloping.mywebsite.entitys.medias.Songs;
+import io.github.kloping.mywebsite.plugins.PluginsSource;
+import io.github.kloping.mywebsite.plugins.detail.BaiduShituDetail;
 import io.github.kloping.mywebsite.services.*;
 import io.github.kloping.mywebsite.services.impl.ParseGifImgImpl;
 import io.github.kloping.mywebsite.services.impl.ParseGifImgImpl0;
@@ -271,4 +275,15 @@ public class ApiSearchController {
         }
     }
 
+    @RequestMapping("searchPic")
+    public Object searchPic(@RequestParam("url") String url) {
+        List list = new ArrayList<>();
+        BaiduShitu baiduShitu = BaiduShituDetail.get(url);
+        BaiduShituResponse response = PluginsSource.iBaiduShitu.response(baiduShitu.getData().getSign());
+        Iterator<io.github.kloping.mywebsite.entitys.baiduShitu.response.List> iterator = Arrays.asList(response.getData().getList()).iterator();
+        while (iterator.hasNext()) {
+            list.add(iterator.hasNext());
+        }
+        return list;
+    }
 }

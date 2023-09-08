@@ -1,6 +1,5 @@
 package io.github.kloping.mywebsite.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.github.kloping.judge.Judge;
@@ -14,13 +13,10 @@ import io.github.kloping.mywebsite.entitys.yuanShen.YuanShenPlayerInfo;
 import io.github.kloping.mywebsite.mapper.AddressCodeMapper;
 import io.github.kloping.mywebsite.mapper.BottleMessageMapper;
 import io.github.kloping.mywebsite.mapper.IllegalMapper;
-import io.github.kloping.mywebsite.plugins.Source;
+import io.github.kloping.mywebsite.plugins.PluginsSource;
 import io.github.kloping.mywebsite.services.IgetLngLat;
 import io.github.kloping.mywebsite.utils.ImageDrawer;
 import io.github.kloping.mywebsite.utils.MyUtils;
-import io.github.kloping.url.UrlUtils;
-import org.jsoup.Connection;
-import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.Nullable;
@@ -32,10 +28,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.security.SecureRandom;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 /**
  * @author github.kloping
@@ -46,23 +44,30 @@ public class ApiToolController {
 
     @RequestMapping("/ocr")
     public List<String> ocr(@RequestParam("url") @Nullable String url, @RequestParam("file") @Nullable MultipartFile imageFile) {
-        try {
-            byte[] bytes = null;
-            if (imageFile != null && !imageFile.isEmpty()) {
-                bytes = imageFile.getBytes();
-            } else if (Judge.isNotEmpty(url)) {
-                bytes = UrlUtils.getBytesFromHttpUrl(url);
-            } else return new ArrayList<>();
-            String json = Jsoup.connect("http://www.iinside.cn:7001/api_req/").method(Connection.Method.POST).ignoreContentType(true).ignoreHttpErrors(true).header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 Edg/109.0.1518.78").header("Accept", "application/json, */*").data("image_ocr_pp", "wx.png", new ByteArrayInputStream(bytes), "application/octet-stream").data("password", "8907").data("reqmode", "ocr_pp").execute().body();
-            List<String> list = new ArrayList<>();
-            for (Object o : JSON.parseObject(json).getJSONArray("data")) {
-                list.add(o.toString());
-            }
-            return list;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ArrayList<>();
-        }
+//        try {
+//            byte[] bytes = null;
+//            if (imageFile != null && !imageFile.isEmpty()) {
+//                bytes = imageFile.getBytes();
+//            } else if (Judge.isNotEmpty(url)) {
+//                bytes = UrlUtils.getBytesFromHttpUrl(url);
+//            } else return new ArrayList<>();
+//            String json = Jsoup.connect("http://www.iinside.cn:7001/api_req/"
+//            ).method(Connection.Method.POST).ignoreContentType(true).ignoreHttpErrors(true)
+//                    .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 Edg/109.0.1518.78")
+//                    .header("Accept", "application/json, */*")
+//                    .data("file", "oc.jpg", new ByteArrayInputStream(bytes), "application/octet-stream")
+//                    .execute().body();
+//
+//            List<String> list = new ArrayList<>();
+//            for (Object o : JSON.parseObject(json).getJSONArray("data")) {
+//                list.add(o.toString());
+//            }
+//            return list;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return new ArrayList<>();
+//        }
+        return null;
     }
 
     @Autowired
@@ -122,9 +127,9 @@ public class ApiToolController {
         Object o = null;
         try {
             if (v == null || v.trim().isEmpty()) {
-                o = Source.runAll.runAny(entity, l);
+                o = PluginsSource.runAll.runAny(entity, l);
             } else {
-                o = Source.runAll.runAny(entity, l, v);
+                o = PluginsSource.runAll.runAny(entity, l, v);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -142,7 +147,7 @@ public class ApiToolController {
 
     @GetMapping("/shenInfo")
     public String info(@RequestParam("uid") String uid, @RequestParam("server") Integer server, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        YuanShenPlayerInfo info = Source.daidr.info(uid, server, HEADERS0);
+        YuanShenPlayerInfo info = PluginsSource.daidr.info(uid, server, HEADERS0);
         String name = ImageDrawer.drawerShenInfo(info);
         return "http://kloping.top/" + name;
     }

@@ -7,6 +7,7 @@ import io.github.kloping.common.Public;
 import io.github.kloping.date.FrameUtils;
 import io.github.kloping.file.FileUtils;
 import io.github.kloping.mywebsite.broadcast.EmailReceivesBroadcast;
+import io.github.kloping.mywebsite.plugins.PluginsSource;
 import io.github.kloping.mywebsite.webhook.WebHookStarter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -35,7 +36,7 @@ public class MyWebSiteApplication {
     public static void main(String[] args) {
         onCreate();
         applicationContext = SpringApplication.run(MyWebSiteApplication.class, args);
-        io.github.kloping.mywebsite.plugins.Source.before();
+        PluginsSource.before();
         System.out.println("start succes -v 9-5");
 
         String name = ManagementFactory.getRuntimeMXBean().getName();

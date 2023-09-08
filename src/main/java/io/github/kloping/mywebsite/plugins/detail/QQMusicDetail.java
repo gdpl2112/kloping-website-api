@@ -10,7 +10,7 @@ import io.github.kloping.mywebsite.entitys.webApi.qqLyric.QQLyric;
 import io.github.kloping.mywebsite.entitys.webApi.qqMusicSearchNewPlatform.QqMusicSearchNewPlatform;
 import io.github.kloping.mywebsite.entitys.webApi.qqOneSong.Data;
 import io.github.kloping.mywebsite.entitys.webApi.qqOneSong.QQOneSong;
-import io.github.kloping.mywebsite.plugins.Source;
+import io.github.kloping.mywebsite.plugins.PluginsSource;
 import org.apache.tomcat.util.codec.binary.Base64;
 
 import java.net.URLEncoder;
@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static io.github.kloping.mywebsite.plugins.Source.qqMusic;
+import static io.github.kloping.mywebsite.plugins.PluginsSource.qqMusic;
 
 /**
  * @author github-kloping
@@ -41,7 +41,7 @@ public class QQMusicDetail {
 
     public static String filterBase64(String json) {
         QQLyric qqLyric = JSON.toJavaObject(JSON.parseObject(json), QQLyric.class);
-        qqLyric.setLyric(Source.decodeBySunMisc(qqLyric.getLyric()));
+        qqLyric.setLyric(PluginsSource.decodeBySunMisc(qqLyric.getLyric()));
         return JSON.toJSONString(qqLyric);
     }
 
@@ -108,7 +108,7 @@ public class QQMusicDetail {
     private static String getT0(Data data, String urlEnd) {
         for (String urlStr : data.getSip()) {
             String url = urlStr + urlEnd;
-            if (Source.checkUrl(url)) {
+            if (PluginsSource.checkUrl(url)) {
                 return url;
             }
         }

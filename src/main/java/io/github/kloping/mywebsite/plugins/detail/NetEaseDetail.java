@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
-import static io.github.kloping.mywebsite.plugins.Source.getEntry;
-import static io.github.kloping.mywebsite.plugins.Source.netEaseMusic;
+import static io.github.kloping.mywebsite.plugins.PluginsSource.getEntry;
+import static io.github.kloping.mywebsite.plugins.PluginsSource.netEaseMusic;
 
 /**
  * @author github-kloping
