@@ -2,8 +2,10 @@ package io.github.kloping.mywebsite.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import io.github.kloping.file.FileUtils;
 import io.github.kloping.judge.Judge;
 import io.github.kloping.mywebsite.entitys.AddressCode;
+import io.github.kloping.mywebsite.entitys.FileWithPath;
 import io.github.kloping.mywebsite.entitys.database.BottleMessage;
 import io.github.kloping.mywebsite.entitys.database.Illegal;
 import io.github.kloping.mywebsite.entitys.medias.position.PositionInfo;
@@ -17,6 +19,7 @@ import io.github.kloping.mywebsite.plugins.PluginsSource;
 import io.github.kloping.mywebsite.services.IgetLngLat;
 import io.github.kloping.mywebsite.utils.ImageDrawer;
 import io.github.kloping.mywebsite.utils.MyUtils;
+import io.github.kloping.url.UrlUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.Nullable;
@@ -25,6 +28,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import ws.schild.jave.Encoder;
+import ws.schild.jave.MultimediaObject;
+import ws.schild.jave.encode.AudioAttributes;
+import ws.schild.jave.encode.EncodingAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -204,5 +211,32 @@ public class ApiToolController {
         Long time = Long.parseLong(time0);
         String end = MyUtils.getTimeFormat0(System.currentTimeMillis() - time);
         return end;
+    }
+
+
+    @RequestMapping("/mp32amr")
+    public Object mp32amr(@RequestParam("url") String url, HttpServletResponse response) {
+        try {
+            FileWithPath source = UtilsController.requestFile(true, "mp3");
+            FileUtils.writeBytesToFile(UrlUtils.getBytesFromHttpUrl(url), source.getFile());
+            FileWithPath target = UtilsController.requestFile(true, "amr");
+            AudioAttributes audioAttributes = new AudioAttributes();
+            audioAttributes.setChannels(1);
+            audioAttributes.setBitRate(24000);
+            audioAttributes.setSamplingRate(8000);
+            EncodingAttributes encodingAttributes = new EncodingAttributes();
+            encodingAttributes.setOutputFormat("amr");
+            encodingAttributes.setAudioAttributes(audioAttributes);
+            Encoder encoder = new Encoder();
+            encoder.encode(new MultimediaObject(source.getFile()), target.getFile(), encodingAttributes);
+            response.addHeader("Content-type", "audio/amr-wb");
+            response.getOutputStream().write(FileUtils.getBytesFromFile(target.getFile().getAbsolutePath()));
+            source.getFile().delete();
+            target.getFile().delete();
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "转换失败!\n" + e.getMessage();
+        }
     }
 }

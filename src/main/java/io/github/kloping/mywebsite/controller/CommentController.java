@@ -47,10 +47,4 @@ public class CommentController {
                 .setIcon(userTemp.getIcon());
         return service.put(comment) > 0 ? comment : null;
     }
-
-    @Value("${auth.url}")
-    String url;
-
-    @Value("${auth.pwd}")
-    String pwd;
 }
