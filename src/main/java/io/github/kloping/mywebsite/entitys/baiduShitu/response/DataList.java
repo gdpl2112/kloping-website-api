@@ -1,6 +1,6 @@
 package io.github.kloping.mywebsite.entitys.baiduShitu.response;
 
-public class List {
+public class DataList {
     private String fromUrl;
     private Number width;
     private String objUrl;
@@ -13,7 +13,7 @@ public class List {
         return this.fromUrl;
     }
 
-    public List setFromUrl(String fromUrl) {
+    public DataList setFromUrl(String fromUrl) {
         this.fromUrl = fromUrl;
         return this;
     }
@@ -22,7 +22,7 @@ public class List {
         return this.width;
     }
 
-    public List setWidth(Number width) {
+    public DataList setWidth(Number width) {
         this.width = width;
         return this;
     }
@@ -31,7 +31,7 @@ public class List {
         return this.objUrl;
     }
 
-    public List setObjUrl(String objUrl) {
+    public DataList setObjUrl(String objUrl) {
         this.objUrl = objUrl;
         return this;
     }
@@ -40,7 +40,7 @@ public class List {
         return this.index;
     }
 
-    public List setIndex(Number index) {
+    public DataList setIndex(Number index) {
         this.index = index;
         return this;
     }
@@ -49,7 +49,7 @@ public class List {
         return this.contsign;
     }
 
-    public List setContsign(String contsign) {
+    public DataList setContsign(String contsign) {
         this.contsign = contsign;
         return this;
     }
@@ -58,7 +58,7 @@ public class List {
         return this.thumbUrl;
     }
 
-    public List setThumbUrl(String thumbUrl) {
+    public DataList setThumbUrl(String thumbUrl) {
         this.thumbUrl = thumbUrl;
         return this;
     }
@@ -67,7 +67,7 @@ public class List {
         return this.height;
     }
 
-    public List setHeight(Number height) {
+    public DataList setHeight(Number height) {
         this.height = height;
         return this;
     }

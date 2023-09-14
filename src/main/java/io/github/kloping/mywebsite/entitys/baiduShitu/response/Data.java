@@ -4,7 +4,7 @@ public class Data {
     private String ajaxTextUrl;
     private String imageUrl;
     private Number length;
-    private List[] list;
+    private DataList[] list;
 
     public String getAjaxTextUrl() {
         return this.ajaxTextUrl;
@@ -33,11 +33,11 @@ public class Data {
         return this;
     }
 
-    public List[] getList() {
+    public DataList[] getList() {
         return this.list;
     }
 
-    public Data setList(List[] list) {
+    public Data setList(DataList[] list) {
         this.list = list;
         return this;
     }
