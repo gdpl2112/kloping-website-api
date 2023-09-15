@@ -20,6 +20,8 @@ import io.github.kloping.mywebsite.services.IgetLngLat;
 import io.github.kloping.mywebsite.utils.ImageDrawer;
 import io.github.kloping.mywebsite.utils.MyUtils;
 import io.github.kloping.url.UrlUtils;
+import org.jsoup.Connection;
+import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.Nullable;
@@ -35,12 +37,10 @@ import ws.schild.jave.encode.EncodingAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.security.SecureRandom;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 /**
  * @author github.kloping
@@ -50,31 +50,25 @@ import java.util.Random;
 public class ApiToolController {
 
     @RequestMapping("/ocr")
-    public List<String> ocr(@RequestParam("url") @Nullable String url, @RequestParam("file") @Nullable MultipartFile imageFile) {
-//        try {
-//            byte[] bytes = null;
-//            if (imageFile != null && !imageFile.isEmpty()) {
-//                bytes = imageFile.getBytes();
-//            } else if (Judge.isNotEmpty(url)) {
-//                bytes = UrlUtils.getBytesFromHttpUrl(url);
-//            } else return new ArrayList<>();
-//            String json = Jsoup.connect("http://www.iinside.cn:7001/api_req/"
-//            ).method(Connection.Method.POST).ignoreContentType(true).ignoreHttpErrors(true)
-//                    .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 Edg/109.0.1518.78")
-//                    .header("Accept", "application/json, */*")
-//                    .data("file", "oc.jpg", new ByteArrayInputStream(bytes), "application/octet-stream")
-//                    .execute().body();
-//
-//            List<String> list = new ArrayList<>();
-//            for (Object o : JSON.parseObject(json).getJSONArray("data")) {
-//                list.add(o.toString());
-//            }
-//            return list;
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return new ArrayList<>();
-//        }
-        return null;
+    public Object ocr(@RequestParam("url") @Nullable String url, @RequestParam("file") @Nullable MultipartFile imageFile) {
+        try {
+            byte[] bytes = null;
+            if (imageFile != null && !imageFile.isEmpty()) {
+                bytes = imageFile.getBytes();
+            } else if (Judge.isNotEmpty(url)) {
+                bytes = UrlUtils.getBytesFromHttpUrl(url);
+            } else return new ArrayList<>();
+            String json = Jsoup.connect("https://api.pearktrue.cn/api/ocr/index.php"
+                    ).method(Connection.Method.POST).ignoreContentType(true).ignoreHttpErrors(true)
+                    .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 Edg/109.0.1518.78")
+                    .header("Accept", "*/*")
+                    .data("file", "def.jpg", new ByteArrayInputStream(bytes), "image/png")
+                    .execute().body();
+            return json;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
     }
 
     @Autowired
@@ -212,7 +206,6 @@ public class ApiToolController {
         String end = MyUtils.getTimeFormat0(System.currentTimeMillis() - time);
         return end;
     }
-
 
     @RequestMapping("/mp32amr")
     public Object mp32amr(@RequestParam("url") String url, HttpServletResponse response) {

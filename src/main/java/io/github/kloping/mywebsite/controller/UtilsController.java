@@ -93,7 +93,7 @@ public class UtilsController {
         }
     }
 
-    public static interface Notice {
+    public interface Notice {
         /**
          * on notice
          *
@@ -202,7 +202,6 @@ public class UtilsController {
         }
         return pkvMapper.delete(queryWrapper) > 0 ? "OK" : "ERROR";
     }
-
 
     @GetMapping("/notice")
     public String notice(@RequestParam String packName, @RequestParam String title, @RequestParam String text) {
