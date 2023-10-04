@@ -17,7 +17,7 @@ import java.util.Properties;
  */
 public class EmailSender {
     public static final String SENDER = "hrs3474006766@outlook.com";
-    public static final String PASSWORD = "ujqyssprhnwajfdg";
+    public static final String PASSWORD = "Han_20771";
     public static final String HOST = "smtp.office365.com";
     public static final String PORT = "587";
 
