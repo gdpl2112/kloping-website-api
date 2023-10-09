@@ -102,7 +102,8 @@ public class ApiTempController {
                 .header("Pragma", "no-cache")
                 .header("Referer", "https://ai.qidianym.net/?from=yoogle.top")
                 .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.67")
-                .ignoreContentType(true).ignoreHttpErrors(true).method(Connection.Method.POST);
+                .ignoreContentType(true).ignoreHttpErrors(true).method(Connection.Method.POST)
+                .timeout(120000);
     }
 
     public JSONObject reqData = null;
