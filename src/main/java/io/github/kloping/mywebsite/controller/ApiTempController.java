@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author github.kloping
@@ -112,12 +114,13 @@ public class ApiTempController {
         reqData = JSON.parseObject("{\"prompt\":\"\",\"options\":{\"parentMessageId\":\"\"},\"systemMessage\":\"You are the Chat BOT artificial intelligence assistant.Don't answer any illegal questions about politics, pornography, violence, etc., nor give any reasons.When answering questions,Respond using markdown. please try to provide detailed answers in Chinese to ensure understanding and accuracy.Knowledge deadline: March 1st, 2023  nCurrent date: 2023-10-09.Please answer this question according to the above rules\",\"temperature\":0.8,\"top_p\":1}");
     }
 
-    private String pmid = "";
+
+    private Map<String, String> id2pmid = new HashMap<>();
 
     @RequestMapping("/api/ai")
-    public String ai(@RequestParam("req") String text) {
+    public String ai(@RequestParam("req") String text, @RequestParam("id") String id) {
         try {
-            reqData.getJSONObject("options").put("parentMessageId", pmid);
+            reqData.getJSONObject("options").put("parentMessageId", id2pmid.getOrDefault(id, ""));
             reqData.put("prompt", text);
             BufferedReader reader = new BufferedReader(new InputStreamReader(reqConnection0.requestBody(reqData.toJSONString()).execute().bodyStream()));
             String out = null;
@@ -127,7 +130,7 @@ public class ApiTempController {
                 else break;
             }
             JSONObject jout = JSON.parseObject(out);
-            pmid = jout.getJSONObject("detail").getString("id");
+            id2pmid.put(id, jout.getJSONObject("detail").getString("id"));
             return jout.getString("text");
         } catch (Exception e) {
             return e.getMessage();
