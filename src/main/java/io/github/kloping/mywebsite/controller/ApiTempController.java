@@ -71,7 +71,7 @@ public class ApiTempController {
                             break;
                         } else sb.append(out);
                         if (r >= 30) {
-                            sb.append("请求超时!请重试.");
+                            sb.append("\n请求超时!请重试.");
                             break;
                         }
                     }
