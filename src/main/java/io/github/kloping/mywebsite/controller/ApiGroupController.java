@@ -43,10 +43,6 @@ public class ApiGroupController {
 
     public static final OkHttpClient CLIENT = new OkHttpClient();
 
-    static {
-
-    }
-
     public static PayOut launch(String pskey, String skey, String title, Float jie, Long qq, Long uin, Long gid) {
         try {
             String cookie = "uin=o" + qq + "; p_uin=o" + qq + "; skey=" + skey + "; p_skey=" + pskey;

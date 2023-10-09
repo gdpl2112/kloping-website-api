@@ -17,7 +17,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api")
-public class ApiShowController implements ApplicationRunner {
+public class ApiShowController   {
     @Autowired
     ApiDetailMapper mapper;
 
@@ -31,7 +31,4 @@ public class ApiShowController implements ApplicationRunner {
         return details;
     }
 
-    @Override
-    public void run(ApplicationArguments args) throws Exception {
-    }
 }

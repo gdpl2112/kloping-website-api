@@ -17,7 +17,7 @@ import java.util.List;
 @Service
 public class ParseGifImgImpl0 implements IParseImg {
 
-    public ParseGifImgImpl gifImg = new ParseGifImgImpl();
+    public ParseKsVoiceImpl gifImg = new ParseKsVoiceImpl();
 
     @Override
     public String[] parse(String url) throws Exception {
