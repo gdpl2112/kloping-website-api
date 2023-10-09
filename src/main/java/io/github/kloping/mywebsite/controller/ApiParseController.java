@@ -30,7 +30,7 @@ public class ApiParseController {
     @Autowired
     IParseImg parseImgDy;
 
-    @RequestMapping("/parseImgs")
+    @RequestMapping("/api/search/parseImgs")
     public List<String> parseImg(HttpServletRequest request, String url, @RequestParam(required = false) String type) {
         if (type == null) {
             if (url.contains("douyin")) type = "dy";
@@ -51,7 +51,7 @@ public class ApiParseController {
         return null;
     }
 
-    @RequestMapping("/parseVoice")
+    @RequestMapping("/api/search/parseVoice")
     public Object parseVoice(String url) throws IOException {
         if (url.contains("kuaishou")) {
             return "https://p4.a.yximgs.com" + ksVoice.getDataResponse(url).getAtlas().getMusic();
