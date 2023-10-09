@@ -30,6 +30,7 @@ public class ApiTempController {
                     .header("Referer", "https://codenews.cc/chatgpt")
                     .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.67")
                     .requestBody("chatgpt_input=" + URLEncoder.encode(text) + "&qa_type=programming&chatgpt_version_value=202301008").post();
+            int s = 0;
             while (true) {
                 Document doc0 = Jsoup.connect("https://codenews.cc/chat_stream").ignoreHttpErrors(true).ignoreContentType(true)
                         .header("Accept", "application/json, text/javascript, */*; q=0.01")
@@ -49,6 +50,12 @@ public class ApiTempController {
                     sb.append(out.substring(0, out.length() - 1));
                     break;
                 } else sb.append(out);
+                Thread.sleep(2000);
+                s += 2;
+                if (s >= 20) {
+                    sb = new StringBuilder("请求超时,请重试!");
+                    break;
+                }
             }
             return sb.toString();
         } catch (Exception e) {
