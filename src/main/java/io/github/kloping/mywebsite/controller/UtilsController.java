@@ -104,12 +104,11 @@ public class UtilsController {
         void notice(String packName, String title, String text);
     }
 
-    public static final List<Notice> NOTICES = new ArrayList<>();
-
     @GetMapping("/tool/ok")
     public String ok(String a) {
         return "ok";
     }
+
 
     @Autowired
     PwdKeyValueMapper pkvMapper;
@@ -152,45 +151,11 @@ public class UtilsController {
         }
     }
 
-    @GetMapping("/containsKeys")
-    public Integer contains(@RequestParam("keys") String[] keys, @RequestParam("pwd") String pwd, @RequestParam("value") @Nullable String value) {
-        Integer c = 0;
-        for (String key : keys) {
-            QueryWrapper<PwdKeyValue> queryWrapper = new QueryWrapper<>();
-            queryWrapper.eq("pwd", pwd);
-            queryWrapper.eq("k", key);
-            PwdKeyValue pkv = pkvMapper.selectOne(queryWrapper);
-            if (pkv == null) continue;
-            if (value != null && !value.isEmpty()) {
-                if (pkv.getValue().equalsIgnoreCase(value)) {
-                    c++;
-                }
-            } else {
-                c++;
-            }
-        }
-        return c;
-    }
-
-
-    @GetMapping("/containsPwds")
-    public Integer containsPwds(@RequestParam("key") String key, @RequestParam("pwds") String[] pwds, @RequestParam("value") @Nullable String value) {
-        Integer c = 0;
-        for (String pwd : pwds) {
-            QueryWrapper<PwdKeyValue> queryWrapper = new QueryWrapper<>();
-            queryWrapper.eq("pwd", pwd);
-            queryWrapper.eq("k", key);
-            PwdKeyValue pkv = pkvMapper.selectOne(queryWrapper);
-            if (pkv == null) continue;
-            if (value != null && !value.isEmpty()) {
-                if (pkv.getValue().equalsIgnoreCase(value)) {
-                    c++;
-                }
-            } else {
-                c++;
-            }
-        }
-        return c;
+    @RequestMapping("/list")
+    public Object get(@RequestParam("key") String key) {
+        QueryWrapper<PwdKeyValue> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("pwd", pwd);
+        return pkvMapper.selectList(queryWrapper);
     }
 
     @GetMapping("/del")
@@ -202,6 +167,44 @@ public class UtilsController {
         }
         return pkvMapper.delete(queryWrapper) > 0 ? "OK" : "ERROR";
     }
+
+    @GetMapping("/containsKeys")
+    public Integer contains(@RequestParam("keys") String[] keys, @RequestParam("pwd") String pwd, @RequestParam("value") @Nullable String value) {
+        Integer c = 0;
+        for (String key : keys) {
+            c = getContainsCount(pwd, value, c, key);
+            continue;
+        }
+        return c;
+    }
+
+    private Integer getContainsCount(String pwd, String value, Integer c, String key) {
+        QueryWrapper<PwdKeyValue> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("pwd", pwd);
+        queryWrapper.eq("k", key);
+        PwdKeyValue pkv = pkvMapper.selectOne(queryWrapper);
+        if (pkv == null) return c;
+        if (value != null && !value.isEmpty()) {
+            if (pkv.getValue().equalsIgnoreCase(value)) {
+                c++;
+            }
+        } else {
+            c++;
+        }
+        return c;
+    }
+
+    @GetMapping("/containsPwds")
+    public Integer containsPwds(@RequestParam("key") String key, @RequestParam("pwds") String[] pwds, @RequestParam("value") @Nullable String value) {
+        Integer c = 0;
+        for (String pwd : pwds) {
+            c = getContainsCount(pwd, value, c, key);
+            continue;
+        }
+        return c;
+    }
+
+    public static final List<Notice> NOTICES = new ArrayList<>();
 
     @GetMapping("/notice")
     public String notice(@RequestParam String packName, @RequestParam String title, @RequestParam String text) {
