@@ -152,7 +152,7 @@ public class UtilsController {
     }
 
     @RequestMapping("/list")
-    public Object get(@RequestParam("key") String key) {
+    public Object get(@RequestParam("pwd") String pwd) {
         QueryWrapper<PwdKeyValue> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("pwd", pwd);
         return pkvMapper.selectList(queryWrapper);
