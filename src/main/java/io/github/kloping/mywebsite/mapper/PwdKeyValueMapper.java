@@ -13,6 +13,11 @@ import java.util.List;
  */
 @Mapper
 public interface PwdKeyValueMapper extends BaseMapper<PwdKeyValue> {
+    /**
+     *
+     * @param pwd
+     * @return
+     */
     @Select("select k from pkv where pwd=#{pwd};")
     List<String> selectKeys(@Param("pwd") String pwd);
 }
