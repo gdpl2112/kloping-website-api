@@ -136,4 +136,9 @@ public class ApiTempController {
             return e.getMessage();
         }
     }
+
+    @RequestMapping("/api/ai/clear")
+    public String clearAi(@RequestParam("id") String id) {
+        return id2pmid.remove(id);
+    }
 }
