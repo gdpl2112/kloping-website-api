@@ -23,17 +23,28 @@ public class ZaiwenChatBotService implements ChatBotService {
     public Connection reqConnection0 = null;
 
     {
-        reqConnection0 = Jsoup.connect("https://ai.zaiwen.org.cn/message_poe").header("Accept", "application/json, text/plain, */*").header("Accept-Encoding", "gzip, deflate, br").header("Accept-Language", "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6").header("Cache-Control", "no-cache").header("Content-Type", "application/json").header("Origin", "https://www.zaiwen.top").header("Host", "ai.zaiwen.org.cn").header("Pragma", "no-cache").header("Referer", "https://www.zaiwen.top/").header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.67").ignoreContentType(true).ignoreHttpErrors(true).method(Connection.Method.POST).timeout(120000);
+        reqConnection0 = Jsoup.connect("https://ai.zaiwen.org.cn/message_poe")
+                .header("Accept","*/*")
+                .header("Accept-Encoding","gzip, deflate, br")
+                .header("Accept-Language","zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6")
+                .header("Access-Control-Allow-Origin","*")
+                .header("Cache-Control","no-cache")
+                .header("Connection","keep-alive")
+                .header("Content-Type","application/json")
+                .header("Host","www.zaiwen.org.cn")
+                .header("Origin","https://www.zaiwen.top")
+                .header("Pragma","no-cache")
+                .header("Referer","https://www.zaiwen.top/")
+                .header("User-Agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.67")
+                .ignoreContentType(true).ignoreHttpErrors(true).method(Connection.Method.POST).timeout(120000);
     }
 
     @Override
     public String ai(String msg, String id) {
         JSONObject data = getRequestData(msg, id);
-        Document doc0;
         try {
             String reqStr = data.toString();
-            doc0 = reqConnection0.requestBody(reqStr).post();
-            String out = doc0.body().text();
+            String out = reqConnection0.requestBody(reqStr).execute().body();
             arrayMap.get(id).add(new ChatNode("assistant", out));
             return out;
         } catch (IOException e) {
