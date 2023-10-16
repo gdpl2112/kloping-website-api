@@ -18,16 +18,24 @@
             alert(err);
         })
         var audio0 = document.getElementById("audio0")
+        //正在播放..
+        var ak0 = null
+        audio0.addEventListener('ended', function () {
+            ak0 = false
+        }, false);
         setInterval(function () {
-            axios.get("/audio/get").then(function (response) {
-                if (response.data !== "E") {
-                    audio0.src = response.data
-                    audio0.load()
-                    audio0.play()
-                }
-            }).catch(function (err) {
-                alert(err);
-            })
+            if (ak0 == null || !ak0) {
+                axios.get("/audio/get").then(function (response) {
+                    if (response.data !== "E") {
+                        audio0.src = response.data
+                        audio0.load()
+                        audio0.play()
+                        ak0 = true
+                    }
+                }).catch(function (err) {
+                    alert(err);
+                })
+            }
         }, 3000, 3000)
     });
 </script>
