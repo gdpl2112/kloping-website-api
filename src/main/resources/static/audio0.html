@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="/js/lib/axios.js"></script>
+    <script src="/js/lib/vue.js"></script>
+    <script src="/js/lib/jq3.6.js"></script>
+    <title>Title</title>
+</head>
+<body>
+<audio id="audio0" src="" controls autoplay></audio>
+<script>
+    $(document).ready(async function () {
+        axios.get("/audio/clear").then(function (response) {
+
+        }).catch(function (err) {
+            alert(err);
+        })
+        var audio0 = document.getElementById("audio0")
+        setInterval(function () {
+            axios.get("/audio/get").then(function (response) {
+                if (response.data !== "E") {
+                    audio0.src = response.data
+                    audio0.load()
+                    audio0.play()
+                }
+            }).catch(function (err) {
+                alert(err);
+            })
+        }, 3000, 3000)
+    });
+</script>
+</body>
+</html>
