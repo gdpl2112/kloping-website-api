@@ -86,13 +86,13 @@
         let f0 = files[0]
         let title = $("#title").val();
         let code = sm.summernote('code');
-        if (f0.size > 3145728) {
+        if (f0 != null && f0.size > 3145728) {
             $("#tips-content").html("上传的图标大于3MB,请重新选择")
             $('#tipsModal').modal('show')
             return
         }
-        if (title.length < 2 || title.length >= 12) {
-            $("#tips-content").html("标题内容不得小于3或大于12")
+        if (title.length < 2) {
+            $("#tips-content").html("标题内容不得小于3")
             $('#tipsModal').modal('show')
             return
         }
