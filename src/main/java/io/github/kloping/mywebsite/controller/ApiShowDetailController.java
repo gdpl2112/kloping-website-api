@@ -20,7 +20,7 @@ import java.util.Map;
  * @author github-kloping
  */
 @RestController
-public class ApiShowDetailController implements ApplicationRunner {
+public class ApiShowDetailController {
 
     public static final String HTTP_FORMAT = "http://%s%s";
     public static final String HTTP_FORMAT1 = "http://%s/%s";
@@ -45,10 +45,6 @@ public class ApiShowDetailController implements ApplicationRunner {
         }
         ApiDetail apiDetail = detailMap.get(name);
         return apiDetail;
-    }
-
-    @Override
-    public void run(ApplicationArguments args) throws Exception {
     }
 
     private static final ApiDetail ERR = new ApiDetail().setAddress("请求错误").setDesc("错误").setName("错误 ");

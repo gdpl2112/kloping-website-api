@@ -8,9 +8,6 @@ import io.github.kloping.mywebsite.plugins.detail.GetPvpNews;
 import io.github.kloping.mywebsite.plugins.detail.PvpQq;
 import io.github.kloping.mywebsite.plugins.detail.RunAll;
 import io.github.kloping.mywebsite.plugins.interfaces.*;
-import io.github.kloping.mywebsite.services.impl.ParseKsVoiceImpl;
-import io.github.kloping.mywebsite.services.impl.VideoGetterIqiyiImpl;
-import io.github.kloping.mywebsite.services.impl.VideoGetterTencentImpl;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
@@ -32,10 +29,6 @@ public class PluginsSource {
 
     @AutoStand
     public static KugouMusic kugou;
-
-    @AutoStand
-    public static DouyinPic0 douyinPic0;
-
     @AutoStand
     public static NetEaseMusic netEaseMusic;
 
@@ -47,21 +40,6 @@ public class PluginsSource {
 
     @AutoStand
     public static DuiTangImage duiTangImage;
-
-    @AutoStand
-    public static Iqiyi iqiyi;
-
-    @AutoStand
-    public static Iqiyi0 iqiyi0;
-
-    @AutoStand
-    public static TencentVideo tencentVideo;
-
-    @AutoStand
-    public static TencentVideo0 tencentVideo0;
-
-    @AutoStand
-    public static Vopipi vopipi;
 
     @AutoStand
     public static MyHkw myHkw;
@@ -86,9 +64,6 @@ public class PluginsSource {
 
     @AutoStand
     public static RunAll runAll;
-
-
-    public static ParseKsVoiceImpl parseGifImg = new ParseKsVoiceImpl();
 
     /**
      * sun.misc方式Base64编码
@@ -133,7 +108,5 @@ public class PluginsSource {
 
     @Schedule("10:00:05,12:00:05,00:00:05,14:00:05")
     public static final void m0() {
-        VideoGetterIqiyiImpl.HIST.clear();
-        VideoGetterTencentImpl.HIST.clear();
     }
 }
