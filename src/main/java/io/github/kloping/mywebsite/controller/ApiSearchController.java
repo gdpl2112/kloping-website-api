@@ -57,10 +57,6 @@ public class ApiSearchController {
     @Autowired
     ISearchSong searchSongQq;
 
-    @Qualifier("searchVideoBili")
-    @Autowired
-    ISearchVideo searchVideoBili;
-
     @RequestMapping("/pic")
     public Result searchPic(HttpServletRequest request, @RequestParam("keyword") String keyword, @RequestParam(required = false) Integer num, @RequestParam(required = false, value = "type") String type) {
         Result result = new Result();
@@ -133,55 +129,6 @@ public class ApiSearchController {
                 e.printStackTrace();
             }
             return new Songs(-1, 0, System.currentTimeMillis(), keyword, null, "err");
-        }
-    }
-
-    @Autowired
-    @Qualifier("videoGetterIqiyiImpl")
-    IVideoGetter getter0;
-
-    @Autowired
-    @Qualifier("videoGetterTencentImpl")
-    IVideoGetter getter1;
-
-    @Autowired
-    @Qualifier("videoGetterThirdPartyImpl")
-    IVideoGetter getter2;
-
-    @RequestMapping("/video")
-    public Object searchVideo(@RequestParam("keyword") String keyword,
-                              @RequestParam(required = false, value = "type") String type,
-                              @RequestParam(required = false, value = "url") String url
-    ) {
-        keyword = keyword.trim();
-        if (url != null && !url.isEmpty()) {
-            switch (type.trim()) {
-                case "iqiyi":
-                    return getter0.get(keyword, url);
-                case "tencent":
-                    return getter1.get(keyword, url);
-                case "all":
-                    List<VideoAnimeSource> sources = new LinkedList<>();
-                    sources.addAll(Arrays.asList(getter0.get(keyword, url)));
-                    sources.addAll(Arrays.asList(getter1.get(keyword, url)));
-                    return sources.toArray(new VideoAnimeSource[0]);
-                default:
-                    return null;
-            }
-        } else {
-            switch (type.trim()) {
-                case "iqiyi":
-                    return getter0.search(keyword);
-                case "tencent":
-                    return getter1.search(keyword);
-                case "all":
-                    List<VideoAnimeSource> sources = new LinkedList<>();
-                    sources.addAll(Arrays.asList(getter0.search(keyword)));
-                    sources.addAll(Arrays.asList(getter1.search(keyword)));
-                    return sources.toArray(new VideoAnimeSource[0]);
-                default:
-                    return null;
-            }
         }
     }
 

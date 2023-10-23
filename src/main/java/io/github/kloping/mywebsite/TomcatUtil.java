@@ -16,6 +16,7 @@ import java.util.List;
  */
 @Configuration
 public class TomcatUtil {
+    /*
     @Value("${server.additionalPorts}")
     private String additionalPorts;
 
@@ -42,5 +43,5 @@ public class TomcatUtil {
             result.add(connector);
         }
         return result.toArray(new Connector[]{});
-    }
+    }*/
 }
