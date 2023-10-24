@@ -23,7 +23,7 @@ public class ZaiwenChatBotService implements ChatBotService {
     public Connection reqConnection0 = null;
 
     {
-        reqConnection0 = Jsoup.connect("https://ai.zaiwen.org.cn/message_poe")
+        reqConnection0 = Jsoup.connect("https://bak.cwjiaoyu.cn/message")
                 .header("Accept","*/*")
                 .header("Accept-Encoding","gzip, deflate, br")
                 .header("Accept-Language","zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6")
@@ -31,7 +31,7 @@ public class ZaiwenChatBotService implements ChatBotService {
                 .header("Cache-Control","no-cache")
                 .header("Connection","keep-alive")
                 .header("Content-Type","application/json")
-                .header("Host","www.zaiwen.org.cn")
+                .header("Host","bak.cwjiaoyu.cn")
                 .header("Origin","https://www.zaiwen.top")
                 .header("Pragma","no-cache")
                 .header("Referer","https://www.zaiwen.top/")
@@ -58,7 +58,7 @@ public class ZaiwenChatBotService implements ChatBotService {
     }
 
     private JSONObject getRequestData(String msg, String id) {
-        return getRequestData(msg, "chinchilla:0", id);
+        return getRequestData(msg, "v3.5", id);
     }
 
     public Map<String, JSONArray> arrayMap = new HashMap<>();
