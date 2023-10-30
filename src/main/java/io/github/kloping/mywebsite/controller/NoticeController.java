@@ -49,8 +49,28 @@ public class NoticeController {
     }
 
     @GetMapping("/getNoticeById")
-    public Notice get1(@RequestParam Integer id, @AuthenticationPrincipal UserDetails userDetails) {
+    public Object get1(@RequestParam Integer id, @AuthenticationPrincipal UserDetails userDetails) {
         return service.get0(id);
+    }
+
+    @GetMapping("deletable")
+    public Boolean deletable(@RequestParam Integer id, @AuthenticationPrincipal UserDetails userDetails) {
+        if (userDetails == null) return false;
+        Notice notice = mapper.selectById(id);
+        return notice.getAuthorName().equals(userDetails.getUsername());
+    }
+
+    @GetMapping("deleten")
+    public String deleten(@RequestParam Integer id, @AuthenticationPrincipal UserDetails userDetails) {
+        if (userDetails == null) return "Insufficient permissions";
+        Notice notice = mapper.selectById(id);
+        if (notice.getAuthorName().equals(userDetails.getUsername())) {
+            notice.setState(1);
+            mapper.updateById(notice);
+            notices.clear();
+            notices2.clear();
+            return "OK";
+        } else return "Insufficient permissions!";
     }
 
     @Autowired

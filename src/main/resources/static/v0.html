@@ -13,7 +13,7 @@
     <script src="/js/popper1.14.1.min.js"></script>
     <script src="/js/bootstrap4.3.1.min.js"></script>
     <link rel="stylesheet" href="/css/main.css">
-    <title>kloping bot 授权码状态</title>
+    <title>个人中心</title>
 </head>
 <body>
 <center style="margin-top: 120px;color: white"><h1> kloping bot 个人中心 </h1></center>
@@ -66,22 +66,68 @@
         <div class="col-2"></div>
         <div style="border-radius: 15px;background-color: rgba(142,211,180,0.4);text-align: center;" class="col-8">
             <hr>
-            <form id="codeForm" class="form-inline">
-                <div class="form-group mx-sm-5 mb-2">
-                    <label for="codeP" class="sr-only">授权码</label>
-                    <input type="text" class="form-control" id="codeP" :value="vd.code" placeholder="授权码">
+            <label for="image0">贡献网站背景图; 已贡献数量: <h5 style="color: #ff4e09;display: inline">{{in0}}</h5>
+            </label>
+            <div class="input-group">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="image0t">图片格式</label>
+                    </div>
+                    <select class="custom-select" id="image0t">
+                        <option value="0">横</option>
+                        <option value="1">竖</option>
+                    </select>
                 </div>
-                <input v-show="k1" type="button" v-on:click="copy0()" class="btn btn-primary mb-2" value="复制"/>
-                <input v-show="!k1" type="button" v-on:click="reqTry()" class="btn btn-primary mb-2"
-                       value="授权码申请试用"/>
-                <div :class="'form-group mx-sm-5 mb-2 '+ je0(vd.expire)">{{je(vd.expire)}}</div>
-            </form>
+                <div class="input-group mb-3">
+                    <div class="custom-file">
+                        <input type="file" accept="image/jpeg,image/png" onchange="image0change(this)"
+                               class="custom-file-input"
+                               id="image0"
+                               aria-describedby="image0"
+                               alt="img">
+                        <label class="custom-file-label" for="image0">选择图片</label>
+                    </div>
+                    <div class="input-group-append">
+                        <button class="btn btn-info" type="button" onclick="uploadi0()" id="uploadImage0">上传</button>
+                    </div>
+                </div>
+                <img id="image0show" referrer="no-referrer" class="card-img-top img-responsive center-block"
+                     src="" style="display: inline-block;max-width: 240px; "
+                     alt="待展示图片">
+            </div>
             <hr>
         </div>
     </div>
 </div>
 <script src="/js/utils.js"></script>
 <script>
+    let image = '';
+
+    function image0change(file) {
+        if (!file.files || !file.files[0]) {
+            return;
+        }
+        let reader = new FileReader();
+        reader.onload = function (evt) {
+            document.getElementById('image0show').src = evt.target.result;
+            image = file.files[0]
+            console.log(evt)
+        }
+        reader.readAsDataURL(file.files[0]);
+    }
+
+    function uploadi0() {
+        let t = $("#image0t").val()
+        let param = new FormData();
+        param.append("t", t)
+        param.append("img", image)
+        axios.post("/upload_image0", param).then(function (response) {
+            alert(response.data)
+        }).catch(function (err) {
+            alert(err);
+        })
+    }
+
     let vm1 = new Vue({
         el: "#divm",
         created: function () {
@@ -101,51 +147,18 @@
             }).catch(function (err) {
                 alert(err);
             })
+
+            axios.get("/user_in0").then(function (response) {
+                vm1.in0 = response.data
+            }).catch(function (err) {
+                alert(err);
+            })
         }, data: {
             vd: {},
             user: {},
-            k1: false
+            k1: false,
+            in0: 0
         }, methods: {
-            je: function (t) {
-                let dateTime = new Date(t)
-                let nowTime = new Date()
-                if (nowTime.getTime() > dateTime.getTime()) {
-                    return "已过期"
-                } else {
-                    let year = dateTime.getFullYear()
-                    let month = dateTime.getMonth() + 1
-                    let day = dateTime.getDate()
-                    return "至" + year + "-" + month + "-" + day
-                }
-            }
-            , je0: function (t) {
-                let dateTime = new Date(t)
-                let nowTime = new Date()
-                if (nowTime.getTime() > dateTime.getTime()) {
-                    return "alert alert-danger"
-                } else {
-                    return "alert alert-success"
-                }
-            }
-            , copy0: function (text) {
-                let copyText = document.getElementById("codeP");
-                copyText.select();
-                copyText.setSelectionRange(0, 99999);
-                navigator.clipboard.writeText(copyText.value);
-            }
-            , reqTry: function () {
-                axios.get("/req-try").then(function (response) {
-                    if (response.data != null) {
-                        vm1.k1 = true
-                        vm1.vd = response.data
-                        console.log(vm1.vd)
-                    } else {
-                        alert("不符合申请条件或申请失败")
-                    }
-                }).catch(function (err) {
-                    alert(err);
-                })
-            }
         }
     });
 </script>

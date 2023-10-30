@@ -18,4 +18,5 @@ public class BgImg {
     private String url;
     @TableField("type")
     private Integer type;
+    private String eid;
 }

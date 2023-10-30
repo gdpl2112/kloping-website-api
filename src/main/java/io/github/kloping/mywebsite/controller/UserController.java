@@ -1,34 +1,28 @@
 package io.github.kloping.mywebsite.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.github.kloping.judge.Judge;
-import io.github.kloping.mywebsite.MyWebSiteApplication;
-import io.github.kloping.mywebsite.broadcast.WebHookBroadcast;
+import io.github.kloping.mywebsite.entitys.database.BgImg;
 import io.github.kloping.mywebsite.entitys.database.FriendLink;
 import io.github.kloping.mywebsite.entitys.database.UserTemp;
-import io.github.kloping.mywebsite.entitys.database.Verify0Entity;
+import io.github.kloping.mywebsite.mapper.BgImgMapper;
 import io.github.kloping.mywebsite.mapper.FriendLinkMapper;
 import io.github.kloping.mywebsite.mapper.UserTempMapper;
-import io.github.kloping.mywebsite.mapper.Verify0Mapper;
 import io.github.kloping.mywebsite.utils.EmailSender;
 import io.github.kloping.mywebsite.utils.KaptchaUtils;
-import io.github.kloping.mywebsite.webhook.e0.OrderReq;
-import io.github.kloping.url.UrlUtils;
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.net.URLEncoder;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import static io.github.kloping.mywebsite.config.UserDetailsServiceImpl.EMAIL_TYPE;
 
@@ -37,53 +31,9 @@ import static io.github.kloping.mywebsite.config.UserDetailsServiceImpl.EMAIL_TY
  */
 @RestController
 public class UserController {
-    public UserController(FriendLinkMapper friendLinkMapper, UserTempMapper userTempMapper, Verify0Mapper verify0Mapper) {
+    public UserController(FriendLinkMapper friendLinkMapper, UserTempMapper userTempMapper) {
         this.friendLinkMapper = friendLinkMapper;
-        WebHookBroadcast.INSTANCE.add(this::onReceive);
         this.userTempMapper = userTempMapper;
-        this.verify0Mapper = verify0Mapper;
-    }
-
-    private void onReceive(OrderReq req) {
-        if (req == null) return;
-        try {
-            if (!req.getData().getOrder().getPlan_title().equals("获得授权码")) {
-                return;
-            }
-            String remark = req.getData().getOrder().getRemark().trim();
-            Integer month = req.getData().getOrder().getMonth().intValue();
-
-            UserTemp temp = userTempMapper.selectById(remark);
-            StringBuilder sb = new StringBuilder();
-            if (temp != null) {
-                Verify0Entity entity = verify0Mapper.selectByCode(temp.getAuth());
-                if (entity == null) {
-                    entity.setCode(UUID.randomUUID().toString());
-                    entity.setExpire(System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000);
-                    verify0Mapper.insert(entity);
-                }
-                entity.setExpire(entity.getExpire() + 1000 * 60 * 60 * 24 * 30);
-                verify0Mapper.updateById(entity);
-                sb.append(temp.getEid()).append("\n")
-                        .append(temp.getQid()).append("\n")
-                        .append(temp.getNickname()).append("\n")
-                        .append("购买授权成功").append("\n");
-            } else {
-                if (url == null) {
-                    url = MyWebSiteApplication.applicationContext.getEnvironment().getProperty("auth.url").toString();
-                }
-                if (pwd == null) {
-                    pwd = MyWebSiteApplication.applicationContext.getEnvironment().getProperty("auth.pwd").toString();
-                }
-                sb.append("<At:3474006766>.\n")
-                        .append("请注意!授权码信息收集错误\n")
-                        .append(JSON.toJSON(req));
-            }
-            UrlUtils.getStringFromHttpUrl(url + "/say?gid=570700910&pwd=" + pwd + "&s=" + URLEncoder.encode(sb.toString()));
-        } catch (Exception e) {
-            System.err.println("订单信息错误");
-            throw new RuntimeException(e);
-        }
     }
 
     @Value("${auth.url}")
@@ -148,25 +98,6 @@ public class UserController {
         return userTemp;
     }
 
-    final Verify0Mapper verify0Mapper;
-
-    @GetMapping("/req-try")
-    public Verify0Entity rt(@AuthenticationPrincipal UserDetails userDetails) {
-        UserTemp userTemp = userTempMapper.selectById(userDetails.getUsername());
-        if (userTemp.getAuth() == null || userTemp.getAuth().isEmpty()) {
-            String uuid = UUID.randomUUID().toString();
-            Verify0Entity entity = new Verify0Entity();
-            entity.setExpire(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 7);
-            entity.setCode(uuid);
-            verify0Mapper.insert(entity);
-            userTemp.setAuth(uuid);
-            userTempMapper.updateById(userTemp);
-            return entity;
-        }
-        return null;
-    }
-
-
     final FriendLinkMapper friendLinkMapper;
 
     private List<FriendLink> links = null;
@@ -183,5 +114,38 @@ public class UserController {
             }
         }
         return links;
+    }
+
+    @Autowired
+    BgImgMapper bgImgMapper;
+
+    @GetMapping("/user_in0")
+    public int in0(@AuthenticationPrincipal UserDetails userDetails) {
+        QueryWrapper<BgImg> wrapper = new QueryWrapper<>();
+        wrapper.eq("eid", userDetails.getUsername());
+        return bgImgMapper.selectCount(wrapper);
+    }
+
+    @PostMapping("/upload_image0")
+    public String uploadImage0(
+            HttpServletRequest request, HttpServletResponse response,
+            @AuthenticationPrincipal UserDetails userDetails,
+            @RequestParam("img") MultipartFile imageFile,
+            @RequestParam("t") String t) {
+        try {
+            String path = UtilsController.save(imageFile.getBytes(), false);
+            Cookie cookie = new Cookie(ApiImageController.R0_KEY, path);
+            cookie.setMaxAge(120 * 60);
+            cookie.setPath("/");
+            response.addCookie(cookie);
+            BgImg bgImg = new BgImg();
+            bgImg.setEid(userDetails.getUsername());
+            bgImg.setType(Integer.valueOf(t));
+            bgImg.setUrl(path);
+            return bgImgMapper.insert(bgImg) > 0 ? "上传成功!" : "上传异常";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return e.getMessage();
+        }
     }
 }

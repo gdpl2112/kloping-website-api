@@ -19,5 +19,4 @@ public interface Verify0Mapper extends BaseMapper<Verify0Entity> {
      */
     @Select("select * from verify0_entity where code=#{code}")
     Verify0Entity selectByCode(@Param("code") String code);
-
 }

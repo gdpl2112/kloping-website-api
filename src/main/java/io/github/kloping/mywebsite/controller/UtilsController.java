@@ -1,11 +1,9 @@
 package io.github.kloping.mywebsite.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import io.github.kloping.date.DateUtils;
 import io.github.kloping.file.FileUtils;
-import io.github.kloping.io.ReadUtils;
 import io.github.kloping.judge.Judge;
 import io.github.kloping.mywebsite.entitys.FileWithPath;
 import io.github.kloping.mywebsite.entitys.OnlyData;
@@ -299,8 +297,8 @@ public class UtilsController {
     }
 
     public static FileWithPath requestFile(boolean isTemp, String format) {
-        String name = DateUtils.getYear() + "/" + DateUtils.getMonth() + "/" + DateUtils.getDay() + "/" + UUID.randomUUID().toString() + "." + format;
-        name = isTemp ? "temp/" + name : name;
+        String name = "/" + DateUtils.getYear() + "/" + DateUtils.getMonth() + "/" + DateUtils.getDay() + "/" + UUID.randomUUID().toString() + "." + format;
+        name = isTemp ? "/temp" + name : name;
         File file = new File("./files/" + name);
         file.getParentFile().mkdirs();
         return new FileWithPath(file, name);

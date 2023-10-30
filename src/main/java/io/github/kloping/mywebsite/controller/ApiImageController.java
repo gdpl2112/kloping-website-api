@@ -42,7 +42,7 @@ import static io.github.kloping.mywebsite.utils.ImageDrawerUtils.TONG_BASE_BYTES
 @RequestMapping("/api/image")
 public class ApiImageController {
 
-    public static final String R0_KEY = "rand-url";
+    public static final String R0_KEY = "randUrl";
 
     @Autowired
     BgImgMapper bgImgMapper;
@@ -58,7 +58,8 @@ public class ApiImageController {
                 BgImg bgImg = bgImgList.get(ApiToolController.RANDOM.nextInt(bgImgList.size()));
                 url = bgImg.getUrl();
                 Cookie cookie = new Cookie(R0_KEY, url);
-                cookie.setMaxAge(10800);
+                cookie.setMaxAge(120 * 60);
+                cookie.setPath("/");
                 response.addCookie(cookie);
             }
             response.sendRedirect(url);

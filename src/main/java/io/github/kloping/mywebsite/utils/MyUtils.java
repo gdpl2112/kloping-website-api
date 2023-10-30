@@ -36,7 +36,7 @@ public class MyUtils {
         if (cookies == null) return value;
         for (Cookie cookie : cookies) {
             if (cookie.getName().equals(key)) {
-                return cookie.getValue();
+                value = cookie.getValue();
             }
         }
         return value;
