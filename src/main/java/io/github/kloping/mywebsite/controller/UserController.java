@@ -12,7 +12,6 @@ import io.github.kloping.mywebsite.mapper.dao.UserTemp;
 import io.github.kloping.mywebsite.utils.EmailSender;
 import io.github.kloping.mywebsite.utils.KaptchaUtils;
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -159,16 +158,25 @@ public class UserController {
             if (k) Public.EXECUTOR_SERVICE.submit(() -> {
                 try {
                     String eu = url + "/say";
-                    Document doc = Jsoup.connect(eu)
+                    String tu = UtilsController.getHostWithPre(request) + path;
+                    Jsoup.connect(eu)
                             .ignoreContentType(true).ignoreHttpErrors(true)
                             .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1661.41")
                             .timeout(30000)
                             .data("gid", "570700910")
                             .data("pwd", pwd)
-                            .data("s", String.format("新背景图上传成功!type:%s\n<pic:%s>", t, UtilsController.getHostWithPre(request) + path))
+                            .data("s", String.format("新背景图上传成功!type:%s\nurl:%s", t, tu))
+                            .post();
+                    Jsoup.connect(eu)
+                            .ignoreContentType(true).ignoreHttpErrors(true)
+                            .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1661.41")
+                            .timeout(30000)
+                            .data("gid", "570700910")
+                            .data("pwd", pwd)
+                            .data("s", String.format("<pic:%s>", tu))
                             .post();
                 } catch (IOException e) {
-                    throw new RuntimeException(e);
+                    e.printStackTrace();
                 }
             });
             return k ? "上传成功!" : "上传异常";
