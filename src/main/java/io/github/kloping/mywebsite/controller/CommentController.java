@@ -7,10 +7,7 @@ import io.github.kloping.mywebsite.mapper.dao.UserTemp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -19,12 +16,13 @@ import java.util.List;
  * @author github.kloping
  */
 @RestController
+@RequestMapping("/comments")
 public class CommentController {
 
     @Autowired
     CommentMapper commentMapper;
 
-    @GetMapping("getComment")
+    @GetMapping("/get-comment")
     public List<Comment> comments(@AuthenticationPrincipal UserDetails userDetails, @RequestParam("nid") Integer nid) {
         if (nid == null) return null;
         List<Comment> comments = commentMapper.selectList(nid);
@@ -38,7 +36,7 @@ public class CommentController {
         return comments;
     }
 
-    @GetMapping("/del_comment")
+    @GetMapping("/del-comment")
     public boolean delComment(@AuthenticationPrincipal UserDetails userDetails, @RequestParam("id") Integer id) {
         if (id == null) return false;
         Comment comment = commentMapper.selectById(id);
@@ -51,7 +49,7 @@ public class CommentController {
     @Autowired
     UserTempMapper userTempMapper;
 
-    @PostMapping("pcm")
+    @PostMapping("/pcm")
     public Comment pcm(
             @RequestParam("nid") Integer nid,
             @RequestParam("body") String body,

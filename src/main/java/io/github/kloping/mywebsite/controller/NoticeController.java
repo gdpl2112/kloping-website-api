@@ -37,36 +37,37 @@ import static io.github.kloping.mywebsite.services.impl.NoticeServiceImpl.notice
  * @author github.kloping
  */
 @RestController
+@RequestMapping("/notice")
 public class NoticeController {
     @Autowired
     INoticeService service;
 
-    @GetMapping("/getNotice")
+    @GetMapping("/get-notice")
     public NoticePack get0(@RequestParam @Nullable Integer pn) {
         if (pn == null) pn = 1;
         return service.get(pn);
     }
 
-    @GetMapping("/getNotice0")
+    @GetMapping("/get-notice0")
     public NoticePack get2(@RequestParam @Nullable Integer pn) {
         if (pn == null) pn = 1;
         return service.get1(pn);
     }
 
-    @GetMapping("/getNoticeById")
+    @GetMapping("/get-notice-id")
     public Object get1(@RequestParam Integer id, @AuthenticationPrincipal UserDetails userDetails) {
         return service.get0(id);
     }
 
-    @GetMapping("deletable")
+    @GetMapping("/deletable")
     public Boolean deletable(@RequestParam Integer id, @AuthenticationPrincipal UserDetails userDetails) {
         if (userDetails == null) return false;
         Notice notice = mapper.selectById(id);
         return notice.getAuthorName().equals(userDetails.getUsername());
     }
 
-    @GetMapping("deleten")
-    public String deleten(@RequestParam Integer id, @AuthenticationPrincipal UserDetails userDetails) {
+    @GetMapping("/delete")
+    public String delete(@RequestParam Integer id, @AuthenticationPrincipal UserDetails userDetails) {
         if (userDetails == null) return "Insufficient permissions";
         Notice notice = mapper.selectById(id);
         if (notice.getAuthorName().equals(userDetails.getUsername())) {
@@ -148,7 +149,7 @@ public class NoticeController {
     @Autowired
     FavoritesMapper favoritesMapper;
 
-    @GetMapping("favoritec")
+    @GetMapping("/favoritec")
     public boolean favoritec(@RequestParam("id") Integer id, @AuthenticationPrincipal UserDetails userDetails) {
         QueryWrapper<Favorites> qw = new QueryWrapper<>();
         qw.eq("name", userDetails.getUsername());
@@ -162,7 +163,7 @@ public class NoticeController {
         }
     }
 
-    @GetMapping("favorite")
+    @GetMapping("/favorite")
     public boolean favorite(@RequestParam("id") Integer id, @AuthenticationPrincipal UserDetails userDetails) {
         QueryWrapper<Favorites> qw = new QueryWrapper<>();
         qw.eq("name", userDetails.getUsername());
@@ -170,7 +171,7 @@ public class NoticeController {
         return favoritesMapper.selectCount(qw) > 0;
     }
 
-    @GetMapping("favorites")
+    @GetMapping("/favorites")
     public Object favorites(@AuthenticationPrincipal UserDetails userDetails) {
         if (userDetails == null) return null;
         List<JSONObject> jos = new LinkedList<>();

@@ -150,7 +150,7 @@ public class ApiToolController {
     public String info(@RequestParam("uid") String uid, @RequestParam("server") Integer server, HttpServletRequest request, HttpServletResponse response) throws Exception {
         YuanShenPlayerInfo info = PluginsSource.daidr.info(uid, server, HEADERS0);
         String name = ImageDrawer.drawerShenInfo(info);
-        return "http://kloping.top/" + name;
+        return UtilsController.getHostWithPre(request) + name;
     }
 
     @Autowired

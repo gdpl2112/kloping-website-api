@@ -3,7 +3,7 @@ $(function () {
 })
 
 let host0 = "";
-axios.get("/getHost?url=" + document.location).then(function (response) {
+axios.get("/get-host?url=" + document.location).then(function (response) {
     host0 = response.data
     $("body").append(`
 

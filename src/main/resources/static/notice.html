@@ -112,7 +112,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-primary" onclick="deleten()">确定</button>
+                <button type="button" class="btn btn-primary" onclick="deleteNow()">确定</button>
             </div>
         </div>
     </div>
@@ -127,8 +127,8 @@
     const params = new URLSearchParams(paramsStr)
     let id = params.get('id')
 
-    function deleten() {
-        axios.get("/deleten?id=" + id).then(function (response) {
+    function deleteNow() {
+        axios.get("/notice/delete?id=" + id).then(function (response) {
             if (response.data == "OK") {
                 location.href = "/"
             } else alert(response.data)
@@ -141,7 +141,7 @@
         el: "#box",
         created: function () {
             input0 = $("#tips-input")
-            axios.get("/getNoticeById?id=" + id).then(function (response) {
+            axios.get("/notice/get-notice-id?id=" + id).then(function (response) {
                 vm1.data = response.data
                 document.getElementsByTagName("title")[0].innerText = vm1.data.title
             }).catch(function (err) {
@@ -151,13 +151,13 @@
             axios.get("/login_state").then(function (response) {
                 vm1.lstate = response.data
                 if (vm1.lstate) {
-                    axios.get("/deletable?id=" + id,).then(function (response) {
+                    axios.get("/notice/deletable?id=" + id,).then(function (response) {
                         vm1.deletable = response.data
                     }).catch(function (err) {
                         alert(err);
                     })
 
-                    axios.get("/favorite?id=" + id).then(function (response) {
+                    axios.get("/notice/favorite?id=" + id).then(function (response) {
                         vm1.fClassEnd = response.data ? "btn-primary" : "btn-outline-secondary"
                     }).catch(function (err) {
                         alert(err);
@@ -178,7 +178,7 @@
                 return formatMsgTime(t)
             },
             favoritec: function () {
-                axios.get("/favoritec?id=" + id).then(function (response) {
+                axios.get("/notice/favoritec?id=" + id).then(function (response) {
                     let k = response.data;
                     let tips = k ? "收藏成功" : "取消收藏";
                     vm1.fClassEnd = k ? "btn-primary" : "btn-outline-secondary"
@@ -193,7 +193,7 @@
     let vm2 = new Vue({
         el: "#comment_q",
         created: function () {
-            axios.get("/getComment?nid=" + id).then(function (response) {
+            axios.get("/comments/get-comment?nid=" + id).then(function (response) {
                 vm2.cs = response.data
             }).catch(function (err) {
                 alert(err);
@@ -203,7 +203,7 @@
         }, methods: {
             delc: function (id) {
                 $('#tipsModal').modal('show')
-                axios.get("/del_comment?id=" + id).then(function (response) {
+                axios.get("/del-comment?id=" + id).then(function (response) {
                     setTimeout(function () {
                         $('#tipsModal').modal('hide')
                     }, 500)
@@ -235,7 +235,7 @@
             let fd = new FormData()
             fd.append("nid", id)
             fd.append("body", d)
-            axios.post("/pcm", fd).then(function (response) {
+            axios.post("/comments/pcm", fd).then(function (response) {
                 vm2.cs.push(response.data)
                 setTimeout(function () {
                     $('#tipsModal').modal('hide')

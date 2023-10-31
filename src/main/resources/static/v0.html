@@ -92,7 +92,7 @@
             <div class="collapse" id="collapseA">
                 <div class="card card-body">
                     <ul class="list-group" v-for="e in ilist">
-                        <li class="list-group-item">{{e.url}}
+                        <li class="list-group-item">{{e.u0}}
                             <button type="button" class="btn btn-outline-danger btn-sm" v-on:click="delImg(e.url)">删除</button>
                         </li>
                     </ul>
@@ -173,7 +173,7 @@
             }).catch(function (err) {
                 alert(err);
             })
-            axios.get("/favorites").then(function (response) {
+            axios.get("/notice/favorites").then(function (response) {
                 vm1.flist = response.data
             }).catch(function (err) {
                 alert(err);

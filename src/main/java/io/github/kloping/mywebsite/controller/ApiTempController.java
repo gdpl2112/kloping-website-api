@@ -7,8 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.PriorityQueue;
-import java.util.Queue;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author github.kloping
@@ -42,24 +41,9 @@ public class ApiTempController {
     public String clearAi1(@RequestParam("id") String id) {
         return service1.clear(id);
     }
-//
-//    private Queue<String> queue = new PriorityQueue<>();
-//
-//    @RequestMapping("/audio/get")
-//    public String audioGet() {
-//        String url = queue.poll();
-//        return url == null ? "E" : url;
-//    }
-//
-//    @RequestMapping("/audio/offer")
-//    public Integer audioOffer(@RequestParam("url") String url) {
-//        queue.offer(url);
-//        return queue.size();
-//    }
-//
-//    @RequestMapping("/audio/clear")
-//    public String audioOffer() {
-//        queue.clear();
-//        return "OK";
-//    }
+
+    @RequestMapping("/test")
+    public String test(HttpServletRequest request) {
+        return UtilsController.getHost(request);
+    }
 }

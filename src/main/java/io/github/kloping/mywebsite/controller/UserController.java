@@ -124,14 +124,19 @@ public class UserController {
     BgImgMapper bgImgMapper;
 
     @GetMapping("/user_image_list")
-    public Object imageList(@AuthenticationPrincipal UserDetails userDetails) {
-        return bgImgMapper.selectListByEid(userDetails.getUsername());
+    public Object imageList(HttpServletRequest request, @AuthenticationPrincipal UserDetails userDetails) {
+        List<BgImg> list = bgImgMapper.selectListByEid(userDetails.getUsername());
+        String host = UtilsController.getHostWithPre(request);
+        for (BgImg bgImg : list) {
+            bgImg.setU0(host + bgImg.getUrl());
+        }
+        return list;
     }
 
     @GetMapping("/del_image")
-    public Object delImage(@RequestParam("url") String url, @AuthenticationPrincipal UserDetails userDetails) {
+    public Object delImage(HttpServletRequest request, @RequestParam("url") String url, @AuthenticationPrincipal UserDetails userDetails) {
         bgImgMapper.deleteByEidAndUrl(userDetails.getUsername(), url);
-        return imageList(userDetails);
+        return imageList(request, userDetails);
     }
 
     @PostMapping("/upload_image0")
@@ -153,7 +158,8 @@ public class UserController {
             boolean k = bgImgMapper.insert(bgImg) > 0;
             if (k) Public.EXECUTOR_SERVICE.submit(() -> {
                 try {
-                    Document doc = Jsoup.connect(url + String.format("/say?gid=570700910&pwd=%s&s=新背景图上传成功!type:%s\n<pic:%s>", pwd, t, "http://kloping.top" + path))
+                    String eu = url + String.format("/say?gid=570700910&pwd=%s&s=新背景图上传成功!type:%s\n<pic:%s>", pwd, t, "http://kloping.top" + path);
+                    Document doc = Jsoup.connect(eu)
                             .ignoreContentType(true).ignoreHttpErrors(true)
                             .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1661.41")
                             .timeout(30000).get();

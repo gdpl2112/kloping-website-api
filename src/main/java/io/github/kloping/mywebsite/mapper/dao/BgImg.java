@@ -19,4 +19,7 @@ public class BgImg {
     @TableField("type")
     private Integer type;
     private String eid;
+
+    @TableField(exist = false)
+    private String u0;
 }

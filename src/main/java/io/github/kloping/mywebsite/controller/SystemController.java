@@ -5,6 +5,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import static io.github.kloping.mywebsite.Source.println;
 
 
@@ -21,7 +24,7 @@ public class SystemController {
     }
 
     @GetMapping({"/", "/#"})
-    public String index(@RequestHeader(value = "User-Agent") String userAgent) {
+    public String index(HttpServletRequest request, HttpServletResponse response, @RequestHeader(value = "User-Agent") String userAgent) {
         return "redirect:index.html";
     }
 

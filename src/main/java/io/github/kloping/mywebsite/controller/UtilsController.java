@@ -6,16 +6,14 @@ import io.github.kloping.date.DateUtils;
 import io.github.kloping.file.FileUtils;
 import io.github.kloping.judge.Judge;
 import io.github.kloping.mywebsite.entitys.FileWithPath;
-import io.github.kloping.mywebsite.entitys.OnlyData;
 import io.github.kloping.mywebsite.entitys.baiduShitu.BaiduShitu;
 import io.github.kloping.mywebsite.entitys.baiduShitu.response.BaiduShituResponse;
-import io.github.kloping.mywebsite.mapper.dao.PwdKeyValue;
 import io.github.kloping.mywebsite.mapper.PwdKeyValueMapper;
+import io.github.kloping.mywebsite.mapper.dao.PwdKeyValue;
 import io.github.kloping.mywebsite.plugins.detail.BaiduShituDetail;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.Nullable;
@@ -27,12 +25,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.UUID;
 
 import static io.github.kloping.mywebsite.plugins.PluginsSource.iBaiduShitu;
 
@@ -55,58 +53,17 @@ public class UtilsController {
         Document doc = Jsoup.connect(url).ignoreContentType(true)
                 .ignoreHttpErrors(true)
                 .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36 Edg/105.0.1343.50")
-//                .header("Host", host)
                 .header("Referer", referer)
                 .header("Accept-Language", "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6")
                 .header("Accept", "*/*")
-//                .header("Accept-Encoding", "gzip, deflate, br")
-//                .header("Connection", "keep-alive")
                 .get();
         return doc.location();
-    }
-
-    @GetMapping("/getMCloud3")
-    public String getMCloud3Url() throws Exception {
-        Connection connection = Jsoup.connect("http://fy4.nsmc.org.cn/nsmc/cn/image/area.html").ignoreContentType(true).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.54 Safari/537.36 Edg/95.0.1020.30");
-        Document document = connection.get();
-        Element element = document.getElementById("j-video");
-        String url = element.attr("src");
-        return url;
-    }
-
-    @RequestMapping("/getCloudPics")
-    public List<String> getCloudPic() {
-        try {
-            String baseUrl = "http://www.nsmc.org.cn/NSMC/datalist/fy2_color.txt";
-            String mn = "http://img.nsmc.org.cn/CLOUDIMAGE/FY2/WXCL/%s";
-            byte[] bytes = io.github.kloping.url.UrlUtils.getBytesFromHttpUrl(baseUrl);
-            String[] pics = new String(bytes, "utf-8").trim().split(",");
-            System.out.println(Arrays.toString(pics).replaceAll(",", "\n"));
-            for (int i = 0; i < pics.length; i++)
-                pics[i] = String.format(mn, pics[i].trim()).trim();
-            return Arrays.asList(pics);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    public interface Notice {
-        /**
-         * on notice
-         *
-         * @param packName
-         * @param title
-         * @param text
-         */
-        void notice(String packName, String title, String text);
     }
 
     @GetMapping("/tool/ok")
     public String ok(String a) {
         return "ok";
     }
-
 
     @Autowired
     PwdKeyValueMapper pkvMapper;
@@ -164,10 +121,20 @@ public class UtilsController {
         return pkvMapper.delete(queryWrapper) > 0 ? "OK" : "ERROR";
     }
 
-    @GetMapping("/containsKeys")
+    @GetMapping("/contains-keys")
     public Integer contains(@RequestParam("keys") String[] keys, @RequestParam("pwd") String pwd, @RequestParam("value") @Nullable String value) {
         Integer c = 0;
         for (String key : keys) {
+            c = getContainsCount(pwd, value, c, key);
+            continue;
+        }
+        return c;
+    }
+
+    @GetMapping("/contains-pwds")
+    public Integer containsPwds(@RequestParam("key") String key, @RequestParam("pwds") String[] pwds, @RequestParam("value") @Nullable String value) {
+        Integer c = 0;
+        for (String pwd : pwds) {
             c = getContainsCount(pwd, value, c, key);
             continue;
         }
@@ -190,46 +157,19 @@ public class UtilsController {
         return c;
     }
 
-    @GetMapping("/containsPwds")
-    public Integer containsPwds(@RequestParam("key") String key, @RequestParam("pwds") String[] pwds, @RequestParam("value") @Nullable String value) {
-        Integer c = 0;
-        for (String pwd : pwds) {
-            c = getContainsCount(pwd, value, c, key);
-            continue;
-        }
-        return c;
-    }
-
-    public static final List<Notice> NOTICES = new ArrayList<>();
-
-    @GetMapping("/notice")
-    public String notice(@RequestParam String packName, @RequestParam String title, @RequestParam String text) {
-        for (Notice notice : NOTICES) {
-            notice.notice(packName, title, text);
-        }
-        return "success";
-    }
-
     @Value("${auth.pwd}")
     String pwd;
 
-    @PostMapping("/uploadImg")
-    public String upload(@RequestParam("key") String key, @RequestBody OnlyData data, HttpServletRequest request) {
-        if (!this.pwd.equals(pwd)) return "wrong password";
-        byte[] bytes = Base64.getDecoder().decode(data.getData().toString());
-        String name = save(bytes, false);
-        return name;
-    }
 
-    @PostMapping("/uploadImg0")
-    public String upload(@RequestParam("file") @Nullable MultipartFile imageFile) {
+    @PostMapping("/upload-img")
+    public String upload(HttpServletRequest request, @RequestParam("file") @Nullable MultipartFile imageFile) {
         try {
             if (imageFile != null && !imageFile.isEmpty()) {
                 FileWithPath fwp = UtilsController.requestFile(false, "jpg");
                 FileOutputStream fos = new FileOutputStream(fwp.getFile());
                 fos.write(imageFile.getBytes());
                 fos.close();
-                return "/" + fwp.getName();
+                return getHostWithPre(request) + "/" + fwp.getName();
             } else {
                 return "error";
             }
@@ -238,18 +178,26 @@ public class UtilsController {
         }
     }
 
-    @GetMapping("/transImg")
-    public String proxy(@RequestParam("url") String url, @Nullable @RequestParam("type") String type, HttpServletResponse response) {
+    @GetMapping("/trans-img")
+    public String proxy(@RequestParam("url") String url,
+                        @Nullable @RequestParam("type") String type
+            , HttpServletResponse response
+            , HttpServletRequest request
+    ) {
         try {
             Connection connection = null;
-            connection = org.jsoup.Jsoup.connect(url).ignoreContentType(true).ignoreHttpErrors(true).header("Host", new URL(url).getHost()).header("accept-encoding", "gzip, deflate, br").userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Safari/537.36 Edg/100.0.1185.50").method(Connection.Method.GET);
+            connection = org.jsoup.Jsoup.connect(url).ignoreContentType(true)
+                    .ignoreHttpErrors(true).header("Host", new URL(url).getHost())
+                    .header("accept-encoding", "gzip, deflate, br")
+                    .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Safari/537.36 Edg/100.0.1185.50")
+                    .method(Connection.Method.GET);
             Connection.Response resp = connection.execute();
             byte[] bytes = resp.bodyAsBytes();
             String name = save(bytes, true);
             if (Judge.isEmpty(type)) {
                 response.sendRedirect("/" + name);
             } else if ("url".equals(type)) {
-                return "http://kloping.top/" + name;
+                return getHostWithPre(request) + name;
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -257,24 +205,13 @@ public class UtilsController {
         return null;
     }
 
-    @GetMapping("/transImg2")
-    public String proxy2(@RequestParam("url") String url, HttpServletRequest request, HttpServletResponse response) {
-        try {
-            Connection connection = null;
-            connection = org.jsoup.Jsoup.connect(url).ignoreContentType(true).ignoreHttpErrors(true).header("Host", new URL(url).getHost()).header("accept-encoding", "gzip, deflate, br").userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Safari/537.36 Edg/100.0.1185.50").method(Connection.Method.GET);
-            Connection.Response resp = connection.execute();
-            byte[] bytes = resp.bodyAsBytes();
-            String name = save(bytes, true);
-            BaiduShitu baiduShitu = BaiduShituDetail.get("http://kloping.top/" + name);
-            BaiduShituResponse response0 = iBaiduShitu.response(baiduShitu.getData().getSign());
-            return response0.getData().getImageUrl();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return "";
+    @GetMapping("/stamp2time")
+    public String getHost(@RequestParam("stamp") Long stamp, @RequestParam("exp") @Nullable String exp) {
+        exp = exp == null ? "yyyy年MM月dd日 HH:mm:ss" : exp;
+        return new SimpleDateFormat(exp).format(new Date(stamp));
     }
 
-    @GetMapping("/getHost")
+    @GetMapping("/get-host")
     public String getHost(@RequestParam("url") String url) {
         String host = "localhost";
         try {
@@ -286,10 +223,14 @@ public class UtilsController {
         return host;
     }
 
-    @GetMapping("/stamp2time")
-    public String getHost(@RequestParam("stamp") Long stamp, @RequestParam("exp") @Nullable String exp) {
-        exp = exp == null ? "yyyy年MM月dd日 HH:mm:ss" : exp;
-        return new SimpleDateFormat(exp).format(new Date(stamp));
+    public static String getHost(HttpServletRequest request) {
+        String host = request.getHeader("host");
+        if (Judge.isEmpty(host)) host = request.getHeader("Host");
+        return host;
+    }
+
+    public static String getHostWithPre(HttpServletRequest request) {
+        return "http://" + getHost(request);
     }
 
     public static FileWithPath requestFile(boolean isTemp) {
