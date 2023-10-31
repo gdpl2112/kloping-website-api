@@ -32,7 +32,7 @@
             data-toggle="modal" data-target="#dtips0"></button>
     <button type="button" :class="'bi bi-bookmark-heart btn '+fClassEnd"
             v-show="lstate" v-on:click="favoritec()"></button>
-    <h5 v-show="!lstate">tips:登录可收藏</h5>
+    <h5 v-show="!lstate">tips:登录可收藏/删除评论</h5>
     <hr/>
     <center><h3 v-text="data.title"></h3></center>
     <hr/>
@@ -68,7 +68,7 @@
     <br>
     <div style="margin-top: 5px" class="row" v-for="d in cs">
         <div class="col-1"></div>
-        <div style="background-color: rgba(119,119,119,0.8);border-radius: 10px;vertical-align: middle;"
+        <div style="background-color: rgba(123,152,161,0.75);border-radius: 10px;vertical-align: middle;"
              class="media col-10">
             <img style="max-width: 40px; border-radius: 10px" :src="d.icon" class="mr-3 align-self-center mx-auto "
                  alt=".">
@@ -76,6 +76,7 @@
                 <h5 class="mt-0" v-text="d.nickName"></h5>
                 <p v-text="d.content"></p>
             </div>
+            <a v-show="d.c0" class="ml-3 bi bi-trash badge badge-danger" v-on:click="delc(d.commentId)">删除</a>
         </div>
         <div class="col-1"></div>
     </div>
@@ -85,7 +86,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="tipsModalLabel">评论中...</h5>
+                <h5 class="modal-title" id="tipsModalLabel">提示</h5>
             </div>
             <div id="tips-content" class="modal-body text-danger">
                 <div class="spinner-border text-primary" role="status">
@@ -199,7 +200,26 @@
             })
         }, data: {
             cs: []
-        }, methods: {}
+        }, methods: {
+            delc: function (id) {
+                $('#tipsModal').modal('show')
+                axios.get("/del_comment?id=" + id).then(function (response) {
+                    setTimeout(function () {
+                        $('#tipsModal').modal('hide')
+                    }, 500)
+                    if (response.data) {
+                        vm2.cs = vm2.cs.filter(function (item) {
+                            return item.commentId !== id
+                        });
+                    }
+                }).catch(function (err) {
+                    setTimeout(function () {
+                        $('#tipsModal').modal('hide')
+                    }, 500)
+                    alert(err);
+                })
+            }
+        }
     });
 
     $("#comment_but").click(function () {
@@ -208,7 +228,7 @@
             alert("内容不可空")
             return
         }
-        if (vm1.lstate) {
+        if (!vm1.lstate) {
             location.href = "/login.html"
         } else {
             $('#tipsModal').modal('show')
