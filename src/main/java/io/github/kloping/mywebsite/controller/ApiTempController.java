@@ -9,6 +9,7 @@ import io.github.kloping.mywebsite.services.impl.SearchSongKugou;
 import io.github.kloping.url.UrlUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -88,8 +89,10 @@ public class ApiTempController {
         return null;
     }
 
-    @RequestMapping("/clear-music")
-    public void clearMusic() {
+    @GetMapping("/clear-music")
+    public Object clearMusic() {
+        Integer n = tempList.size();
         tempList.clear();
+        return n;
     }
 }
