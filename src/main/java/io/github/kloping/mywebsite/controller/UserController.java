@@ -158,11 +158,15 @@ public class UserController {
             boolean k = bgImgMapper.insert(bgImg) > 0;
             if (k) Public.EXECUTOR_SERVICE.submit(() -> {
                 try {
-                    String eu = url + String.format("/say?gid=570700910&pwd=%s&s=新背景图上传成功!type:%s\n<pic:%s>", pwd, t, "http://kloping.top" + path);
+                    String eu = url + "/say";
                     Document doc = Jsoup.connect(eu)
                             .ignoreContentType(true).ignoreHttpErrors(true)
                             .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1661.41")
-                            .timeout(30000).get();
+                            .timeout(30000)
+                            .data("gid", "570700910")
+                            .data("pwd", pwd)
+                            .data("s", String.format("新背景图上传成功!type:%s\n<pic:%s>", t, UtilsController.getHostWithPre(request) + path))
+                            .post();
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
