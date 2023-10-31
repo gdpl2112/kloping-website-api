@@ -3,11 +3,9 @@ package io.github.kloping.mywebsite.github;
 import com.alibaba.fastjson.JSON;
 import io.github.kloping.mywebsite.github.api.AccessTokenDTO;
 import io.github.kloping.mywebsite.github.api.GithubUser;
-import io.github.kloping.mywebsite.utils.SSLSocketClientUtil;
 import org.jsoup.Connection;
 import org.jsoup.helper.HttpConnection;
 import org.jsoup.nodes.Document;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -28,7 +26,7 @@ public class GitHubRequestUtils {
         return connection;
     }
 
-    public static final String ACCESS_URL = "https://ghproxy.com/https://github.com/login/oauth/access_token";
+    public static final String ACCESS_URL = "https://github.com/login/oauth/access_token";
 
     public String getAccessToken(AccessTokenDTO dto) {
         Document doc = null;
