@@ -56,7 +56,9 @@
         animation: a_hover .3s linear forwards;
     }
 </style>
+
 <div id="con0" class="container" style="width: 90%;margin-top: 120px">
+    <div id="player"></div>
     <div v-on:click="tog(d.id)" v-for="d in data.notices">
         <div class="row shadow-lg p-3 mb-5 rounded notice-div0" style="margin-top: 10px;">
             <div class="col-3 align-middle" style="display: inline-block;">
@@ -131,9 +133,40 @@
     });
 </script>
 <script src="/js/footer-bottom.js"></script>
-<div id="music" key="635c8492de645" api="https://music.cxinyun.cn"></div>
-<script id="xplayer" src="https://music.cxinyun.cn/Static/player4/js/player.js"></script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aplayer/1.10.1/APlayer.min.js"
+        integrity="sha512-RWosNnDNw8FxHibJqdFRySIswOUgYhFxnmYO3fp+BgCU7gfo4z0oS7mYFBvaa8qu+axY39BmQOrhW3Tp70XbaQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aplayer/1.10.1/APlayer.min.css"
+      integrity="sha512-CIYsJUa3pr1eoXlZFroEI0mq0UIMUqNouNinjpCkSWo3Bx5NRlQ0OuC6DtEB/bDqUWnzXc1gs2X/g52l36N5iw=="
+      crossorigin="anonymous" referrerpolicy="no-referrer"/>
+
+<script>
+    let ap = new APlayer({
+        container: document.getElementById('player'),
+        listFolded: false,
+        listMaxHeight: 90,
+        audio: []
+    });
+    ap.on('ended', function () {
+        axios.get("/get-music").then(function (response) {
+            ap.list.clear()
+            ap.list.add(response.data)
+            ap.list.show()
+            ap.play()
+        }).catch(function (err) {
+            alert(err);
+        })
+    });
+    axios.get("/get-music").then(function (response) {
+        ap.list.clear()
+        ap.list.add(response.data)
+        ap.list.show()
+        ap.play()
+    }).catch(function (err) {
+        alert(err);
+    })
+</script>
 <footer>
     <script src="/live2d/TweenLite.js"></script>
     <script src="/live2d/live2dcubismcore.min.js"></script>
