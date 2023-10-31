@@ -26,7 +26,7 @@ public class GitHubRequestUtils {
         return connection;
     }
 
-    public static final String ACCESS_URL = "https://ghproxy.com/https://github.com/login/oauth/access_token";
+    public static final String ACCESS_URL = "https://github.com/login/oauth/access_token";
 
     public String getAccessToken(AccessTokenDTO dto) {
         Document doc = null;
