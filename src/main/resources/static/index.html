@@ -149,14 +149,6 @@
         audio: []
     });
     ap.on('ended', function () {
-        axios.get("/get-music").then(function (response) {
-            ap.list.clear()
-            ap.list.add(response.data)
-            ap.list.show()
-            ap.play()
-        }).catch(function (err) {
-            alert(err);
-        })
     });
     axios.get("/get-music").then(function (response) {
         ap.list.clear()
