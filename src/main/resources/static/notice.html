@@ -28,9 +28,11 @@
 <br>
 <div id="box" class="container page-header-fixed" style="background-color: rgba(255,255,255,0.78)">
     <br>
-    <button type="button" class="btn btn-danger" v-show="deletable"
-            data-toggle="modal" data-target="#dtips0">删除此贴
-    </button>
+    <button type="button" class="btn btn-danger bi bi-x-square" v-show="deletable"
+            data-toggle="modal" data-target="#dtips0"></button>
+    <button type="button" :class="'bi bi-bookmark-heart btn '+fClassEnd"
+            v-show="lstate" v-on:click="favoritec()"></button>
+    <h5 v-show="!lstate">tips:登录可收藏</h5>
     <hr/>
     <center><h3 v-text="data.title"></h3></center>
     <hr/>
@@ -95,7 +97,6 @@
 </div>
 
 
-<!-- Modal -->
 <div class="modal fade" id="dtips0" tabindex="-1" aria-labelledby="dtips0Label" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -118,10 +119,9 @@
 
 
 <script src="/js/utils.js"></script>
-<script src="https://api.vvhan.com/api/yinghua"></script>
+<script src="/js/lib/yinghua.js"></script>
 <script>
     let input0 = null
-
     const paramsStr = window.location.search
     const params = new URLSearchParams(paramsStr)
     let id = params.get('id')
@@ -129,7 +129,7 @@
     function deleten() {
         axios.get("/deleten?id=" + id).then(function (response) {
             if (response.data == "OK") {
-                location.href="/"
+                location.href = "/"
             } else alert(response.data)
         }).catch(function (err) {
             alert(err);
@@ -147,17 +147,44 @@
                 alert(err);
             })
 
-            axios.get("/deletable?id=" + id,).then(function (response) {
-                vm1.deletable = response.data
+            axios.get("/login_state").then(function (response) {
+                vm1.lstate = response.data
+                if (vm1.lstate) {
+                    axios.get("/deletable?id=" + id,).then(function (response) {
+                        vm1.deletable = response.data
+                    }).catch(function (err) {
+                        alert(err);
+                    })
+
+                    axios.get("/favorite?id=" + id).then(function (response) {
+                        vm1.fClassEnd = response.data ? "btn-primary" : "btn-outline-secondary"
+                    }).catch(function (err) {
+                        alert(err);
+                    })
+                }
             }).catch(function (err) {
                 alert(err);
             })
+
+
         }, data: {
             data: {},
-            deletable: false
+            deletable: false,
+            lstate: false,
+            fClassEnd: "btn-outline-secondary"
         }, methods: {
             formatMsgTime: function (t) {
                 return formatMsgTime(t)
+            },
+            favoritec: function () {
+                axios.get("/favoritec?id=" + id).then(function (response) {
+                    let k = response.data;
+                    let tips = k ? "收藏成功" : "取消收藏";
+                    vm1.fClassEnd = k ? "btn-primary" : "btn-outline-secondary"
+                    alert(tips)
+                }).catch(function (err) {
+                    alert(err);
+                })
             }
         }
     });
@@ -181,29 +208,25 @@
             alert("内容不可空")
             return
         }
-        axios.get("/login_state").then(function (response) {
-            if (false === response.data) {
-                location.href = "/login.html"
-            } else {
-                $('#tipsModal').modal('show')
-                let fd = new FormData()
-                fd.append("nid", id)
-                fd.append("body", d)
-                axios.post("/pcm", fd).then(function (response) {
-                    vm2.cs.push(response.data)
-                    setTimeout(function () {
-                        $('#tipsModal').modal('hide')
-                    }, 500)
-                }).catch(function (err) {
-                    setTimeout(function () {
-                        $('#tipsModal').modal('hide')
-                    }, 500)
-                    alert(err);
-                })
-            }
-        }).catch(function (err) {
-            alert(err);
-        })
+        if (vm1.lstate) {
+            location.href = "/login.html"
+        } else {
+            $('#tipsModal').modal('show')
+            let fd = new FormData()
+            fd.append("nid", id)
+            fd.append("body", d)
+            axios.post("/pcm", fd).then(function (response) {
+                vm2.cs.push(response.data)
+                setTimeout(function () {
+                    $('#tipsModal').modal('hide')
+                }, 500)
+            }).catch(function (err) {
+                setTimeout(function () {
+                    $('#tipsModal').modal('hide')
+                }, 500)
+                alert(err);
+            })
+        }
     })
 </script>
 <script src="/js/footer-bottom.js"></script>

@@ -1,15 +1,18 @@
 package io.github.kloping.mywebsite.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import io.github.kloping.common.Public;
 import io.github.kloping.judge.Judge;
-import io.github.kloping.mywebsite.entitys.database.BgImg;
-import io.github.kloping.mywebsite.entitys.database.FriendLink;
-import io.github.kloping.mywebsite.entitys.database.UserTemp;
 import io.github.kloping.mywebsite.mapper.BgImgMapper;
 import io.github.kloping.mywebsite.mapper.FriendLinkMapper;
 import io.github.kloping.mywebsite.mapper.UserTempMapper;
+import io.github.kloping.mywebsite.mapper.dao.BgImg;
+import io.github.kloping.mywebsite.mapper.dao.FriendLink;
+import io.github.kloping.mywebsite.mapper.dao.UserTemp;
 import io.github.kloping.mywebsite.utils.EmailSender;
 import io.github.kloping.mywebsite.utils.KaptchaUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -20,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -119,11 +123,15 @@ public class UserController {
     @Autowired
     BgImgMapper bgImgMapper;
 
-    @GetMapping("/user_in0")
-    public int in0(@AuthenticationPrincipal UserDetails userDetails) {
-        QueryWrapper<BgImg> wrapper = new QueryWrapper<>();
-        wrapper.eq("eid", userDetails.getUsername());
-        return bgImgMapper.selectCount(wrapper);
+    @GetMapping("/user_image_list")
+    public Object imageList(@AuthenticationPrincipal UserDetails userDetails) {
+        return bgImgMapper.selectListByEid(userDetails.getUsername());
+    }
+
+    @GetMapping("/del_image")
+    public Object delImage(@RequestParam("url") String url, @AuthenticationPrincipal UserDetails userDetails) {
+        bgImgMapper.deleteByEidAndUrl(userDetails.getUsername(), url);
+        return imageList(userDetails);
     }
 
     @PostMapping("/upload_image0")
@@ -142,10 +150,23 @@ public class UserController {
             bgImg.setEid(userDetails.getUsername());
             bgImg.setType(Integer.valueOf(t));
             bgImg.setUrl(path);
-            return bgImgMapper.insert(bgImg) > 0 ? "上传成功!" : "上传异常";
+            boolean k = bgImgMapper.insert(bgImg) > 0;
+            if (k) Public.EXECUTOR_SERVICE.submit(() -> {
+                try {
+                    Document doc = Jsoup.connect(url + String.format("/say?gid=570700910&pwd=%s&s=新背景图上传成功!type:%s\n<pic:%s>", pwd, t, "http://kloping.top" + path))
+                            .ignoreContentType(true).ignoreHttpErrors(true)
+                            .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1661.41")
+                            .timeout(30000).get();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+            return k ? "上传成功!" : "上传异常";
         } catch (Exception e) {
             e.printStackTrace();
             return e.getMessage();
+        } finally {
+
         }
     }
 }

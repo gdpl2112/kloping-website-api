@@ -1,6 +1,6 @@
 package io.github.kloping.mywebsite.services;
 
-import io.github.kloping.mywebsite.entitys.database.Comment;
+import io.github.kloping.mywebsite.mapper.dao.Comment;
 
 import java.util.List;
 

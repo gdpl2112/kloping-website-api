@@ -1,6 +1,6 @@
 package io.github.kloping.mywebsite.entitys;
 
-import io.github.kloping.mywebsite.entitys.database.Notice;
+import io.github.kloping.mywebsite.mapper.dao.Notice;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;

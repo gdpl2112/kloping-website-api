@@ -28,10 +28,12 @@ public class GitHubRequestUtils {
         return connection;
     }
 
+    public static final String ACCESS_URL = "https://ghproxy.com/https://github.com/login/oauth/access_token";
+
     public String getAccessToken(AccessTokenDTO dto) {
         Document doc = null;
         try {
-            doc = getConnection().url("https://github.com/login/oauth/access_token")
+            doc = getConnection().url(ACCESS_URL)
                     .header("accept", "application/json")
                     .data("client_id", dto.getClient_id())
                     .data("client_secret", dto.getClient_secret())

@@ -1,11 +1,9 @@
 package io.github.kloping.mywebsite.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import io.github.kloping.mywebsite.entitys.ApiDetail;
+import io.github.kloping.mywebsite.mapper.dao.ApiDetail;
 import io.github.kloping.mywebsite.mapper.ApiDetailMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

@@ -9,7 +9,7 @@ import io.github.kloping.mywebsite.entitys.FileWithPath;
 import io.github.kloping.mywebsite.entitys.OnlyData;
 import io.github.kloping.mywebsite.entitys.baiduShitu.BaiduShitu;
 import io.github.kloping.mywebsite.entitys.baiduShitu.response.BaiduShituResponse;
-import io.github.kloping.mywebsite.entitys.database.PwdKeyValue;
+import io.github.kloping.mywebsite.mapper.dao.PwdKeyValue;
 import io.github.kloping.mywebsite.mapper.PwdKeyValueMapper;
 import io.github.kloping.mywebsite.plugins.detail.BaiduShituDetail;
 import org.jsoup.Connection;

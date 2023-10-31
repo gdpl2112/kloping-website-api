@@ -22,7 +22,7 @@ let vm1 = new Vue({
         },
         gotoGithub() {
             location.href =
-                "https://github.com/login/oauth/authorize?client_id=6316ca5eff5a1c74c2f3&redirect_uri=http://kloping.top/github/code&scope=user:email&state=1"
+                "https://github.com/login/oauth/authorize?client_id=6316ca5eff5a1c74c2f3&redirect_uri=/github/code&scope=user:email&state=1"
         }
     }
 });

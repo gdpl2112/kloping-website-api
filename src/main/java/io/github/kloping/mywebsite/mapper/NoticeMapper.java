@@ -1,11 +1,13 @@
 package io.github.kloping.mywebsite.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import io.github.kloping.mywebsite.entitys.database.Notice;
+import io.github.kloping.mywebsite.mapper.dao.Notice;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author github.kloping
@@ -27,4 +29,11 @@ public interface NoticeMapper extends BaseMapper<Notice> {
      */
     @Select("SELECT * FROM `notice` WHERE state=1 order by `id` desc LIMIT 1;")
     Notice getUtmost();
+
+    /**
+     * @param name
+     * @return
+     */
+    @Select("select title,views,id from notice left join favorites on favorites.nid=notice.id where name=#{name} and state=0;")
+    List<Notice> selectTitleAndViewsByFavoriteName(@Param("name") String name);
 }

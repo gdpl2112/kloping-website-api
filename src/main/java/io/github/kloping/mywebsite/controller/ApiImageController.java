@@ -5,7 +5,7 @@ import com.madgag.gif.fmsware.AnimatedGifEncoder;
 import io.github.kloping.judge.Judge;
 import io.github.kloping.mywebsite.entitys.FileWithPath;
 import io.github.kloping.mywebsite.entitys.ImageE0;
-import io.github.kloping.mywebsite.entitys.database.BgImg;
+import io.github.kloping.mywebsite.mapper.dao.BgImg;
 import io.github.kloping.mywebsite.mapper.BgImgMapper;
 import io.github.kloping.mywebsite.utils.ImageDrawerUtils;
 import io.github.kloping.mywebsite.utils.MyUtils;

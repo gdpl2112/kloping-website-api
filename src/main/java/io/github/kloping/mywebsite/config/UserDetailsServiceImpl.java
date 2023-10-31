@@ -1,7 +1,7 @@
 package io.github.kloping.mywebsite.config;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import io.github.kloping.mywebsite.entitys.database.UserTemp;
+import io.github.kloping.mywebsite.mapper.dao.UserTemp;
 import io.github.kloping.mywebsite.github.GithubCodeAuthenticationProvider;
 import io.github.kloping.mywebsite.mapper.UserTempMapper;
 import org.springframework.beans.factory.annotation.Autowired;

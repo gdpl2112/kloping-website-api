@@ -1,7 +1,7 @@
 package io.github.kloping.mywebsite.services;
 
 import io.github.kloping.mywebsite.entitys.NoticePack;
-import io.github.kloping.mywebsite.entitys.database.Notice;
+import io.github.kloping.mywebsite.mapper.dao.Notice;
 import org.springframework.security.core.userdetails.UserDetails;
 
 /**

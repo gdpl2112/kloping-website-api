@@ -1,11 +1,10 @@
 package io.github.kloping.mywebsite.controller;
 
-import io.github.kloping.mywebsite.entitys.database.Comment;
-import io.github.kloping.mywebsite.entitys.database.UserTemp;
+import io.github.kloping.mywebsite.mapper.dao.Comment;
+import io.github.kloping.mywebsite.mapper.dao.UserTemp;
 import io.github.kloping.mywebsite.mapper.UserTempMapper;
 import io.github.kloping.mywebsite.services.ICommentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-cn">
+<html lang="zh-cn" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="utf-8">
     <meta name="referrer" content="no-referrer"/>
@@ -64,10 +64,41 @@
     <hr>
     <div class="row">
         <div class="col-2"></div>
-        <div style="border-radius: 15px;background-color: rgba(142,211,180,0.4);text-align: center;" class="col-8">
+        <div style="border-radius: 15px;background-color: rgba(68,120,133,0.4);text-align: center;" class="col-8">
             <hr>
-            <label for="image0">贡献网站背景图; 已贡献数量: <h5 style="color: #ff4e09;display: inline">{{in0}}</h5>
-            </label>
+
+            <div>
+                <a class="btn btn-outline-info" data-toggle="collapse" href="#collapseB"
+                   role="button" aria-expanded="false" aria-controls="collapseExample">
+                    收藏帖子数: <p style="color: #d21fb3;display: inline">{{flist.length}}</p></a>
+            </div>
+
+            <div class="collapse" id="collapseB">
+                <div class="card card-body">
+                    <ul class="list-group" v-for="e in flist">
+                        <li class="list-group-item btn btn-outline-secondary" v-on:click="jumpTo(e.id)">
+                            {{e.title}}
+                            <p class="bi-eye" style="display: inline">{{e.views}}</p></li>
+                    </ul>
+                </div>
+            </div>
+            <hr>
+            <div>
+                <a class="btn btn-outline-success" data-toggle="collapse" href="#collapseA"
+                   role="button" aria-expanded="false" aria-controls="collapseExample">
+                    贡献网站背景图; 已贡献数量: <h5 style="color: #ff4e09;display: inline">{{ilist.length}}</h5></a>
+            </div>
+
+            <div class="collapse" id="collapseA">
+                <div class="card card-body">
+                    <ul class="list-group" v-for="e in ilist">
+                        <li class="list-group-item">{{e.url}}
+                            <button type="button" class="btn btn-outline-danger btn-sm" v-on:click="delImg(e.url)">删除</button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <hr>
             <div class="input-group">
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
@@ -123,6 +154,7 @@
         param.append("img", image)
         axios.post("/upload_image0", param).then(function (response) {
             alert(response.data)
+            window.location = window.location
         }).catch(function (err) {
             alert(err);
         })
@@ -133,23 +165,16 @@
         created: function () {
             axios.get("/user").then(function (response) {
                 vm1.user = response.data
-                if (vm1.user.auth === null || vm1.user.auth === "") {
-
-                } else {
-                    axios.get("/getVerify0?code=" + vm1.user.auth).then(function (response) {
-                        vm1.k1 = true
-                        vm1.vd = response.data
-                        console.log(vm1.vd)
-                    }).catch(function (err) {
-                        alert(err);
-                    })
-                }
             }).catch(function (err) {
                 alert(err);
             })
-
-            axios.get("/user_in0").then(function (response) {
-                vm1.in0 = response.data
+            axios.get("/user_image_list").then(function (response) {
+                vm1.ilist = response.data
+            }).catch(function (err) {
+                alert(err);
+            })
+            axios.get("/favorites").then(function (response) {
+                vm1.flist = response.data
             }).catch(function (err) {
                 alert(err);
             })
@@ -157,8 +182,19 @@
             vd: {},
             user: {},
             k1: false,
-            in0: 0
+            ilist: [],
+            flist: [],
         }, methods: {
+            jumpTo: function (id) {
+                window.open("/notice.html?id=" + id)
+            },
+            delImg: function (url) {
+                axios.get("/del_image?url=" + url).then(function (response) {
+                    vm1.ilist = response.data
+                }).catch(function (err) {
+                    alert(err);
+                })
+            }
         }
     });
 </script>

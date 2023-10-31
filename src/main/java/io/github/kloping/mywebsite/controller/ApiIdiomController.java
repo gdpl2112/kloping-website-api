@@ -1,6 +1,5 @@
 package io.github.kloping.mywebsite.controller;
 
-import io.github.kloping.mywebsite.entitys.ApiDetail;
 import io.github.kloping.mywebsite.entitys.idiom.M;
 import io.github.kloping.mywebsite.services.impl.Idiom;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -2,12 +2,15 @@ package io.github.kloping.mywebsite.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.github.kloping.mywebsite.entitys.FileWithPath;
 import io.github.kloping.mywebsite.entitys.NoticePack;
-import io.github.kloping.mywebsite.entitys.database.Notice;
-import io.github.kloping.mywebsite.entitys.database.UserTemp;
+import io.github.kloping.mywebsite.mapper.FavoritesMapper;
 import io.github.kloping.mywebsite.mapper.NoticeMapper;
 import io.github.kloping.mywebsite.mapper.UserTempMapper;
+import io.github.kloping.mywebsite.mapper.dao.Favorites;
+import io.github.kloping.mywebsite.mapper.dao.Notice;
+import io.github.kloping.mywebsite.mapper.dao.UserTemp;
 import io.github.kloping.mywebsite.services.INoticeService;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -24,6 +27,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Base64;
+import java.util.LinkedList;
+import java.util.List;
 
 import static io.github.kloping.mywebsite.services.impl.NoticeServiceImpl.notices;
 import static io.github.kloping.mywebsite.services.impl.NoticeServiceImpl.notices2;
@@ -137,6 +142,46 @@ public class NoticeController {
             e.printStackTrace();
             return "err";
         }
+    }
+
+
+    @Autowired
+    FavoritesMapper favoritesMapper;
+
+    @GetMapping("favoritec")
+    public boolean favoritec(@RequestParam("id") Integer id, @AuthenticationPrincipal UserDetails userDetails) {
+        QueryWrapper<Favorites> qw = new QueryWrapper<>();
+        qw.eq("name", userDetails.getUsername());
+        qw.eq("nid", id);
+        if (favoritesMapper.selectCount(qw) > 0) {
+            favoritesMapper.delete(qw);
+            return false;
+        } else {
+            favoritesMapper.insert(new Favorites().setName(userDetails.getUsername()).setNid(id));
+            return true;
+        }
+    }
+
+    @GetMapping("favorite")
+    public boolean favorite(@RequestParam("id") Integer id, @AuthenticationPrincipal UserDetails userDetails) {
+        QueryWrapper<Favorites> qw = new QueryWrapper<>();
+        qw.eq("name", userDetails.getUsername());
+        qw.eq("nid", id);
+        return favoritesMapper.selectCount(qw) > 0;
+    }
+
+    @GetMapping("favorites")
+    public Object favorites(@AuthenticationPrincipal UserDetails userDetails) {
+        if (userDetails == null) return null;
+        List<JSONObject> jos = new LinkedList<>();
+        for (Notice notice : mapper.selectTitleAndViewsByFavoriteName(userDetails.getUsername())) {
+            JSONObject jo = new JSONObject();
+            jo.put("title", notice.getTitle());
+            jo.put("views", notice.getViews());
+            jo.put("id", notice.getId());
+            jos.add(jo);
+        }
+        return jos;
     }
 
     @Autowired
