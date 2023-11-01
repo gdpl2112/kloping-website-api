@@ -22,6 +22,7 @@
 </head>
 <body>
 <script src="/js/header-top.js"></script>
+<script src="/js/utils.js"></script>
 <br>
 <br>
 <br>
@@ -68,15 +69,18 @@
     <br>
     <div style="margin-top: 5px" class="row" v-for="d in cs">
         <div class="col-1"></div>
-        <div style="background-color: rgba(123,152,161,0.75);border-radius: 10px;vertical-align: middle;"
+        <div style="background-color: rgba(94,145,152,0.7);border-radius: 10px;vertical-align: middle;"
              class="media col-10">
             <img style="max-width: 40px; border-radius: 10px" :src="d.icon" class="mr-3 align-self-center mx-auto "
                  alt=".">
             <div style="margin-left: 8px" class="media-body">
                 <h5 class="mt-0" v-text="d.nickName"></h5>
-                <p v-text="d.content"></p>
+                <p style="display: inline-block" v-text="d.content"></p>
             </div>
-            <a v-show="d.c0" class="ml-3 bi bi-trash badge badge-danger" v-on:click="delc(d.commentId)">删除</a>
+            <a style="margin-top: 3px" v-show="d.c0" class="ml-3 bi bi-trash badge badge-danger"
+               v-on:click="delc(d.commentId)">删除</a>
+            <br>
+            <span style="margin-top: 3px; color: #cb8bab" class="ml-3 " v-text="formatMsgTime(d.time)"></span>
         </div>
         <div class="col-1"></div>
     </div>
