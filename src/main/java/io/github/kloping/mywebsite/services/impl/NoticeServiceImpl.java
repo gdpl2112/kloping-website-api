@@ -141,6 +141,7 @@ public class NoticeServiceImpl implements INoticeService {
     public Notice get0(Integer id) {
         QueryWrapper<Notice> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("id", id);
+        queryWrapper.eq("state", 0);
         Notice notice = mapper.selectOne(queryWrapper);
         notice.setViews(notice.getViews() + 1);
         for (Notice n0 : notices) {
