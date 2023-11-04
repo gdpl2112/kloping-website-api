@@ -1,9 +1,6 @@
 package io.github.kloping.mywebsite.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import io.github.kloping.mywebsite.entitys.VideoAnimeSource;
 import io.github.kloping.mywebsite.entitys.baiduShitu.BaiduShitu;
 import io.github.kloping.mywebsite.entitys.baiduShitu.response.BaiduShituResponse;
 import io.github.kloping.mywebsite.entitys.baiduShitu.response.DataList;
@@ -12,9 +9,9 @@ import io.github.kloping.mywebsite.entitys.medias.Song;
 import io.github.kloping.mywebsite.entitys.medias.Songs;
 import io.github.kloping.mywebsite.plugins.PluginsSource;
 import io.github.kloping.mywebsite.plugins.detail.BaiduShituDetail;
-import io.github.kloping.mywebsite.services.*;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
+import io.github.kloping.mywebsite.services.ISearchPic;
+import io.github.kloping.mywebsite.services.ISearchSong;
+import io.github.kloping.url.UrlUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -145,34 +142,20 @@ public class ApiSearchController {
             , @RequestParam(required = false, value = "n") String numStr
     ) throws ScriptException, IOException {
         synchronized (HEADERS) {
+            keyword = keyword.trim();
             if (VSS_MAP.containsKey(keyword)) {
                 return VSS_MAP.get(keyword);
             }
-            Songs songs = new Songs();
-            Document doc = Jsoup.
-                    connect("https://zj.v.api.aa1.cn/api/qqmusic/?songName=" + keyword + "&singerName=&playlistId=&pageNum=1&pageSize=2&type=qq")
-                    .headers(HEADERS)
-                    .ignoreContentType(true).ignoreHttpErrors(true).get();
-            String text = doc.body().text();
-            JSONObject jo = JSON.parseObject(text);
-            List<Song> list = new ArrayList<>();
-            for (Object o : jo.getJSONArray("list")) {
-                JSONObject j1 = (JSONObject) o;
-                Song song = new Song();
-                song.setSongUrl(j1.getString("url"));
-                song.setImgUrl(j1.getString("cover"));
-                song.setLyric("");
-                song.setMedia_name(j1.getString("name"));
-                song.setAuthor_name(j1.getString("singer"));
-                song.setId("0");
-                list.add(song);
-            }
-            songs.setType("qq");
-            songs.setTime(System.currentTimeMillis());
-            songs.setState(200);
-            songs.setNum(list.size());
-            songs.setKeyword(keyword);
-            songs.setData(list.toArray(new Song[0]));
+            String out = UrlUtils.getStringFromHttpUrl("https://xiaoapi.cn/API/yy.php?type=qq&msg=" + keyword + "&n=1");
+            String[] outs = out.split("\n");
+            Song song = new Song();
+            song.setId("");
+            song.setLyric("");
+            song.setSongUrl(outs[3].substring(5))
+                    .setImgUrl(outs[0].substring(3))
+                    .setMedia_name(outs[2].substring(3))
+                    .setAuthor_name(outs[1].substring(3));
+            Songs songs = new Songs(1, 1, System.currentTimeMillis(), keyword, new Song[]{song}, "qq");
             VSS_MAP.put(keyword, songs);
             return songs;
         }
