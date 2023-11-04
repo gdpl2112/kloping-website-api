@@ -16,6 +16,5 @@ public class TimeController {
         ApiSearchController.SONGS_HASH_MAP.clear();
         NoticeServiceImpl.notices.clear();
         NoticeServiceImpl.notices2.clear();
-        ApiSearchController.VSS_MAP.clear();
     }
 }

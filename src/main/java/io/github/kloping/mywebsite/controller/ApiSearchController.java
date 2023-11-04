@@ -135,17 +135,12 @@ public class ApiSearchController {
         HEADERS.put("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 Edg/109.0.1518.78");
     }
 
-    public static final Map<String, Songs> VSS_MAP = new HashMap<>();
-
     @RequestMapping("vipSong")
     public Songs vipSongs(HttpServletRequest request, @RequestParam("keyword") String keyword
             , @RequestParam(required = false, value = "n") String numStr
     ) throws ScriptException, IOException {
         synchronized (HEADERS) {
             keyword = keyword.trim();
-            if (VSS_MAP.containsKey(keyword)) {
-                return VSS_MAP.get(keyword);
-            }
             String out = UrlUtils.getStringFromHttpUrl("https://xiaoapi.cn/API/yy.php?type=qq&msg=" + keyword + "&n=1");
             String[] outs = out.split("\n");
             Song song = new Song();
@@ -156,7 +151,6 @@ public class ApiSearchController {
                     .setMedia_name(outs[2].substring(3))
                     .setAuthor_name(outs[1].substring(3));
             Songs songs = new Songs(1, 1, System.currentTimeMillis(), keyword, new Song[]{song}, "qq");
-            VSS_MAP.put(keyword, songs);
             return songs;
         }
     }
