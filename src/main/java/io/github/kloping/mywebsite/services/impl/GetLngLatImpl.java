@@ -14,14 +14,6 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class GetLngLatImpl implements IgetLngLat {
-    //https://apis.map.qq.com/jsapi
-    // ?qt=geoc
-    // &addr=xx
-    // &key=UGMBZ-CINWR-DDRW5-W52AK-D3ENK-ZEBRC
-    // &output=jsonp
-    // &pf=jsapi
-    // &ref=jsapi
-    // &cb=qq.maps._svcb3.geocoder0
 
     public static final String BASEU1 = "https://apis.map.qq.com/jsapi?qt=geoc&addr=%s&key=UGMBZ-CINWR-DDRW5-W52AK-D3ENK-ZEBRC&output=jsonp&pf=jsapi&ref=jsapi&cb=qq.maps._svcb3.geocoder0";
 

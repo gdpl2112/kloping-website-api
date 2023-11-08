@@ -42,10 +42,6 @@ public class Source {
         System.out.println("====================" + t + "=====================\r\n");
     }
 
-    private static String today;
-    private static File file = new File("./sh.txt");
-    private static File fileMap = new File("./upMap.txt");
-    public static final Map<String, Object> objs = new HashMap<>();
     private static String toMon = null;
     private static String toYear = null;
 

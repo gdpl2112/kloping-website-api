@@ -15,6 +15,7 @@ import java.awt.image.ColorModel;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -268,5 +269,22 @@ public class MyUtils {
             l -= 1000;
         }
         return String.format("%s小时%s分钟%s秒", hour, min, sec);
+    }
+
+    public static Map<String, String> url2parmsMap(String url) {
+        int i = url.indexOf("?");
+        String sub = url.substring(i + 1);
+        String[] ps = sub.split("&");
+        Map<String, String> map = new LinkedHashMap<>();
+        for (String p : ps) {
+            if (p.length() > 0) {
+                String[] ks = p.split("=");
+                if (ks.length > 0) {
+                    if (ks.length == 1) map.put(ks[0], "");
+                    else map.put(ks[0], ks[1]);
+                }
+            } else continue;
+        }
+        return map;
     }
 }

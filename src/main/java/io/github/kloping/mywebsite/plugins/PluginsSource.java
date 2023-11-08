@@ -45,9 +45,6 @@ public class PluginsSource {
     public static MyHkw myHkw;
 
     @AutoStand
-    public static IBaiduShitu iBaiduShitu;
-
-    @AutoStand
     public static Daidr daidr;
 
     @AutoStand
