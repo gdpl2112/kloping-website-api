@@ -37,7 +37,7 @@ public class MyWebSiteApplication {
         onCreate();
         applicationContext = SpringApplication.run(MyWebSiteApplication.class, args);
         PluginsSource.before();
-        System.out.println("start succes -v 10-31");
+        System.out.println("start succes -v 11-9");
 
         String name = ManagementFactory.getRuntimeMXBean().getName();
         String pid = name.split("@")[0];
