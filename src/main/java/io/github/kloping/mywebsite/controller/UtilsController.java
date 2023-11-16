@@ -164,7 +164,7 @@ public class UtilsController {
                 FileOutputStream fos = new FileOutputStream(fwp.getFile());
                 fos.write(imageFile.getBytes());
                 fos.close();
-                return getHostWithPre(request) + "/" + fwp.getName();
+                return getHostWithPre(request) + fwp.getName();
             } else {
                 return "error";
             }
