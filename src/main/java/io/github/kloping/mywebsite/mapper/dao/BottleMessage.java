@@ -16,10 +16,10 @@ public class BottleMessage {
     private Integer id;
 
     @TableField("`gid`")
-    private Long gid;
+    private String gid;
 
     @TableField("`sid`")
-    private Long sid;
+    private String sid;
 
     @TableField("`time`")
     private Long time;

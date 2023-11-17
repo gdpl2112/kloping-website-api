@@ -177,8 +177,7 @@ public class UtilsController {
     public String proxy(@RequestParam("url") String url,
                         @Nullable @RequestParam("type") String type
             , HttpServletResponse response
-            , HttpServletRequest request
-    ) {
+            , HttpServletRequest request) {
         try {
             Connection connection = null;
             connection = org.jsoup.Jsoup.connect(url).ignoreContentType(true)

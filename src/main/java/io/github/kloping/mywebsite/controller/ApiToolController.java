@@ -4,10 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.github.kloping.file.FileUtils;
 import io.github.kloping.judge.Judge;
-import io.github.kloping.mywebsite.mapper.dao.AddressCode;
 import io.github.kloping.mywebsite.entitys.FileWithPath;
-import io.github.kloping.mywebsite.mapper.dao.BottleMessage;
-import io.github.kloping.mywebsite.mapper.dao.Illegal;
 import io.github.kloping.mywebsite.entitys.medias.position.PositionInfo;
 import io.github.kloping.mywebsite.entitys.runcode.CodeContent;
 import io.github.kloping.mywebsite.entitys.runcode.CodeEntity;
@@ -15,6 +12,9 @@ import io.github.kloping.mywebsite.entitys.yuanShen.YuanShenPlayerInfo;
 import io.github.kloping.mywebsite.mapper.AddressCodeMapper;
 import io.github.kloping.mywebsite.mapper.BottleMessageMapper;
 import io.github.kloping.mywebsite.mapper.IllegalMapper;
+import io.github.kloping.mywebsite.mapper.dao.AddressCode;
+import io.github.kloping.mywebsite.mapper.dao.BottleMessage;
+import io.github.kloping.mywebsite.mapper.dao.Illegal;
 import io.github.kloping.mywebsite.plugins.PluginsSource;
 import io.github.kloping.mywebsite.services.IgetLngLat;
 import io.github.kloping.mywebsite.utils.ImageDrawer;
@@ -78,7 +78,7 @@ public class ApiToolController {
     IllegalMapper illegalMapper;
 
     @GetMapping("/throwBottle")
-    public Object throwBottle(@RequestParam("gid") Long gid, @RequestParam("sid") Long sid, @RequestParam("message") String message, @RequestParam("name") @Nullable String name) {
+    public Object throwBottle(@RequestParam("gid") String gid, @RequestParam("sid") String sid, @RequestParam("message") String message, @RequestParam("name") @Nullable String name) {
         if (gid == null || sid == null || message == null || message.isEmpty()) return "参数不能为空";
         BottleMessage bottle = new BottleMessage();
         bottle.setGid(gid).setSid(sid).setMessage(message).setName(name).setTime(System.currentTimeMillis()).setState(0);
@@ -103,7 +103,7 @@ public class ApiToolController {
         List<BottleMessage> list = bottleMessageMapper.selectList(queryWrapper);
         if (list.isEmpty()) {
             bottle = new BottleMessage();
-            bottle.setName("默认昵称").setId(0).setGid(0L).setSid(0L).setTime(System.currentTimeMillis()).setState(0).setId(-1).setMessage("空瓶子");
+            bottle.setName("默认昵称").setId(0).setGid("0").setSid("0").setTime(System.currentTimeMillis()).setState(0).setId(-1).setMessage("空瓶子");
             return bottle;
         }
         Integer r = RANDOM.nextInt(list.size());
