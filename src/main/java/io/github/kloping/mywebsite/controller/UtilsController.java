@@ -160,7 +160,7 @@ public class UtilsController {
     public String upload(HttpServletRequest request, @RequestParam("file") @Nullable MultipartFile imageFile) {
         try {
             if (imageFile != null && !imageFile.isEmpty()) {
-                FileWithPath fwp = UtilsController.requestFile(false, "jpg");
+                FileWithPath fwp = UtilsController.requestFile(true, "jpg");
                 FileOutputStream fos = new FileOutputStream(fwp.getFile());
                 fos.write(imageFile.getBytes());
                 fos.close();
