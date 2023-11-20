@@ -3,14 +3,11 @@ package io.github.kloping.mywebsite.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import io.github.kloping.mywebsite.entitys.baiduShitu.response.BaiduShituResponse;
-import io.github.kloping.mywebsite.entitys.baiduShitu.response.DataList;
 import io.github.kloping.mywebsite.entitys.medias.Result;
 import io.github.kloping.mywebsite.entitys.medias.Song;
 import io.github.kloping.mywebsite.entitys.medias.Songs;
 import io.github.kloping.mywebsite.services.ISearchPic;
 import io.github.kloping.mywebsite.services.ISearchSong;
-import io.github.kloping.reg.MatcherUtils;
 import io.github.kloping.url.UrlUtils;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -23,10 +20,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * @author github-kloping
@@ -162,17 +163,13 @@ public class ApiSearchController {
 
     @RequestMapping("searchPic")
     public Object searchPic(@RequestParam("url") String url) throws Exception {
-        JSONArray array = new JSONArray();
-        BaiduShituResponse response = t0(url);
-        Iterator<DataList> iterator = Arrays.asList(response.getData().getList()).iterator();
-        while (iterator.hasNext()) {
-            Object o = iterator.next();
-            array.add(o);
-        }
+        JSONArray array = t0(url);
         return array;
     }
 
-    public BaiduShituResponse t0(String source) throws Exception {
+    public static final ScriptEngineManager SCRIPT_ENGINE_MANAGER = new ScriptEngineManager();
+
+    public JSONArray t0(String source) throws Exception {
         Connection connection = new HttpConnection()
                 .url("https://graph.baidu.com/upload?uptime=" + System.currentTimeMillis())
                 .ignoreContentType(true).ignoreHttpErrors(true)
@@ -194,24 +191,52 @@ public class ApiSearchController {
         Document doc0 = Jsoup.connect(url0).get();
         Element element = doc0.head().getElementsByTag("script").get(1);
         String js = element.html();
-        String url = null;
-        for (String s : MatcherUtils.matcherAll(js.replaceAll("\\\\", ""), "(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]")) {
-            if (s.contains("tk=")) {
-                url = s;
-                System.out.println("Matched to " + url);
+
+        ScriptEngine engine = SCRIPT_ENGINE_MANAGER.getEngineByName("javascript");
+        engine.eval("var window={\"M\":{}};");
+        engine.eval("var M={}");
+
+        engine.eval(js);
+        engine.eval("var out = JSON.stringify(window.cardData)");
+        String jsonData = engine.get("out").toString();
+        JSONArray array = JSON.parseArray(jsonData);
+
+        JSONObject simipic = null;
+        for (Object o : array) {
+            JSONObject e0 = (JSONObject) o;
+            String cardName = e0.getString("cardName");
+            if (cardName.equals("simipic")) {
+                simipic = e0;
                 break;
             }
         }
+        String url = simipic.getJSONObject("tplData").getString("firstUrl");
+
         connection = new HttpConnection()
                 .url(url)
                 .ignoreContentType(true).ignoreHttpErrors(true)
                 .header("Accept", "*/*")
-//                .header("Accept-Encoding", "gzip, deflate, br")
-//                .header("Accept-Language", "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6")
                 .header("Connection", "Keep-Alive")
                 .header("Referer", url0)
                 .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.67")
                 .method(Connection.Method.GET);
-        return JSON.parseObject(connection.execute().body(), BaiduShituResponse.class);
+        JSONArray result = new JSONArray();
+        try {
+            JSONObject same = array.getJSONObject(1);
+            for (Object o : array) {
+                JSONObject e0 = (JSONObject) o;
+                String cardName = e0.getString("cardName");
+                if (cardName.equals("same")) {
+                    same = e0;
+                    break;
+                }
+            }
+            result.addAll(same.getJSONObject("tplData").getJSONArray("list"));
+        } catch (Exception e) {
+            System.err.println(e.getMessage() + ";; search pic by pic of same data lose for " + source);
+        }
+        JSONObject jo0 = JSON.parseObject(connection.execute().body());
+        result.addAll(jo0.getJSONObject("data").getJSONArray("list"));
+        return result;
     }
 }
