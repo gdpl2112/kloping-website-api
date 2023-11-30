@@ -63,13 +63,15 @@ public class ApiTempController {
 
     private int index0 = 1;
     private int indexMax = 20;
+    public long time0 = 0;
 
     @RequestMapping("/get-music")
     public Object getMusic() {
-        try {
-            if (tempList.isEmpty() || index0++ % indexMax == 0) {
-                String data = UrlUtils.getStringFromHttpUrl("http://localhost/get?pwd=r&key=songs");
-                for (Object o : JSONArray.parseArray(data)) {
+        if (tempList.isEmpty() || index0++ % indexMax == 0 || System.currentTimeMillis() - time0 > 1800000) {
+            time0 = System.currentTimeMillis();
+            String data = UrlUtils.getStringFromHttpUrl("http://localhost/get?pwd=r&key=songs");
+            for (Object o : JSONArray.parseArray(data)) {
+                try {
                     String name = o.toString();
                     Songs songs = searchSongKugou.searchSong(name, 1);
                     Song song = songs.getData()[0];
@@ -79,13 +81,12 @@ public class ApiTempController {
                     jo.put("cover", song.getImgUrl());
                     jo.put("url", song.getSongUrl());
                     tempList.add(jo);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
-            return tempList;
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-        return null;
+        return tempList;
     }
 
     @GetMapping("/clear-music")

@@ -59,9 +59,17 @@ $("body").append(`
                         <img style="opacity: 0.86;max-width: 35px"  alt="qq" loading="lazy" src="https://s.nmxc.ltd/sakurairo_vision/@2.6/display_icon/sora/qq.png">
                         QQ
                     </a>
-                    <a class="dropdown-item" target="_blank" href="//github.com/kloping">
+                    <a class="dropdown-item" target="_blank" href="http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=Bk2IrDI969mNd-R5G30Ridw9yeou0Mqd&authKey=TCtcOWnwzFw3NfZn%2F9XAXtRmPquOdFbRQmAAFFnf18WXusQBWqt8TFyoJpVVktj2&noverify=0&group_code=278681553">
+                        <img style="opacity: 0.86;max-width: 35px"  alt="qq" loading="lazy" src="https://s.nmxc.ltd/sakurairo_vision/@2.6/display_icon/sora/qq.png">
+                        QQ GROUP
+                    </a>
+                    <a class="dropdown-item" target="_blank" href="https://github.com/kloping">
                         <img style="opacity: 0.86;max-width: 35px"  alt="github" loading="lazy" src="https://s.nmxc.ltd/sakurairo_vision/@2.6/display_icon/sora/github.png">
                         github
+                    </a> 
+                    <a class="dropdown-item" target="_blank" href="https://github.com/gdpl2112">
+                        <img style="opacity: 0.86;max-width: 35px"  alt="github" loading="lazy" src="https://s.nmxc.ltd/sakurairo_vision/@2.6/display_icon/sora/github.png">
+                        github organization
                     </a>
                 </div>
             </li>
