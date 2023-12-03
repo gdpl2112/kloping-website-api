@@ -69,6 +69,7 @@ public class ApiTempController {
     public Object getMusic() {
         if (tempList.isEmpty() || index0++ % indexMax == 0 || System.currentTimeMillis() - time0 > 1800000) {
             time0 = System.currentTimeMillis();
+            tempList.clear();
             String data = UrlUtils.getStringFromHttpUrl("http://localhost/get?pwd=r&key=songs");
             for (Object o : JSONArray.parseArray(data)) {
                 try {
