@@ -98,7 +98,7 @@ public class NoticeController {
                 FileOutputStream fos = new FileOutputStream(fwp.getFile());
                 fos.write(imageFile.getBytes());
                 fos.close();
-                img = "/" + fwp.getName();
+                img = fwp.getName();
             } else {
                 UserTemp userTemp = userTempMapper.selectById(userDetails.getUsername());
                 img = userTemp.getIcon();
