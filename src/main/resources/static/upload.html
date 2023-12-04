@@ -104,7 +104,7 @@
         fd.append('file', f0)
         fd.append('title', title)
         fd.append('code', code)
-        axios.post("/upload", fd).then(function (response) {
+        axios.post("/notice/upload", fd).then(function (response) {
             alert(response.data)
         }).catch(function (err) {
             alert(err);
