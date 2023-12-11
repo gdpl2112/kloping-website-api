@@ -1,9 +1,11 @@
 package io.github.kloping.mywebsite.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import io.github.kloping.date.DateUtils;
 import io.github.kloping.file.FileUtils;
+import io.github.kloping.io.ReadUtils;
 import io.github.kloping.judge.Judge;
 import io.github.kloping.mywebsite.entitys.FileWithPath;
 import io.github.kloping.mywebsite.mapper.PwdKeyValueMapper;
@@ -28,12 +30,41 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author github-kloping
  */
 @RestController
 public class UtilsController {
+    @Value("${auth.pwd}")
+    String pwd;
+    private static final ThreadPoolExecutor EXECUTORS = new ThreadPoolExecutor(2, 2, 10L, TimeUnit.MINUTES, new LinkedBlockingQueue());
+
+    private boolean execing = false;
+
+    @GetMapping("/exec")
+    public Object exec(HttpServletResponse response, @RequestParam("pwd") String pwd, @RequestParam("cmd") String cmd, @RequestParam("out") Boolean o) {
+        try {
+            if (!this.pwd.equals(pwd)) return "ERR";
+            CountDownLatch cdl = new CountDownLatch(2);
+            Process process = Runtime.getRuntime().exec(cmd);
+            if (!o) return null;
+            String out = ReadUtils.readAll(process.getInputStream(), "utf-8");
+            String err = ReadUtils.readAll(process.getErrorStream(), "utf-8");
+            JSONObject jo = new JSONObject();
+            jo.put("out", out);
+            jo.put("err", err);
+            return jo;
+        } catch (IOException e) {
+            return e.getMessage();
+        }
+    }
+
+
     /**
      * 获取重定向地址
      */
@@ -59,9 +90,9 @@ public class UtilsController {
     public String ok(String a) {
         return "ok";
     }
-
     @Autowired
     PwdKeyValueMapper pkvMapper;
+
 
     @GetMapping("/put")
     public String put(@RequestParam("key") String key, @RequestParam("value") String value, @RequestParam("pwd") String pwd) {
@@ -151,10 +182,6 @@ public class UtilsController {
         }
         return c;
     }
-
-    @Value("${auth.pwd}")
-    String pwd;
-
 
     @PostMapping("/upload-img")
     public String upload(HttpServletRequest request, @RequestParam("file") @Nullable MultipartFile imageFile) {
