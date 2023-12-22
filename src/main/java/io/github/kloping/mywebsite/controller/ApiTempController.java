@@ -6,7 +6,6 @@ import io.github.kloping.mywebsite.entitys.medias.Song;
 import io.github.kloping.mywebsite.entitys.medias.Songs;
 import io.github.kloping.mywebsite.services.ChatBotService;
 import io.github.kloping.mywebsite.services.impl.SearchSongKugou;
-import io.github.kloping.url.UrlUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -57,6 +56,9 @@ public class ApiTempController {
     }
 
     @Autowired
+    UtilsController utilsController;
+
+    @Autowired
     SearchSongKugou searchSongKugou;
 
     private List<JSONObject> tempList = new ArrayList<>();
@@ -70,7 +72,7 @@ public class ApiTempController {
         if (tempList.isEmpty() || index0++ % indexMax == 0 || System.currentTimeMillis() - time0 > 1800000) {
             time0 = System.currentTimeMillis();
             tempList.clear();
-            String data = UrlUtils.getStringFromHttpUrl("http://localhost/get?pwd=r&key=songs");
+            String data = utilsController.get("songs", "r");
             for (Object o : JSONArray.parseArray(data)) {
                 try {
                     String name = o.toString();
