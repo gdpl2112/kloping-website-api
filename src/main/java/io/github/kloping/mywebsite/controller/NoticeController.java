@@ -145,7 +145,6 @@ public class NoticeController {
         }
     }
 
-
     @Autowired
     FavoritesMapper favoritesMapper;
 
@@ -176,6 +175,23 @@ public class NoticeController {
         if (userDetails == null) return null;
         List<JSONObject> jos = new LinkedList<>();
         for (Notice notice : mapper.selectTitleAndViewsByFavoriteName(userDetails.getUsername())) {
+            JSONObject jo = new JSONObject();
+            jo.put("title", notice.getTitle());
+            jo.put("views", notice.getViews());
+            jo.put("id", notice.getId());
+            jos.add(jo);
+        }
+        return jos;
+    }
+
+    @GetMapping("/myall")
+    public Object myAll(@AuthenticationPrincipal UserDetails userDetails) {
+        if (userDetails == null) return null;
+        List<JSONObject> jos = new LinkedList<>();
+        QueryWrapper<Notice> qw0 = new QueryWrapper<>();
+        qw0.eq("author_name", userDetails.getUsername());
+        qw0.eq("state", 0);
+        for (Notice notice : mapper.selectList(qw0)) {
             JSONObject jo = new JSONObject();
             jo.put("title", notice.getTitle());
             jo.put("views", notice.getViews());

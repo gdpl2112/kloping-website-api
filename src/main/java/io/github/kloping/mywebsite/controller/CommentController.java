@@ -1,9 +1,13 @@
 package io.github.kloping.mywebsite.controller;
 
+import io.github.kloping.common.Public;
 import io.github.kloping.mywebsite.mapper.CommentMapper;
+import io.github.kloping.mywebsite.mapper.NoticeMapper;
 import io.github.kloping.mywebsite.mapper.UserTempMapper;
 import io.github.kloping.mywebsite.mapper.dao.Comment;
+import io.github.kloping.mywebsite.mapper.dao.Notice;
 import io.github.kloping.mywebsite.mapper.dao.UserTemp;
+import io.github.kloping.mywebsite.utils.EmailSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -48,6 +52,8 @@ public class CommentController {
 
     @Autowired
     UserTempMapper userTempMapper;
+    @Autowired
+    NoticeMapper noticeMapper;
 
     @PostMapping("/pcm")
     public Comment pcm(
@@ -61,6 +67,15 @@ public class CommentController {
                 .setNoticeId(nid).setNickName(userTemp.getNickname())
                 .setIcon(userTemp.getIcon()).setC0(true);
         int r = commentMapper.insert(comment);
+        Public.EXECUTOR_SERVICE.submit(() -> {
+            Notice notice = noticeMapper.selectById(nid);
+            String eid = userTempMapper.selectById(notice.getAuthorName()).getEid();
+            if (!notice.getAuthorName().equals(userTemp.getNickname())) {
+                EmailSender.sendEmail(eid, "通知来自[若生er,WebSite]",
+                        String.format("<h1>hi! %s</h1><p>%s在您发布的帖子<br>[%s]<br>发布了一条评论</p><br><p>%s</p>",
+                                notice.getAuthorName(), userTemp.getNickname(), notice.getTitle(), body));
+            }
+        });
         return r > 0 ? comment : null;
     }
 }
