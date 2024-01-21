@@ -8,7 +8,6 @@ import io.github.kloping.mywebsite.entitys.medias.Song;
 import io.github.kloping.mywebsite.entitys.medias.Songs;
 import io.github.kloping.mywebsite.services.ISearchPic;
 import io.github.kloping.mywebsite.services.ISearchSong;
-import io.github.kloping.url.UrlUtils;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.helper.HttpConnection;
@@ -19,6 +18,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
@@ -141,14 +141,15 @@ public class ApiSearchController {
         HEADERS.put("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 Edg/109.0.1518.78");
     }
 
+    RestTemplate restTemplate = new RestTemplate();
+
     @RequestMapping("vipSong")
     public Songs vipSongs(HttpServletRequest request, @RequestParam("keyword") String keyword
             , @RequestParam(required = false, value = "n") String numStr
     ) throws ScriptException, IOException {
         synchronized (HEADERS) {
             keyword = keyword.trim();
-            String out = UrlUtils.getStringFromHttpUrl(String.format("http://ovoa.cc/api/QQmusic.php?msg=%s&n=1&type=JSON", keyword));
-            System.out.println(out);
+            String out = restTemplate.getForObject(String.format("http://ovoa.cc/api/QQmusic.php?msg=%s&n=1&type=JSON", keyword), String.class);
             JSONObject jo = JSON.parseObject(out);
             JSONObject data = jo.getJSONObject("data");
             Song song = new Song();
