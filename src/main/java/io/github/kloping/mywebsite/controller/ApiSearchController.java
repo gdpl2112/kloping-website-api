@@ -147,15 +147,16 @@ public class ApiSearchController {
     ) throws ScriptException, IOException {
         synchronized (HEADERS) {
             keyword = keyword.trim();
-            String out = UrlUtils.getStringFromHttpUrl("https://xiaoapi.cn/API/yy.php?type=qq&msg=" + keyword + "&n=1");
-            String[] outs = out.split("\n");
+            String out = UrlUtils.getStringFromHttpUrl(String.format("http://ovoa.cc/api/QQmusic.php?msg=%s&n=1&type=JSON", keyword));
+            JSONObject jo = JSON.parseObject(out);
+            JSONObject data = jo.getJSONObject("data");
             Song song = new Song();
             song.setId("");
             song.setLyric("");
-            song.setSongUrl(outs[3].substring(5))
-                    .setImgUrl(outs[0].substring(3))
-                    .setMedia_name(outs[2].substring(3))
-                    .setAuthor_name(outs[1].substring(3));
+            song.setSongUrl(data.getString("src"))
+                    .setImgUrl(data.getString("cover"))
+                    .setMedia_name(data.getString("songname"))
+                    .setAuthor_name(data.getString("name"));
             Songs songs = new Songs(1, 1, System.currentTimeMillis(), keyword, new Song[]{song}, "qq");
             return songs;
         }
