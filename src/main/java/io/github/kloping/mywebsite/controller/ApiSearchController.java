@@ -148,6 +148,7 @@ public class ApiSearchController {
         synchronized (HEADERS) {
             keyword = keyword.trim();
             String out = UrlUtils.getStringFromHttpUrl(String.format("http://ovoa.cc/api/QQmusic.php?msg=%s&n=1&type=JSON", keyword));
+            System.out.println(out);
             JSONObject jo = JSON.parseObject(out);
             JSONObject data = jo.getJSONObject("data");
             Song song = new Song();
