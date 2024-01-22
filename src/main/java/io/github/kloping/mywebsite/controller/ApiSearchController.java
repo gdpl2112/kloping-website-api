@@ -8,6 +8,7 @@ import io.github.kloping.mywebsite.entitys.medias.Song;
 import io.github.kloping.mywebsite.entitys.medias.Songs;
 import io.github.kloping.mywebsite.services.ISearchPic;
 import io.github.kloping.mywebsite.services.ISearchSong;
+import io.github.kloping.url.UrlUtils;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.helper.HttpConnection;
@@ -148,17 +149,29 @@ public class ApiSearchController {
             , @RequestParam(required = false, value = "n") String numStr
     ) throws ScriptException, IOException {
         synchronized (HEADERS) {
+//            keyword = keyword.trim();
+//            String out = restTemplate.getForObject(String.format("http://ovoa.cc/api/QQmusic.php?msg=%s&n=1&type=JSON", keyword), String.class);
+//            JSONObject jo = JSON.parseObject(out);
+//            JSONObject data = jo.getJSONObject("data");
+//            Song song = new Song();
+//            song.setId("");
+//            song.setLyric("");
+//            song.setSongUrl(data.getString("src"))
+//                    .setImgUrl(data.getString("cover"))
+//                    .setMedia_name(data.getString("songname"))
+//                    .setAuthor_name(data.getString("name"));
+//            Songs songs = new Songs(1, 1, System.currentTimeMillis(), keyword, new Song[]{song}, "qq");
+//            return songs;
             keyword = keyword.trim();
-            String out = restTemplate.getForObject(String.format("http://ovoa.cc/api/QQmusic.php?msg=%s&n=1&type=JSON", keyword), String.class);
-            JSONObject jo = JSON.parseObject(out);
-            JSONObject data = jo.getJSONObject("data");
+            String out = UrlUtils.getStringFromHttpUrl("https://xiaoapi.cn/API/yy.php?type=qq&msg=" + keyword + "&n=1");
+            String[] outs = out.split("\n");
             Song song = new Song();
             song.setId("");
             song.setLyric("");
-            song.setSongUrl(data.getString("src"))
-                    .setImgUrl(data.getString("cover"))
-                    .setMedia_name(data.getString("songname"))
-                    .setAuthor_name(data.getString("name"));
+            song.setSongUrl(outs[3].substring(5))
+                    .setImgUrl(outs[0].substring(3))
+                    .setMedia_name(outs[2].substring(3))
+                    .setAuthor_name(outs[1].substring(3));
             Songs songs = new Songs(1, 1, System.currentTimeMillis(), keyword, new Song[]{song}, "qq");
             return songs;
         }
