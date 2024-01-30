@@ -2,9 +2,6 @@ package io.github.kloping.mywebsite.entitys.webApi.qqDetail;
 
 import com.alibaba.fastjson.annotation.JSONField;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-
 public class QQMusicDataList {
     private Preview preview;
     private String songname_hilight;
@@ -400,13 +397,8 @@ public class QQMusicDataList {
 
     @Override
     public String toString() {
-        String jsonData = "{\"req_0\":{\"module\":\"vkey.GetVkeyServer\",\"method\":\"CgiGetVkey\",\"param\":{\"guid\":\"358840384\",\"songmid\":[\"" + media_mid + "\"],\"songtype\":[0],\"uin\":\"1443481947\",\"loginflag\":1,\"platform\":\"20\"}},\"comm\":{\"uin\":\"18585073516\",\"format\":\"json\",\"ct\":24,\"cv\":0}}";
-
-        try {
-            return URLEncoder.encode(jsonData, "utf-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            return "";
-        }
+        String jsonData = "{\"req\":{\"module\":\"CDN.SrfCdnDispatchServer\",\"method\":\"GetCdnDispatch\",\"param\":{\"guid\":\"0\",\"calltype\":0,\"userip\":\"\"}},\"req_0\":{\"module\":\"vkey.GetVkeyServer\",\"method\":\"CgiGetVkey\",\"param\":{\"guid\":\"0\",\"songmid\":[\""
+                + songmid + "\"],\"songtype\":[0],\"uin\":\"0\",\"loginflag\":1,\"platform\":\"20\"}},\"comm\":{\"uin\":0,\"format\":\"json\",\"ct\":24,\"cv\":0}}";
+        return jsonData;
     }
 }

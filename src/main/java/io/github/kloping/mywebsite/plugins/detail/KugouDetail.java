@@ -42,6 +42,8 @@ public class KugouDetail {
         for (Info info : infos) {
             KugouSong kugouSong = getOne(info.getHash(), info.getAlbum_id());
             if (kugouSong == null || kugouSong.getData() == null) continue;
+            if (kugouSong.getData().getPlay_url() == null || kugouSong.getData().getPlay_url().trim().isEmpty())
+                continue;
             Song song = new Song()
                     .setSongUrl(kugouSong.getData().getPlay_url())
                     .setImgUrl(kugouSong.getData().getImg())
@@ -69,7 +71,6 @@ public class KugouDetail {
         String u0 = String.format("https://wwwapi.kugou.com/yy/index.php?r=play/getdata&callback=%s&hash=%s&album_id=%s&_=%s", "jq", hash, id, System.currentTimeMillis());
         connection = Jsoup.connect(u0).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.134 Safari/537.36 Edg/103.0.1264.77")
                 .ignoreHttpErrors(true).ignoreContentType(true).cookie(E0.getKey(), E0.getValue());
-
         try {
             doc = connection.get();
             kugouSong = JSONObject.parseObject(doc0(doc.body().text()), KugouSong.class);

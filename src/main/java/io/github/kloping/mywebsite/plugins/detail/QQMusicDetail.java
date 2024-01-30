@@ -49,7 +49,7 @@ public class QQMusicDetail {
         try {
             String jsonData = "{\"req_0\":{\"module\":\"vkey.GetVkeyServer\",\"method\":\"CgiGetVkey\",\"param\":{\"guid\":\"358840384\",\"songmid\":[\"" + id + "\"],\"songtype\":[0],\"uin\":\"1443481947\",\"loginflag\":1,\"platform\":\"20\"}},\"comm\":{\"uin\":\"18585073516\",\"format\":\"json\",\"ct\":24,\"cv\":0}}\n";
             jsonData = URLEncoder.encode(jsonData, "utf-8");
-            QQOneSong qqOneSong = qqMusic.oneDetail(null, jsonData, HEADERS);
+            QQOneSong qqOneSong = qqMusic.oneDetail(jsonData, HEADERS);
             Data data = qqOneSong.getReq_0().getData();
             String urlEnd = data.getMidurlinfo()[0].getPurl();
             return getT0(data, urlEnd);
@@ -73,7 +73,7 @@ public class QQMusicDetail {
             QQMusicDataList dl0 = new QQMusicDataList();
             String mid = singleSong.getData()[0].getMid();
             dl0.setMedia_mid(mid);
-            QQOneSong qqOneSong = qqMusic.oneDetail(null, dl0, HEADERS);
+            QQOneSong qqOneSong = qqMusic.oneDetail(dl0.toString(), HEADERS);
             io.github.kloping.mywebsite.entitys.webApi.qqOneSong.Data data = qqOneSong.getReq_0().getData();
             String urlEnd = "http://dl.stream.qqmusic.qq.com/" + data.getMidurlinfo()[0].getPurl();
             String lyric = "";

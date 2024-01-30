@@ -57,23 +57,6 @@ public interface QQMusic {
             @ParamName("w")
                     String w);
 
-    /**
-     * 单曲详情
-     *
-     * @param format
-     * @param data
-     * @param headers
-     * @return
-     */
-    @GetPath("https://u.y.qq.com/cgi-bin/musicu.fcg")
-    QQOneSong oneDetail(
-            @ParamName("format")
-            @DefaultValue("json")
-                    String format,
-            @ParamName("data")
-                    QQMusicDataList data,
-            @Headers Map<String, String> headers
-    );
 
     /**
      * 单曲详情
@@ -85,9 +68,6 @@ public interface QQMusic {
      */
     @GetPath("https://u.y.qq.com/cgi-bin/musicu.fcg")
     QQOneSong oneDetail(
-            @ParamName("format")
-            @DefaultValue("json")
-                    String format,
             @ParamName("data")
                     String data,
             @Headers Map<String, String> headers
