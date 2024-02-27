@@ -5,7 +5,6 @@ import com.alibaba.fastjson.JSONObject;
 import io.github.kloping.mywebsite.entitys.medias.Song;
 import io.github.kloping.mywebsite.entitys.medias.Songs;
 import io.github.kloping.mywebsite.services.ChatBotService;
-import io.github.kloping.mywebsite.services.impl.SearchSongKugou;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -59,7 +58,7 @@ public class ApiTempController {
     UtilsController utilsController;
 
     @Autowired
-    SearchSongKugou searchSongKugou;
+    ApiSearchController apiSearchController;
 
     private List<JSONObject> tempList = new ArrayList<>();
 
@@ -68,7 +67,7 @@ public class ApiTempController {
     public long time0 = 0;
 
     @RequestMapping("/get-music")
-    public Object getMusic() {
+    public Object getMusic(HttpServletRequest request) {
         if (tempList.isEmpty() || index0++ % indexMax == 0 || System.currentTimeMillis() - time0 > 1800000) {
             time0 = System.currentTimeMillis();
             tempList.clear();
@@ -76,7 +75,7 @@ public class ApiTempController {
             for (Object o : JSONArray.parseArray(data)) {
                 try {
                     String name = o.toString();
-                    Songs songs = searchSongKugou.searchSong(name, 1);
+                    Songs songs = apiSearchController.vipSongs(request, o.toString(), "1");
                     Song song = songs.getData()[0];
                     JSONObject jo = new JSONObject();
                     jo.put("name", song.getMedia_name());
