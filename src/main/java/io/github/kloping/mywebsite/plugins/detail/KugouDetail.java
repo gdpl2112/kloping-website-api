@@ -76,11 +76,11 @@ public class KugouDetail {
             kugouSong = JSONObject.parseObject(doc0(doc.body().text()), KugouSong.class);
         } catch (Exception e) {
             e.printStackTrace();
-            try {
-                doc = connection.proxy("123.57.42.227", 8889).get();
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
+//            try {
+//                doc = connection.proxy("123.57.42.227", 8889).get();
+//            } catch (IOException e1) {
+//                e1.printStackTrace();
+//            }
             kugouSong = JSONObject.parseObject(doc0(doc.body().text()), KugouSong.class);
         }
 //        kugouSong = kugou.getSong(

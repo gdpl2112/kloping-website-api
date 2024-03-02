@@ -75,7 +75,7 @@ public class ApiTempController {
             for (Object o : JSONArray.parseArray(data)) {
                 try {
                     String name = o.toString();
-                    Songs songs = apiSearchController.vipSongs(request, o.toString(), "1");
+                    Songs songs = apiSearchController.searchSong(request, o.toString(), "wy", "2");
                     Song song = songs.getData()[0];
                     JSONObject jo = new JSONObject();
                     jo.put("name", song.getMedia_name());
