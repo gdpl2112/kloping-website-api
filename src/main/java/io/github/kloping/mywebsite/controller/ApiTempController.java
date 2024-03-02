@@ -1,20 +1,14 @@
 package io.github.kloping.mywebsite.controller;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import io.github.kloping.mywebsite.entitys.medias.Song;
-import io.github.kloping.mywebsite.entitys.medias.Songs;
+import io.github.kloping.file.FileUtils;
 import io.github.kloping.mywebsite.services.ChatBotService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author github.kloping
@@ -54,47 +48,8 @@ public class ApiTempController {
         return UtilsController.getHost(request);
     }
 
-    @Autowired
-    UtilsController utilsController;
-
-    @Autowired
-    ApiSearchController apiSearchController;
-
-    private List<JSONObject> tempList = new ArrayList<>();
-
-    private int index0 = 1;
-    private int indexMax = 20;
-    public long time0 = 0;
-
     @RequestMapping("/get-music")
     public Object getMusic(HttpServletRequest request) {
-        if (tempList.isEmpty() || index0++ % indexMax == 0 || System.currentTimeMillis() - time0 > 1800000) {
-            time0 = System.currentTimeMillis();
-            tempList.clear();
-            String data = utilsController.get("songs", "r");
-            for (Object o : JSONArray.parseArray(data)) {
-                try {
-                    String name = o.toString();
-                    Songs songs = apiSearchController.searchSong(request, o.toString(), "wy", "2");
-                    Song song = songs.getData()[0];
-                    JSONObject jo = new JSONObject();
-                    jo.put("name", song.getMedia_name());
-                    jo.put("artist", song.getAuthor_name());
-                    jo.put("cover", song.getImgUrl());
-                    jo.put("url", song.getSongUrl());
-                    tempList.add(jo);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return tempList;
-    }
-
-    @GetMapping("/clear-music")
-    public Object clearMusic() {
-        Integer n = tempList.size();
-        tempList.clear();
-        return n;
+        return FileUtils.getStringFromFile("./files/songs.json");
     }
 }
