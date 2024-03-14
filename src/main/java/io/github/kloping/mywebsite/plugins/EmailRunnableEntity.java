@@ -2,21 +2,20 @@ package io.github.kloping.mywebsite.plugins;
 
 import com.sun.mail.pop3.POP3Message;
 import io.github.kloping.MySpringTool.annotations.Entity;
+import io.github.kloping.judge.Judge;
 import io.github.kloping.mywebsite.MyWebSiteApplication;
 import io.github.kloping.mywebsite.broadcast.EmailReceivesBroadcast;
 import io.github.kloping.mywebsite.utils.MyUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.safety.Safelist;
 
 import javax.mail.Address;
 import javax.mail.BodyPart;
 import javax.mail.internet.MimeMultipart;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author github.kloping
@@ -44,9 +43,9 @@ public class EmailRunnableEntity implements EmailReceivesBroadcast.EmailReceives
         try {
             Address address = message.getFrom()[0];
             if (canSend(address)) {
+                String uhref = null;
                 StringBuilder sb = new StringBuilder();
-                sb.append(message.getSubject()).append("\n");
-                sb.append(address.toString()).append("\n");
+                sb.append(message.getSubject()).append("\n===========\n");
                 Object content = message.getContent();
                 if (content instanceof javax.mail.internet.MimeMultipart) {
                     MimeMultipart mimeMultipart = (MimeMultipart) content;
@@ -54,12 +53,22 @@ public class EmailRunnableEntity implements EmailReceivesBroadcast.EmailReceives
                         BodyPart bodyPart = mimeMultipart.getBodyPart(index);
                         String type = bodyPart.getContentType();
                         Object object = bodyPart.getContent();
-//                        if (type.contains("text/plain")) {
-//                            sb.append(object.toString()).append("\n");
-//                        } else
                             if (type.contains("text/html")) {
-                            sb.append(toPlainText(object.toString())).append("\n");
-                        }
+                                Document doc0 = Jsoup.parse(object.toString());
+                                for (Element element : doc0.getElementsByTag("a")) {
+                                    if (element.text().equals("view it on GitHub")) {
+                                        uhref = element.attr("href");
+                                    }
+                                }
+                                Iterator<Element> iter0 = doc0.body().getElementsByTag("p").iterator();
+                                while (iter0.hasNext()) {
+                                    Element e0 = iter0.next();
+                                    if (!iter0.hasNext()) {
+                                        e0.remove();
+                                    }
+                                }
+                                sb.append(doc0.body().wholeText().trim());
+                            }
                     }
                 } else {
                     sb.append(content.toString());
@@ -69,6 +78,9 @@ public class EmailRunnableEntity implements EmailReceivesBroadcast.EmailReceives
                 }
                 if (pwd == null) {
                     pwd = MyWebSiteApplication.applicationContext.getEnvironment().getProperty("auth.pwd").toString();
+                }
+                if (Judge.isNotEmpty(uhref)) {
+                    sb.append("\n===========\n").append(uhref);
                 }
                 System.out.println("say =>> ");
                 System.out.println(sb.toString());
