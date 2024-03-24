@@ -56,7 +56,7 @@ public class EmailRunnableEntity implements EmailReceivesBroadcast.EmailReceives
                             if (type.contains("text/html")) {
                                 Document doc0 = Jsoup.parse(object.toString());
                                 for (Element element : doc0.getElementsByTag("a")) {
-                                    if (element.text().equals("view it on GitHub")) {
+                                    if (element.text().equals("view it on GitHub") || element.text().equals("release page")) {
                                         uhref = element.attr("href");
                                     }
                                 }
