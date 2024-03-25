@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <meta name="referrer" content="no-referrer"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="/css/bootstrap4.3.1.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-icons1.8.1.css">
+    <script src="/js/lib/axios.js"></script>
+    <script src="/js/lib/vue.js"></script>
+    <script src="/js/lib/jq3.6.js"></script>
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/js/popper1.14.1.min.js"></script>
+    <script src="/js/bootstrap4.3.1.min.js"></script>
+    <link rel="stylesheet" href="/css/main.css">
+    <title>以图搜图 结果展示</title>
+</head>
+<body id="body" class="page-header-fixed">
+<script src="/js/header-top.js"></script>
+<br>
+<br>
+<hr>
+<hr>
+<br>
+<hr>
+<div id="main1" class="container" style="background: rgba(181,220,218,0.5);">
+    <div class="row">
+        <div class="col" v-for="e in data">
+            <figure class="figure">
+                <div></div>
+                <img v-if="e.thumbUrl" :src="e.thumbUrl" class="figure-img img-fluid rounded" alt="...">
+                <img v-if="e.image_src" :src="e.image_src" class="figure-img img-fluid rounded" alt="...">
+                <figcaption v-if="e.fromUrl" class="figure-caption"><a :href="e.fromUrl">{{e.fromUrl}}</a></figcaption>
+                <figcaption v-if="e.url" class="figure-caption"><a :href="e.url">{{e.url}}</a></figcaption>
+            </figure>
+        </div>
+    </div>
+</div>
+<script>
+    let vm1 = new Vue({
+        el: "#main1",
+        created: function () {
+            let url = location.href.substring(location.href.indexOf("=") + 1)
+            axios.get("/api/search/searchPic?url=" + url).then(function (response) {
+                vm1.data = response.data
+            }).catch(function (err) {
+                alert(err);
+            })
+        }, data: {
+            data: []
+        }, methods: {
+
+        }
+    });
+</script>
+</body>
+</html>
