@@ -68,11 +68,11 @@ public class GithubCodeAuthenticationProcessingFilter extends AbstractAuthentica
                 return null;
             }
             GithubUser user = utils.getUser(access_token);
-            if (Judge.isEmpty(user.getCompany())) {
+            if (Judge.isEmpty(user.getLogin())) {
                 response.sendRedirect("/error.html?tips=An exception occurred while getting github user information, please try again later");
                 return null;
             }
-            EID2TOKEN.put(user.getCompany(), access_token);
+            EID2TOKEN.put(user.getLogin(), access_token);
             atoken = new GithubCodeAuthenticationToken(code, access_token);
             atoken.setGithubUser(user);
         } catch (Exception e) {

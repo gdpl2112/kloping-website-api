@@ -40,7 +40,7 @@ public class GithubCodeAuthenticationProvider implements AuthenticationProvider 
         authenticationChecks(authentication);
         GithubCodeAuthenticationToken githubCodeAuthenticationToken = (GithubCodeAuthenticationToken) authentication;
         GithubUser githubUser = githubCodeAuthenticationToken.getGithubUser();
-        UserDetails userDetails = userDetailsService.loadUserByUsername(githubUser.getCompany());
+        UserDetails userDetails = userDetailsService.loadUserByUsername(githubUser.getLogin());
         GithubCodeAuthenticationToken result = new GithubCodeAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
         result.setDetails(githubCodeAuthenticationToken.getDetails());
         return result;
@@ -56,7 +56,7 @@ public class GithubCodeAuthenticationProvider implements AuthenticationProvider 
         GithubCodeAuthenticationToken githubCodeAuthenticationToken = (GithubCodeAuthenticationToken) authentication;
         GithubUser user = githubCodeAuthenticationToken.getGithubUser();
         String name = user.getLogin();
-        String eid = user.getCompany();
+        String eid = user.getLogin();
         eid = eid == null ? "" : eid;
         UserTemp userTemp = userTempMapper.selectById(name);
         if (userTemp == null) {

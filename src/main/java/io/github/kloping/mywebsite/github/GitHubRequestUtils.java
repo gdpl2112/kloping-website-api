@@ -18,18 +18,28 @@ import java.io.IOException;
 @Component
 public class GitHubRequestUtils {
     @Value("${proxy.url}")
-    String url;
+    public String url;
 
     @Value("${proxy.port}")
-    Integer port;
+    public Integer port;
 
-    private boolean a = false;
+    private boolean k = false;
+    private int i = 2;
 
     private Connection getConnection() {
         Connection connection = new HttpConnection();
         connection.ignoreHttpErrors(true).ignoreContentType(true);
-        if ((a=!a))
-            connection.proxy(url, port).sslSocketFactory(SSLSocketClientUtil.getSocketFactory(SSLSocketClientUtil.getX509TrustManager()));
+        if (port == null || url == null) return connection;
+        else {
+            if (k) {
+                connection.proxy(url, port).sslSocketFactory(SSLSocketClientUtil.getSocketFactory(SSLSocketClientUtil.getX509TrustManager()));
+                i--;
+                if (i == 0) k = false;
+            } else {
+                i++;
+                if (i == 2) k = true;
+            }
+        }
         return connection;
     }
 
