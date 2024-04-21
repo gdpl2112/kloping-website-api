@@ -1,16 +1,14 @@
 package io.github.kloping.mywebsite.config;
 
 import io.github.kloping.mywebsite.broadcast.InterceptorBroadcast;
-import io.github.kloping.mywebsite.controller.SystemController;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.Arrays;
+import java.util.Date;
 
 /**
  * @author github-kloping
@@ -32,6 +30,7 @@ public class LogInterceptor extends HandlerInterceptorAdapter {
             System.out.print(k + "=>" + Arrays.toString(v));
         });
         System.out.println();
+       /*
         if (url != null) {
             if (url.contains(IMPORTANT_WORD)) {
                 if (whiteListIp.contains(ip)) return true;
@@ -45,11 +44,11 @@ public class LogInterceptor extends HandlerInterceptorAdapter {
                 }
             }
         }
-        reg(request, response);
+        reg(request, response);*/
         return true;
     }
 
-
+/*
     static {
         new Timer().schedule(new TimerTask() {
             @Override
@@ -73,7 +72,7 @@ public class LogInterceptor extends HandlerInterceptorAdapter {
 
     private void reg(HttpServletRequest request, HttpServletResponse response) {
         SystemController.AllNum += 1;
-    }
+    }*/
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
