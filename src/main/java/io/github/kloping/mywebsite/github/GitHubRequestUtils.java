@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.Socket;
 
 /**
  * @author HRS-Computer
@@ -23,24 +25,31 @@ public class GitHubRequestUtils {
     @Value("${proxy.port}")
     public Integer port;
 
-    private boolean k = false;
-    private int i = 2;
-
     private Connection getConnection() {
         Connection connection = new HttpConnection();
         connection.ignoreHttpErrors(true).ignoreContentType(true);
         if (port == null || url == null) return connection;
         else {
-            if (k) {
+            if (testOpen(url, port))
                 connection.proxy(url, port).sslSocketFactory(SSLSocketClientUtil.getSocketFactory(SSLSocketClientUtil.getX509TrustManager()));
-                i--;
-                if (i == 0) k = false;
-            } else {
-                i++;
-                if (i == 2) k = true;
-            }
         }
         return connection;
+    }
+
+    private boolean testOpen(String url, Integer port) {
+        Socket connect = new Socket();
+        try {
+            connect.connect(new InetSocketAddress(url, port), 100);
+            return connect.isConnected();
+        } catch (IOException e) {
+            return false;
+        } finally {
+            try {
+                connect.close();
+            } catch (IOException e) {
+                return false;
+            }
+        }
     }
 
     public static final String ACCESS_URL = "https://github.com/login/oauth/access_token";
