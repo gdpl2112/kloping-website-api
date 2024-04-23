@@ -5,6 +5,7 @@ import com.google.code.kaptcha.util.Config;
 import io.github.kloping.MySpringTool.annotations.Bean;
 import io.github.kloping.common.Public;
 import io.github.kloping.date.FrameUtils;
+import io.github.kloping.file.FileUtils;
 import io.github.kloping.mywebsite.broadcast.EmailReceivesBroadcast;
 import io.github.kloping.mywebsite.plugins.PluginsSource;
 import io.github.kloping.mywebsite.webhook.WebHookStarter;
@@ -18,6 +19,8 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
+import java.io.File;
+import java.lang.management.ManagementFactory;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
@@ -33,6 +36,11 @@ public class MyWebSiteApplication {
     public static void main(String[] args) {
         applicationContext = SpringApplication.run(MyWebSiteApplication.class, args);
         PluginsSource.before();
+
+        String name = ManagementFactory.getRuntimeMXBean().getName();
+        String pid = name.split("@")[0];
+        FileUtils.putStringInFile(pid, new File("./web.pid"));
+
         Public.EXECUTOR_SERVICE.submit(new WebHookStarter());
         FrameUtils.SERVICE.scheduleWithFixedDelay(EmailReceivesBroadcast.INSTANCE, 0, 2, TimeUnit.MINUTES);
     }
@@ -86,5 +94,4 @@ public class MyWebSiteApplication {
     public PasswordEncoder passwordEncoder() {
         return NoOpPasswordEncoder.getInstance();
     }
-
 }
