@@ -5,11 +5,11 @@ import io.github.kloping.mywebsite.entitys.medias.Songs;
 import io.github.kloping.mywebsite.entitys.webApi.netEaseSongs.Artists;
 import io.github.kloping.mywebsite.entitys.webApi.netEaseSongs.NetEaseSongs;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
-import static io.github.kloping.mywebsite.plugins.PluginsSource.getEntry;
 import static io.github.kloping.mywebsite.plugins.PluginsSource.netEaseMusic;
 
 /**
@@ -17,15 +17,15 @@ import static io.github.kloping.mywebsite.plugins.PluginsSource.netEaseMusic;
  * @version 1.0
  */
 public class NetEaseDetail {
-    public static Entry<String, String> OFFSET_ENTRY = getEntry("offset", "0");
-    public static Entry<String, String> TYPE_ENTRY = getEntry("type", "1");
-    public static Entry<String, String> NMTID_ENTRY = getEntry("NMTID", "00OD6v28qj6pKz_UkWbhj4K8i7ro-8AAAF7zh3LOA");
+    public static Entry<String, String> OFFSET_ENTRY = new AbstractMap.SimpleEntry<>("offset", "0");
+    public static Entry<String, String> TYPE_ENTRY = new AbstractMap.SimpleEntry<>("type", "1");
+    public static Entry<String, String> NMTID_ENTRY = new AbstractMap.SimpleEntry<>("NMTID", "00OD6v28qj6pKz_UkWbhj4K8i7ro-8AAAF7zh3LOA");
 
     public static Songs songs(String keyword, Integer num) {
         NetEaseSongs netEaseSongs = netEaseMusic.songs(
-                getEntry("s", keyword.trim()),
+                new AbstractMap.SimpleEntry<>("s", keyword.trim()),
                 OFFSET_ENTRY,
-                getEntry("limit", num.toString()),
+                new AbstractMap.SimpleEntry<>("limit", num.toString()),
                 TYPE_ENTRY,
                 NMTID_ENTRY
         );
