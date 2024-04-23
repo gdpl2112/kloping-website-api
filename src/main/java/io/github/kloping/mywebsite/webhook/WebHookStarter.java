@@ -1,6 +1,6 @@
 package io.github.kloping.mywebsite.webhook;
 
-import io.github.kloping.mywebsite.MyWebSiteApplication;
+import io.github.kloping.mywebsite.KlopingBlogApplication;
 import io.github.kloping.mywebsite.broadcast.WebHookBroadcast;
 import io.github.kloping.mywebsite.webhook.e0.OrderReq;
 import io.github.kloping.url.UrlUtils;
@@ -43,9 +43,9 @@ public class WebHookStarter implements Runnable, WebHookBroadcast.OrderReqReceiv
             Integer month = req.getData().getOrder().getMonth().intValue();
 
             if (url == null)
-                url = MyWebSiteApplication.applicationContext.getEnvironment().getProperty("auth.url").toString();
+                url = KlopingBlogApplication.applicationContext.getEnvironment().getProperty("auth.url").toString();
             if (pwd == null)
-                pwd = MyWebSiteApplication.applicationContext.getEnvironment().getProperty("auth.pwd").toString();
+                pwd = KlopingBlogApplication.applicationContext.getEnvironment().getProperty("auth.pwd").toString();
 
             Integer j = Double.valueOf(amount).intValue();
             Long qid = Long.valueOf(remark);

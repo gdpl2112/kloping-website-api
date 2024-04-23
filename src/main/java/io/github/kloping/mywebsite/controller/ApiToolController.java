@@ -18,7 +18,7 @@ import io.github.kloping.mywebsite.mapper.dao.Illegal;
 import io.github.kloping.mywebsite.plugins.PluginsSource;
 import io.github.kloping.mywebsite.services.IgetLngLat;
 import io.github.kloping.mywebsite.utils.ImageDrawer;
-import io.github.kloping.mywebsite.utils.MyUtils;
+import io.github.kloping.mywebsite.utils.BlogCodeUtils;
 import io.github.kloping.url.UrlUtils;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -203,7 +203,7 @@ public class ApiToolController {
         if (Judge.isEmpty(time0)) return "未记录开始时间,无法计算!";
         utilsController.del(id, SLEEP_KEY);
         Long time = Long.parseLong(time0);
-        String end = MyUtils.getTimeFormat0(System.currentTimeMillis() - time);
+        String end = BlogCodeUtils.getTimeFormat0(System.currentTimeMillis() - time);
         return end;
     }
 

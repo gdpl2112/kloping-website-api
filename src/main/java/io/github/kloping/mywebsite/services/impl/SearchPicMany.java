@@ -19,8 +19,7 @@ public class SearchPicMany implements ISearchPic {
         int pn = 0;
         int rn = 30;
         while (list.size() < num) {
-            String[] ss = PluginsSource.baiduImage.images(null, null, null, null, null,
-                    keyword, rn, pn, BaiduImageDetail.HEADERS);
+            String[] ss = PluginsSource.baiduImage.images(null, null, null, null, null, keyword, rn, pn, BaiduImageDetail.HEADERS);
             for (String s : ss) {
                 list.add(s);
                 if (list.size() >= num) break;

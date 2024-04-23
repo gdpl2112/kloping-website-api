@@ -32,7 +32,6 @@ public class BaiduImageDetail {
     public static final Map<String, String> HEADERS = new HashMap<>();
 
     static {
-        HEADERS.put("Accept",
-                "text/*,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9");
+        HEADERS.put("Accept", "text/*,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9");
     }
 }

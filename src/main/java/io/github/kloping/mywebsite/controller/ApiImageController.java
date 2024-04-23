@@ -8,7 +8,7 @@ import io.github.kloping.mywebsite.entitys.ImageE0;
 import io.github.kloping.mywebsite.mapper.dao.BgImg;
 import io.github.kloping.mywebsite.mapper.BgImgMapper;
 import io.github.kloping.mywebsite.utils.ImageDrawerUtils;
-import io.github.kloping.mywebsite.utils.MyUtils;
+import io.github.kloping.mywebsite.utils.BlogCodeUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
@@ -50,7 +50,7 @@ public class ApiImageController {
     @GetMapping("/rand0")
     public void r0(HttpServletRequest request, HttpServletResponse response, @Nullable @RequestParam("p") Integer p) {
         try {
-            String url = MyUtils.getCookieValue(request, R0_KEY, "");
+            String url = BlogCodeUtils.getCookieValue(request, R0_KEY, "");
             if (url.isEmpty()) {
                 QueryWrapper<BgImg> bgImgQueryWrapper = new QueryWrapper<>();
                 bgImgQueryWrapper.eq("type", p);

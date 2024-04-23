@@ -1,4 +1,4 @@
-package io.github.kloping.mywebsite.entitys.pvpQqCom;
+package io.github.kloping.mywebsite.plugins.dto.pvpQqCom;
 
 public class Data {
     private Number total;

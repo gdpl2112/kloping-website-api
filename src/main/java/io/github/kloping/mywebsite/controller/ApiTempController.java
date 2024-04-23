@@ -1,6 +1,7 @@
 package io.github.kloping.mywebsite.controller;
 
 import io.github.kloping.file.FileUtils;
+import io.github.kloping.mywebsite.github.GitHubRequestUtils;
 import io.github.kloping.mywebsite.services.ChatBotService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
 /**
  * @author github.kloping
@@ -43,9 +45,12 @@ public class ApiTempController {
         return service1.clear(id);
     }
 
+    @Autowired
+    GitHubRequestUtils utils;
+
     @RequestMapping("/test")
-    public String test(HttpServletRequest request) {
-        return UtilsController.getHost(request);
+    public String test(HttpServletRequest request) throws IOException {
+        return "e";
     }
 
     @RequestMapping("/get-music")

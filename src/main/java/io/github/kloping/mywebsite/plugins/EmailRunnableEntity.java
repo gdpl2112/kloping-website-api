@@ -3,9 +3,9 @@ package io.github.kloping.mywebsite.plugins;
 import com.sun.mail.pop3.POP3Message;
 import io.github.kloping.MySpringTool.annotations.Entity;
 import io.github.kloping.judge.Judge;
-import io.github.kloping.mywebsite.MyWebSiteApplication;
+import io.github.kloping.mywebsite.KlopingBlogApplication;
 import io.github.kloping.mywebsite.broadcast.EmailReceivesBroadcast;
-import io.github.kloping.mywebsite.utils.MyUtils;
+import io.github.kloping.mywebsite.utils.BlogCodeUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -74,10 +74,10 @@ public class EmailRunnableEntity implements EmailReceivesBroadcast.EmailReceives
                     sb.append(content.toString());
                 }
                 if (url == null) {
-                    url = MyWebSiteApplication.applicationContext.getEnvironment().getProperty("auth.url").toString();
+                    url = KlopingBlogApplication.applicationContext.getEnvironment().getProperty("auth.url").toString();
                 }
                 if (pwd == null) {
-                    pwd = MyWebSiteApplication.applicationContext.getEnvironment().getProperty("auth.pwd").toString();
+                    pwd = KlopingBlogApplication.applicationContext.getEnvironment().getProperty("auth.pwd").toString();
                 }
                 if (Judge.isNotEmpty(uhref)) {
                     sb.append("\n===========\n").append(uhref);
@@ -88,7 +88,7 @@ public class EmailRunnableEntity implements EmailReceivesBroadcast.EmailReceives
                 map.put("gid", "794238572");
                 map.put("pwd", pwd);
                 map.put("s", sb.toString());
-                MyUtils.post(url + "/say", map);
+                BlogCodeUtils.post(url + "/say", map);
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -56,11 +56,8 @@ public class CommentController {
     NoticeMapper noticeMapper;
 
     @PostMapping("/pcm")
-    public Comment pcm(
-            @RequestParam("nid") Integer nid,
-            @RequestParam("body") String body,
-            @AuthenticationPrincipal UserDetails userDetails,
-            HttpServletRequest request) {
+    public Comment pcm(@RequestParam("nid") Integer nid, @RequestParam("body") String body,
+                       @AuthenticationPrincipal UserDetails userDetails, HttpServletRequest request) {
         UserTemp userTemp = userTempMapper.selectById(userDetails.getUsername());
         Comment comment = new Comment();
         comment.setState(0).setTime(System.currentTimeMillis()).setContent(body)

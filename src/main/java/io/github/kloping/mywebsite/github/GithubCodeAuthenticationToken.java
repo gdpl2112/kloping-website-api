@@ -1,6 +1,7 @@
 package io.github.kloping.mywebsite.github;
 
 import io.github.kloping.mywebsite.github.api.GithubUser;
+import lombok.Getter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.util.Assert;
@@ -9,6 +10,7 @@ import java.util.Collection;
 
 public class GithubCodeAuthenticationToken extends AbstractAuthenticationToken {
 
+    @Getter
     private GithubUser githubUser;
 
     private final Object principal;
@@ -22,8 +24,7 @@ public class GithubCodeAuthenticationToken extends AbstractAuthenticationToken {
         setAuthenticated(false);
     }
 
-    public GithubCodeAuthenticationToken(Object principal, Object credentials,
-                                         Collection<? extends GrantedAuthority> authorities) {
+    public GithubCodeAuthenticationToken(Object principal, Object credentials, Collection<? extends GrantedAuthority> authorities) {
         super(authorities);
         this.principal = principal;
         this.credentials = credentials;
@@ -51,10 +52,6 @@ public class GithubCodeAuthenticationToken extends AbstractAuthenticationToken {
     public void eraseCredentials() {
         super.eraseCredentials();
         this.credentials = null;
-    }
-
-    public GithubUser getGithubUser() {
-        return githubUser;
     }
 
     public void setGithubUser(GithubUser githubUser) {

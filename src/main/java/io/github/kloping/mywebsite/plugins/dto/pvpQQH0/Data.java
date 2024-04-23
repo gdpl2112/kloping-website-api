@@ -1,4 +1,4 @@
-package io.github.kloping.mywebsite.entitys.pvpQQH0;
+package io.github.kloping.mywebsite.plugins.dto.pvpQQH0;
 
 public class Data {
     private String removeHeroid;

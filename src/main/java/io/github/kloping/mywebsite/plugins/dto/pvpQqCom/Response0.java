@@ -1,4 +1,4 @@
-package io.github.kloping.mywebsite.entitys.pvpQqCom;
+package io.github.kloping.mywebsite.plugins.dto.pvpQqCom;
 
 public class Response0 {
     private String msg;

@@ -5,9 +5,9 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import io.github.kloping.file.FileUtils;
 import io.github.kloping.judge.Judge;
-import io.github.kloping.mywebsite.entitys.pvpQqCom.Response0;
-import io.github.kloping.mywebsite.entitys.pvpSkin.Pcblzlby_c6;
-import io.github.kloping.mywebsite.entitys.pvpSkin.PvpSkin;
+import io.github.kloping.mywebsite.plugins.dto.pvpQqCom.Response0;
+import io.github.kloping.mywebsite.plugins.dto.pvpSkin.Pcblzlby_c6;
+import io.github.kloping.mywebsite.plugins.dto.pvpSkin.PvpSkin;
 import io.github.kloping.url.UrlUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -29,6 +29,7 @@ import static io.github.kloping.mywebsite.plugins.PluginsSource.getPvpNews;
 import static io.github.kloping.mywebsite.plugins.PluginsSource.pvpQq;
 
 /**
+ *
  * @author github.kloping
  */
 @RestController

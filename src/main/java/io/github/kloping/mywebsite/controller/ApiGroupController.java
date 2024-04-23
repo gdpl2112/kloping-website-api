@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 
 /**
+ * q群操作 需要 qqpay 的skey
  * @author github.kloping
  */
 @RestController

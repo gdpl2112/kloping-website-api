@@ -2,6 +2,7 @@ package io.github.kloping.mywebsite.utils;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
+import org.jsoup.helper.HttpConnection;
 
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
@@ -23,7 +24,19 @@ import java.util.concurrent.Executors;
 /**
  * @author github-kloping
  */
-public class MyUtils {
+public class BlogCodeUtils {
+    public static boolean testProxyViability(String url, Integer port, String aurl) {
+        Connection connection = new HttpConnection();
+        connection.ignoreHttpErrors(true).ignoreContentType(true);
+        connection.proxy(url, port).sslSocketFactory(SSLSocketClientUtil.getSocketFactory(SSLSocketClientUtil.getX509TrustManager()));
+        try {
+            connection.url(aurl).get();
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     /**
      * 获取cookie
      *

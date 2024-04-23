@@ -65,34 +65,13 @@ public class UtilsController {
     }
 
 
-    /**
-     * 获取重定向地址
-     */
-    public static String getRedirectUrl(String url) throws IOException {
-        HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
-        conn.setInstanceFollowRedirects(false);
-        conn.setConnectTimeout(5000);
-        return conn.getHeaderField("Location");
-    }
-
-    public static String getRedirectUrl(String url, String referer) throws IOException {
-        Document doc = Jsoup.connect(url).ignoreContentType(true)
-                .ignoreHttpErrors(true)
-                .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36 Edg/105.0.1343.50")
-                .header("Referer", referer)
-                .header("Accept-Language", "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6")
-                .header("Accept", "*/*")
-                .get();
-        return doc.location();
-    }
-
     @GetMapping("/tool/ok")
     public String ok(String a) {
         return "ok";
     }
+
     @Autowired
     PwdKeyValueMapper pkvMapper;
-
 
     @GetMapping("/put")
     public String put(@RequestParam("key") String key, @RequestParam("value") String value, @RequestParam("pwd") String pwd) {

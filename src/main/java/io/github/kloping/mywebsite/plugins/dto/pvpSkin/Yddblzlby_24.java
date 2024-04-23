@@ -1,4 +1,4 @@
-package io.github.kloping.mywebsite.entitys.pvpSkin;
+package io.github.kloping.mywebsite.plugins.dto.pvpSkin;
 
 public class Yddblzlby_24 {
     private String yddblzjbxqydz_d7;

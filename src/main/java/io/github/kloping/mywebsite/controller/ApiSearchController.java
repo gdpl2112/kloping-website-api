@@ -19,7 +19,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
@@ -27,7 +26,6 @@ import javax.script.ScriptException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -136,19 +134,12 @@ public class ApiSearchController {
         }
     }
 
-    private static final Map<String, String> HEADERS = new LinkedHashMap<>();
-
-    static {
-        HEADERS.put("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 Edg/109.0.1518.78");
-    }
-
-    RestTemplate restTemplate = new RestTemplate();
 
     @RequestMapping("vipSong")
     public Songs vipSongs(HttpServletRequest request, @RequestParam("keyword") String keyword
             , @RequestParam(required = false, value = "n") String numStr
     ) throws ScriptException, IOException {
-        synchronized (HEADERS) {
+        synchronized (this) {
             keyword = keyword.trim();
             String out = UrlUtils.getStringFromHttpUrl("https://api.linhun.vip/api/qqyy?name=" + keyword + "&y=1&n=1&apiKey=5ff26395f76d3e12b694e1875e37a40a");
             JSONObject jo0 = JSON.parseObject(out);
@@ -164,6 +155,13 @@ public class ApiSearchController {
         }
     }
 
+    /**
+     * 以图搜图
+     *
+     * @param url
+     * @return
+     * @throws Exception
+     */
     @RequestMapping("searchPic")
     public Object searchPic(@RequestParam("url") String url) throws Exception {
         JSONArray array = t0(url);

@@ -14,7 +14,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static io.github.kloping.mywebsite.utils.MyUtils.toUrlString;
+import static io.github.kloping.mywebsite.utils.BlogCodeUtils.toUrlString;
 
 @Service
 public class SearchPicBaidu implements ISearchPic {

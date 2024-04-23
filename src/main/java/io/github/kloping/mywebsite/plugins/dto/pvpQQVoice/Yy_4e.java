@@ -1,4 +1,4 @@
-package io.github.kloping.mywebsite.entitys.pvpQQVoice;
+package io.github.kloping.mywebsite.plugins.dto.pvpQQVoice;
 
 public class Yy_4e {
     private String yyyp_9a;

@@ -15,10 +15,6 @@ import java.util.Map;
  */
 public class Source {
 
-    public static void println(String t) {
-        System.out.println("====================" + t + "=====================\r\n");
-    }
-
     private static String toMon = null;
     private static String toYear = null;
 

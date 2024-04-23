@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import static io.github.kloping.mywebsite.Source.println;
-
 
 /**
  * @author github-kloping
@@ -17,11 +15,7 @@ import static io.github.kloping.mywebsite.Source.println;
 @Controller
 @Slf4j
 public class SystemController {
-    public static int AllNum = 1;
 
-    public SystemController() {
-        println(this.getClass().getSimpleName() + "构建");
-    }
 
     @GetMapping({"/", "/#"})
     public String index(HttpServletRequest request, HttpServletResponse response, @RequestHeader(value = "User-Agent") String userAgent) {

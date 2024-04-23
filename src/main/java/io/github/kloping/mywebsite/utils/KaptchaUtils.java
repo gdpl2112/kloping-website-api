@@ -1,7 +1,7 @@
 package io.github.kloping.mywebsite.utils;
 
 import com.google.code.kaptcha.impl.DefaultKaptcha;
-import io.github.kloping.mywebsite.MyWebSiteApplication;
+import io.github.kloping.mywebsite.KlopingBlogApplication;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -22,7 +22,7 @@ public class KaptchaUtils {
 
     public synchronized static DefaultKaptcha getDefaultKaptcha() {
         if (defaultKaptcha == null) {
-            defaultKaptcha = MyWebSiteApplication.applicationContext.getBean(DefaultKaptcha.class);
+            defaultKaptcha = KlopingBlogApplication.applicationContext.getBean(DefaultKaptcha.class);
         }
         return defaultKaptcha;
     }

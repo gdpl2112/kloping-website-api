@@ -29,12 +29,12 @@ import java.util.concurrent.TimeUnit;
 @CrossOrigin
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
-public class MyWebSiteApplication {
+public class KlopingBlogApplication {
 
     public static ConfigurableApplicationContext applicationContext;
 
     public static void main(String[] args) {
-        applicationContext = SpringApplication.run(MyWebSiteApplication.class, args);
+        applicationContext = SpringApplication.run(KlopingBlogApplication.class, args);
         PluginsSource.before();
 
         String name = ManagementFactory.getRuntimeMXBean().getName();

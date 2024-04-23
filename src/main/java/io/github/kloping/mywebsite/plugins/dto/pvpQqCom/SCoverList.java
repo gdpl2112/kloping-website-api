@@ -1,4 +1,4 @@
-package io.github.kloping.mywebsite.entitys.pvpQqCom.v1;
+package io.github.kloping.mywebsite.plugins.dto.pvpQqCom;
 
 public class SCoverList {
     private String urlCI;
