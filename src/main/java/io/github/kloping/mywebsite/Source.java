@@ -15,29 +15,6 @@ import java.util.Map;
  */
 public class Source {
 
-    public static void setPrintln(String filePath) {
-        try {
-            PrintStream oldPrintStream = System.out;
-            FileOutputStream bos = new FileOutputStream(filePath);
-            PrintStream printStream = new PrintStream(bos) {
-                @Override
-                public void write(int b) {
-                    super.write(b);
-                    oldPrintStream.write((int) b);
-                }
-
-                @Override
-                public void write(byte[] buf, int off, int len) {
-                    super.write(buf, off, len);
-                    oldPrintStream.write(buf, off, len);
-                }
-            };
-            System.setOut(printStream);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     public static void println(String t) {
         System.out.println("====================" + t + "=====================\r\n");
     }
@@ -95,31 +72,4 @@ public class Source {
             e.printStackTrace();
         }
     }
-
-    public static void onCreate() {
-    }
-
-
-    private static final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd-HH-mm");
-
-    public static long getTimeFromNowTo(int day, int hour, int mil) {
-        Date date = null;
-        try {
-            date = df.parse("2022-" + getToMon() + "-" + day + "-" + hour + "-" + mil);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        long millis = date.getTime();
-        long now = System.currentTimeMillis();
-        return millis - now;
-    }
-
-    public static String getToMon() {
-        return toMon == null ? (toMon = new SimpleDateFormat("MM").format(new Date())) : toMon;
-    }
-
-    public static String getToYear() {
-        return toYear == null ? (toYear = new SimpleDateFormat("yyyy").format(new Date())) : toYear;
-    }
-
 }

@@ -21,7 +21,6 @@ import java.util.Map;
  */
 @CommentScan(path = "io.github.kloping.mywebsite.plugins")
 public class PluginsSource {
-
     public static void before() {
         StarterApplication.SCAN_LOADER = PluginsSource.class.getClassLoader();
         StarterApplication.run(PluginsSource.class);
@@ -97,13 +96,5 @@ public class PluginsSource {
             url = null;
             return false;
         }
-    }
-
-    public static <K, V> Map.Entry<K, V> getEntry(K k, V v) {
-        return new AbstractMap.SimpleEntry<>(k, v);
-    }
-
-    @Schedule("10:00:05,12:00:05,00:00:05,14:00:05")
-    public static final void m0() {
     }
 }

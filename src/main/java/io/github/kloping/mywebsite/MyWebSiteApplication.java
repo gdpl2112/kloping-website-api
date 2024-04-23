@@ -16,14 +16,11 @@ import org.springframework.context.annotation.Import;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.client.RestTemplate;
 
 import java.io.File;
 import java.lang.management.ManagementFactory;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
-
-import static io.github.kloping.mywebsite.Source.onCreate;
 
 @SpringBootApplication
 @Import({TomcatUtil.class})
@@ -35,7 +32,6 @@ public class MyWebSiteApplication {
     public static ConfigurableApplicationContext applicationContext;
 
     public static void main(String[] args) {
-        onCreate();
         applicationContext = SpringApplication.run(MyWebSiteApplication.class, args);
         PluginsSource.before();
         System.out.println("start succes -v 3-26");

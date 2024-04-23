@@ -111,7 +111,7 @@ public class UserController {
             if (links == null) {
                 links = friendLinkMapper.selectList(null);
             }
-            int size = friendLinkMapper.selectCount(null);
+            int size = Math.toIntExact(friendLinkMapper.selectCount(null));
             if (links.size() != size) {
                 links = friendLinkMapper.selectList(null);
             }
