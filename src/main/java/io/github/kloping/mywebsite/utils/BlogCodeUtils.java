@@ -30,6 +30,7 @@ public class BlogCodeUtils {
         connection.ignoreHttpErrors(true).ignoreContentType(true);
         connection.proxy(url, port).sslSocketFactory(SSLSocketClientUtil.getSocketFactory(SSLSocketClientUtil.getX509TrustManager()));
         try {
+            connection.timeout(5000);
             connection.url(aurl).get();
             return true;
         } catch (Exception e) {
