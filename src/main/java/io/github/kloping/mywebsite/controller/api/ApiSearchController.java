@@ -25,8 +25,6 @@ import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author github-kloping
@@ -47,10 +45,6 @@ public class ApiSearchController {
     @Autowired
     ISearchSong searchSongWy;
 
-    @Qualifier("searchSongQQ")
-    @Autowired
-    ISearchSong searchSongQq;
-
     @RequestMapping("/pic")
     public PicResult searchPic(HttpServletRequest request, @RequestParam("keyword") String keyword,
                                @RequestParam(required = false) Integer num, @RequestParam(required = false, value = "type") String type) {
@@ -70,46 +64,15 @@ public class ApiSearchController {
         return result;
     }
 
-    public static final Map<String, Songs> SONGS_HASH_MAP = new HashMap<>();
-
     @RequestMapping("/song")
     public Songs searchSong(HttpServletRequest request, @RequestParam("keyword") String keyword
             , @RequestParam(required = false, value = "type") String type
-            , @RequestParam(required = false, value = "n") String numStr
+            , @RequestParam(required = false, value = "n") Integer n
     ) {
-        synchronized (SONGS_HASH_MAP) {
-            if (type == null || type.isEmpty()) type = "kugou";
-            int num = 2;
-            try {
-                num = Integer.parseInt(numStr.trim());
-            } catch (Exception e) {
-            }
-            try {
-                String vk = keyword + "," + type + "," + num;
-                synchronized (SONGS_HASH_MAP) {
-                    if (SONGS_HASH_MAP.containsKey(vk))
-                        return SONGS_HASH_MAP.get(vk);
-                    Songs songs = null;
-                    switch (type.toLowerCase()) {
-                        case "wy":
-                            songs = searchSongWy.searchSong(keyword, num);
-                            break;
-                        case "qq":
-                            songs = searchSongQq.searchSong(keyword, num);
-                            break;
-                        default:
-                            return new Songs(-1, 0, System.currentTimeMillis(), keyword, null, "err");
-                    }
-                    if (songs != null && songs.getState() != -1 && songs.getData().length > 0) {
-                        SONGS_HASH_MAP.put(vk, songs);
-                        return songs;
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return new Songs(-1, 0, System.currentTimeMillis(), keyword, null, "err");
-        }
+        Songs songs = null;
+        songs = searchSongWy.searchSong(keyword, n == null ? 2 : n);
+        if (songs != null && songs.getState() != -1 && songs.getData().length > 0) return songs;
+        return new Songs(-1, 0, System.currentTimeMillis(), keyword, null, "err");
     }
 
 

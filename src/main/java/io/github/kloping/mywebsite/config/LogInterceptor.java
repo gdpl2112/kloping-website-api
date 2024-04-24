@@ -24,7 +24,7 @@ public class LogInterceptor extends HandlerInterceptorAdapter {
             String ip = request.getHeader("x-forwarded-for");
             if (ip == null) ip = request.getRemoteAddr();
             ip = "0:0:0:0:0:0:0:1".equals(ip) ? "127.0.0.1" : ip;
-            System.out.print(String.format("[%s]:%s[GET](%s)", DF2.format(new Date(System.currentTimeMillis())), ip, request.getRequestURL()));
+            System.out.print(String.format("[%s]:%s[%s](%s)", DF2.format(new Date(System.currentTimeMillis())), ip, request.getMethod(), request.getRequestURL()));
             System.out.println(JSON.toJSONString(request.getParameterMap()));
             return true;
         }
@@ -32,12 +32,6 @@ public class LogInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-        synchronized (DF2) {
-            String ip = request.getHeader("x-forwarded-for");
-            if (ip == null) ip = request.getRemoteAddr();
-            ip = "0:0:0:0:0:0:0:1".equals(ip) ? "127.0.0.1" : ip.trim();
-            System.out.println(String.format("[%s]:%s[POST](%s)", DF2.format(new Date(System.currentTimeMillis())), ip, request.getRequestURL()));
-        }
     }
 
     @Override

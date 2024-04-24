@@ -26,8 +26,6 @@ public class PluginsSource {
     @AutoStand
     public static NetEaseMusic netEaseMusic;
     @AutoStand
-    public static QQMusic qqMusic;
-    @AutoStand
     public static DuiTangImage duiTangImage;
     @AutoStand
     public static Empty empty;

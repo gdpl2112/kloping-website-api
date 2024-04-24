@@ -1,6 +1,6 @@
 package io.github.kloping.mywebsite.domain.bo.netEaseSongs;
 
-public class Songs {
+public class NetSongs {
 	private Number no;
 	private Number copyright;
 	private Number dayPlays;
@@ -36,7 +36,7 @@ public class Songs {
 		return this.no;
 	}
 
-	public Songs setNo(Number no) {
+	public NetSongs setNo(Number no) {
 		this.no = no;
 		return this;
 	}
@@ -45,7 +45,7 @@ public class Songs {
 		return this.copyright;
 	}
 
-	public Songs setCopyright(Number copyright) {
+	public NetSongs setCopyright(Number copyright) {
 		this.copyright = copyright;
 		return this;
 	}
@@ -54,7 +54,7 @@ public class Songs {
 		return this.dayPlays;
 	}
 
-	public Songs setDayPlays(Number dayPlays) {
+	public NetSongs setDayPlays(Number dayPlays) {
 		this.dayPlays = dayPlays;
 		return this;
 	}
@@ -63,7 +63,7 @@ public class Songs {
 		return this.fee;
 	}
 
-	public Songs setFee(Number fee) {
+	public NetSongs setFee(Number fee) {
 		this.fee = fee;
 		return this;
 	}
@@ -72,7 +72,7 @@ public class Songs {
 		return this.mMusic;
 	}
 
-	public Songs setMMusic(MMusic mMusic) {
+	public NetSongs setMMusic(MMusic mMusic) {
 		this.mMusic = mMusic;
 		return this;
 	}
@@ -81,7 +81,7 @@ public class Songs {
 		return this.bMusic;
 	}
 
-	public Songs setBMusic(BMusic bMusic) {
+	public NetSongs setBMusic(BMusic bMusic) {
 		this.bMusic = bMusic;
 		return this;
 	}
@@ -90,7 +90,7 @@ public class Songs {
 		return this.duration;
 	}
 
-	public Songs setDuration(Number duration) {
+	public NetSongs setDuration(Number duration) {
 		this.duration = duration;
 		return this;
 	}
@@ -99,7 +99,7 @@ public class Songs {
 		return this.score;
 	}
 
-	public Songs setScore(Number score) {
+	public NetSongs setScore(Number score) {
 		this.score = score;
 		return this;
 	}
@@ -108,7 +108,7 @@ public class Songs {
 		return this.rtype;
 	}
 
-	public Songs setRtype(Number rtype) {
+	public NetSongs setRtype(Number rtype) {
 		this.rtype = rtype;
 		return this;
 	}
@@ -117,7 +117,7 @@ public class Songs {
 		return this.starred;
 	}
 
-	public Songs setStarred(Boolean starred) {
+	public NetSongs setStarred(Boolean starred) {
 		this.starred = starred;
 		return this;
 	}
@@ -126,7 +126,7 @@ public class Songs {
 		return this.artists;
 	}
 
-	public Songs setArtists(Artists[] artists) {
+	public NetSongs setArtists(Artists[] artists) {
 		this.artists = artists;
 		return this;
 	}
@@ -135,7 +135,7 @@ public class Songs {
 		return this.popularity;
 	}
 
-	public Songs setPopularity(Number popularity) {
+	public NetSongs setPopularity(Number popularity) {
 		this.popularity = popularity;
 		return this;
 	}
@@ -144,7 +144,7 @@ public class Songs {
 		return this.playedNum;
 	}
 
-	public Songs setPlayedNum(Number playedNum) {
+	public NetSongs setPlayedNum(Number playedNum) {
 		this.playedNum = playedNum;
 		return this;
 	}
@@ -153,7 +153,7 @@ public class Songs {
 		return this.hearTime;
 	}
 
-	public Songs setHearTime(Number hearTime) {
+	public NetSongs setHearTime(Number hearTime) {
 		this.hearTime = hearTime;
 		return this;
 	}
@@ -162,7 +162,7 @@ public class Songs {
 		return this.starredNum;
 	}
 
-	public Songs setStarredNum(Number starredNum) {
+	public NetSongs setStarredNum(Number starredNum) {
 		this.starredNum = starredNum;
 		return this;
 	}
@@ -171,7 +171,7 @@ public class Songs {
 		return this.id;
 	}
 
-	public Songs setId(Number id) {
+	public NetSongs setId(Number id) {
 		this.id = id;
 		return this;
 	}
@@ -180,7 +180,7 @@ public class Songs {
 		return this.mp3Url;
 	}
 
-	public Songs setMp3Url(String mp3Url) {
+	public NetSongs setMp3Url(String mp3Url) {
 		this.mp3Url = mp3Url;
 		return this;
 	}
@@ -189,7 +189,7 @@ public class Songs {
 		return this.album;
 	}
 
-	public Songs setAlbum(Album album) {
+	public NetSongs setAlbum(Album album) {
 		this.album = album;
 		return this;
 	}
@@ -198,7 +198,7 @@ public class Songs {
 		return this.lMusic;
 	}
 
-	public Songs setLMusic(LMusic lMusic) {
+	public NetSongs setLMusic(LMusic lMusic) {
 		this.lMusic = lMusic;
 		return this;
 	}
@@ -207,7 +207,7 @@ public class Songs {
 		return this.ringtone;
 	}
 
-	public Songs setRingtone(String ringtone) {
+	public NetSongs setRingtone(String ringtone) {
 		this.ringtone = ringtone;
 		return this;
 	}
@@ -216,7 +216,7 @@ public class Songs {
 		return this.commentThreadId;
 	}
 
-	public Songs setCommentThreadId(String commentThreadId) {
+	public NetSongs setCommentThreadId(String commentThreadId) {
 		this.commentThreadId = commentThreadId;
 		return this;
 	}
@@ -225,7 +225,7 @@ public class Songs {
 		return this.copyFrom;
 	}
 
-	public Songs setCopyFrom(String copyFrom) {
+	public NetSongs setCopyFrom(String copyFrom) {
 		this.copyFrom = copyFrom;
 		return this;
 	}
@@ -234,7 +234,7 @@ public class Songs {
 		return this.ftype;
 	}
 
-	public Songs setFtype(Number ftype) {
+	public NetSongs setFtype(Number ftype) {
 		this.ftype = ftype;
 		return this;
 	}
@@ -243,7 +243,7 @@ public class Songs {
 		return this.copyrightId;
 	}
 
-	public Songs setCopyrightId(Number copyrightId) {
+	public NetSongs setCopyrightId(Number copyrightId) {
 		this.copyrightId = copyrightId;
 		return this;
 	}
@@ -252,7 +252,7 @@ public class Songs {
 		return this.hMusic;
 	}
 
-	public Songs setHMusic(HMusic hMusic) {
+	public NetSongs setHMusic(HMusic hMusic) {
 		this.hMusic = hMusic;
 		return this;
 	}
@@ -261,7 +261,7 @@ public class Songs {
 		return this.mvid;
 	}
 
-	public Songs setMvid(Number mvid) {
+	public NetSongs setMvid(Number mvid) {
 		this.mvid = mvid;
 		return this;
 	}
@@ -270,7 +270,7 @@ public class Songs {
 		return this.name;
 	}
 
-	public Songs setName(String name) {
+	public NetSongs setName(String name) {
 		this.name = name;
 		return this;
 	}
@@ -279,7 +279,7 @@ public class Songs {
 		return this.disc;
 	}
 
-	public Songs setDisc(String disc) {
+	public NetSongs setDisc(String disc) {
 		this.disc = disc;
 		return this;
 	}
@@ -288,7 +288,7 @@ public class Songs {
 		return this.position;
 	}
 
-	public Songs setPosition(Number position) {
+	public NetSongs setPosition(Number position) {
 		this.position = position;
 		return this;
 	}
@@ -297,7 +297,7 @@ public class Songs {
 		return this.status;
 	}
 
-	public Songs setStatus(Number status) {
+	public NetSongs setStatus(Number status) {
 		this.status = status;
 		return this;
 	}

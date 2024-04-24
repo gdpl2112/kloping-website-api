@@ -10,13 +10,9 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class SearchSongNetEase implements ISearchSong {
-    @Override
-    public Songs searchSong(String keyword) throws Exception {
-        return searchSong(keyword, 7);
-    }
 
     @Override
-    public Songs searchSong(String keyword, int num) throws Exception {
+    public Songs searchSong(String keyword, int num) {
         return NetEaseDetail.songs(keyword, num);
     }
 }

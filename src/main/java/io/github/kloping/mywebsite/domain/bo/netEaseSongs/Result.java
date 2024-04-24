@@ -1,14 +1,14 @@
 package io.github.kloping.mywebsite.domain.bo.netEaseSongs;
 
 public class Result {
-	private Songs[] songs;
+	private NetSongs[] songs;
 	private Number songCount;
 
-	public Songs[] getSongs(){
+	public NetSongs[] getSongs(){
 		return this.songs;
 	}
 
-	public Result setSongs(Songs[] songs) {
+	public Result setSongs(NetSongs[] songs) {
 		this.songs = songs;
 		return this;
 	}

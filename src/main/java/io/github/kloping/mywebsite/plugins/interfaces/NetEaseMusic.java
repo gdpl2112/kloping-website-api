@@ -23,13 +23,9 @@ public interface NetEaseMusic {
      * @return
      */
     @PostPath("api/search/pc")
-    NetEaseSongs songs(
-            @RequestData Map.Entry<String, String> s,
-            @RequestData Map.Entry<String, String> offset,
-            @RequestData Map.Entry<String, String> limit,
-            @RequestData Map.Entry<String, String> type,
-            @CookieValue Map.Entry<String, String> cookie0
-    );
+    NetEaseSongs songs(@RequestData Map.Entry<String, String> s, @RequestData Map.Entry<String, String> offset,
+            @RequestData Map.Entry<String, String> limit, @RequestData Map.Entry<String, String> type,
+                       @CookieValue Map.Entry<String, String> cookie0);
 
     /**
      * get lyric
