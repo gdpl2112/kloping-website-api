@@ -1,18 +1,19 @@
 package io.github.kloping.mywebsite.controller;
 
 import io.github.kloping.common.Public;
-import io.github.kloping.mywebsite.mapper.CommentMapper;
-import io.github.kloping.mywebsite.mapper.NoticeMapper;
-import io.github.kloping.mywebsite.mapper.UserTempMapper;
 import io.github.kloping.mywebsite.domain.po.Comment;
 import io.github.kloping.mywebsite.domain.po.Notice;
 import io.github.kloping.mywebsite.domain.po.UserTemp;
-import io.github.kloping.mywebsite.utils.EmailSender;
+import io.github.kloping.mywebsite.mapper.CommentMapper;
+import io.github.kloping.mywebsite.mapper.NoticeMapper;
+import io.github.kloping.mywebsite.mapper.UserTempMapper;
+import io.github.kloping.mywebsite.utils.EmailConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -28,6 +29,8 @@ public class CommentController {
     UserTempMapper userTempMapper;
     @Autowired
     NoticeMapper noticeMapper;
+    @Resource
+    EmailConfig emailConfig;
 
     @GetMapping("/get-comment")
     public List<Comment> comments(@AuthenticationPrincipal UserDetails userDetails, @RequestParam("nid") Integer nid) {
@@ -65,7 +68,7 @@ public class CommentController {
             Notice notice = noticeMapper.selectById(nid);
             String eid = userTempMapper.selectById(notice.getAuthorName()).getEid();
             if (!notice.getAuthorName().equals(userTemp.getNickname())) {
-                EmailSender.sendEmail(eid, "通知来自[若生er,WebSite]",
+                emailConfig.sendEmail(eid, "通知来自[若生er,WebSite]",
                         String.format("<h1>hi! %s</h1><p>%s在您发布的帖子<br>[%s]<br>发布了一条评论</p><br><p>%s</p>", notice.getAuthorName(), userTemp.getNickname(), notice.getTitle(), body));
             }
         });

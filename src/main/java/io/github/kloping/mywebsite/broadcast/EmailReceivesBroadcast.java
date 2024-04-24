@@ -3,6 +3,8 @@ package io.github.kloping.mywebsite.broadcast;
 import com.sun.mail.pop3.POP3Message;
 import io.github.kloping.file.FileUtils;
 import io.github.kloping.judge.Judge;
+import io.github.kloping.mywebsite.utils.EmailConfig;
+import org.springframework.stereotype.Component;
 
 import javax.mail.*;
 import java.io.File;
@@ -11,31 +13,28 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
-import static io.github.kloping.mywebsite.utils.EmailSender.PASSWORD;
-import static io.github.kloping.mywebsite.utils.EmailSender.SENDER;
-
 /**
  * @author github.kloping
  */
+@Component
 public class EmailReceivesBroadcast extends Broadcast<EmailReceivesBroadcast.EmailReceivesReceiver> implements Runnable {
-    public static final EmailReceivesBroadcast INSTANCE = new EmailReceivesBroadcast();
+    public static EmailReceivesBroadcast INSTANCE;
     public static final String HOST = "outlook.office365.com";
     public static final String EMAIL_ID = "./email.id";
-    private String user = SENDER;
-    private String password = PASSWORD;
-    private String host = HOST;
     private Session session;
+    private EmailConfig config;
 
-
-    public EmailReceivesBroadcast() {
+    public EmailReceivesBroadcast(EmailConfig email) {
         super("email broadcast");
+        INSTANCE = this;
+        this.config = email;
         Properties props = new Properties();
-        props.put("mail.pop3.host", host);
+        props.put("mail.pop3.host", email.host);
         props.put("mail.pop3.auth", "true");
         props.put("mail.transport.protocol", "pop3");
         session = Session.getDefaultInstance(props, new Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(user, password);
+                return new PasswordAuthentication(email.account, email.pwd);
             }
         });
     }
@@ -81,7 +80,7 @@ public class EmailReceivesBroadcast extends Broadcast<EmailReceivesBroadcast.Ema
                 }
             }
             Store store = session.getStore("pop3s");
-            store.connect(host, user, password);
+            store.connect(config.host, config.account, config.pwd);
             Folder folder = store.getFolder("INBOX");
             folder.open(Folder.READ_ONLY);
             if (id == null) {

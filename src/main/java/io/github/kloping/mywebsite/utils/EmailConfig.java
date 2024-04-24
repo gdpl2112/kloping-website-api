@@ -1,5 +1,8 @@
 package io.github.kloping.mywebsite.utils;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
@@ -15,25 +18,30 @@ import java.util.Properties;
  *
  * @author github.kloping
  */
-public class EmailSender {
-    public static final String SENDER = "hrs3474006766@outlook.com";
-    public static final String PASSWORD = "Han_20771";
-    public static final String HOST = "smtp.office365.com";
-    public static final String PORT = "587";
+@Component
+public class EmailConfig {
+    @Value("${email.account}")
+    public String account;
+    @Value("${email.pwd}")
+    public String pwd;
+    @Value("${email.host}")
+    public String host;
+    @Value("${email.port}")
+    public String port;
 
-    public static boolean sendEmail(String receiver,String title,String content) {
+    public boolean sendEmail(String receiver, String title, String content) {
         try {
             Properties props = new Properties();
             props.setProperty("mail.debug", "true");
             props.setProperty("mail.smtp.auth", "true");
-            props.setProperty("mail.host", HOST);
+            props.setProperty("mail.host", host);
             props.setProperty("mail.transport.protocol", "smtp");
-            props.setProperty("mail.smtp.port", PORT);
+            props.setProperty("mail.smtp.port", port);
             props.put("mail.smtp.starttls.enable", "true");
             Session session = Session.getInstance(props);
 
             MimeMessage msg = new MimeMessage(session);
-            msg.setFrom(new InternetAddress(SENDER));
+            msg.setFrom(new InternetAddress(account));
             msg.addRecipient(Message.RecipientType.TO, new InternetAddress(receiver));
             msg.setSubject(title);
 
@@ -44,7 +52,7 @@ public class EmailSender {
             msg.setContent(multipart);
 
             Transport transport = session.getTransport();
-            transport.connect(SENDER, PASSWORD);
+            transport.connect(account, pwd);
             transport.sendMessage(msg, new Address[]{new InternetAddress(receiver)});
             transport.close();
             return true;

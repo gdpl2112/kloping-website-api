@@ -94,7 +94,7 @@ public class NoticeService implements INoticeService {
 
     final SimpleDateFormat sf_0 = new SimpleDateFormat("yyyy-MM-dd:HH:mm:ss");
 
-    @Value("${auth.url}")
+    @Value("${bot.url}")
     String url;
 
     @Autowired

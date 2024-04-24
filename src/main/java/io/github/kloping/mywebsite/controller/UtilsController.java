@@ -8,8 +8,8 @@ import io.github.kloping.file.FileUtils;
 import io.github.kloping.io.ReadUtils;
 import io.github.kloping.judge.Judge;
 import io.github.kloping.mywebsite.domain.bo.FileWithPath;
-import io.github.kloping.mywebsite.mapper.PwdKeyValueMapper;
 import io.github.kloping.mywebsite.domain.po.PwdKeyValue;
+import io.github.kloping.mywebsite.mapper.PwdKeyValueMapper;
 import org.jsoup.Connection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,11 +37,8 @@ import java.util.concurrent.TimeUnit;
  */
 @RestController
 public class UtilsController {
-    @Value("${auth.pwd}")
-    String pwd;
-    private static final ThreadPoolExecutor EXECUTORS = new ThreadPoolExecutor(2, 2, 10L, TimeUnit.MINUTES, new LinkedBlockingQueue());
-
-    private boolean execing = false;
+    @Value("${upload.pwd}")
+    private String pwd;
 
     @GetMapping("/exec")
     public Object exec(HttpServletResponse response, @RequestParam("pwd") String pwd, @RequestParam("cmd") String cmd, @RequestParam("out") Boolean o) {
@@ -61,10 +58,27 @@ public class UtilsController {
         }
     }
 
-
     @GetMapping("/tool/ok")
     public String ok(String a) {
         return "ok";
+    }
+
+    @GetMapping("/stamp2time")
+    public String getHost(@RequestParam("stamp") Long stamp, @RequestParam("exp") @Nullable String exp) {
+        exp = exp == null ? "yyyy年MM月dd日 HH:mm:ss" : exp;
+        return new SimpleDateFormat(exp).format(new Date(stamp));
+    }
+
+    @GetMapping("/get-host")
+    public String getHost(@RequestParam("url") String url) {
+        String host = "localhost";
+        try {
+            URL u = new URL(url);
+            host = u.getHost();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return host;
     }
 
     @Autowired
@@ -198,24 +212,6 @@ public class UtilsController {
             e.printStackTrace();
         }
         return null;
-    }
-
-    @GetMapping("/stamp2time")
-    public String getHost(@RequestParam("stamp") Long stamp, @RequestParam("exp") @Nullable String exp) {
-        exp = exp == null ? "yyyy年MM月dd日 HH:mm:ss" : exp;
-        return new SimpleDateFormat(exp).format(new Date(stamp));
-    }
-
-    @GetMapping("/get-host")
-    public String getHost(@RequestParam("url") String url) {
-        String host = "localhost";
-        try {
-            URL u = new URL(url);
-            host = u.getHost();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        return host;
     }
 
     public static String getHost(HttpServletRequest request) {

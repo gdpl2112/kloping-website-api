@@ -10,7 +10,7 @@ import io.github.kloping.mywebsite.domain.po.UserTemp;
 import io.github.kloping.mywebsite.mapper.BgImgMapper;
 import io.github.kloping.mywebsite.mapper.FriendLinkMapper;
 import io.github.kloping.mywebsite.mapper.UserTempMapper;
-import io.github.kloping.mywebsite.utils.EmailSender;
+import io.github.kloping.mywebsite.utils.EmailConfig;
 import io.github.kloping.mywebsite.utils.KaptchaUtils;
 import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +20,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,10 +37,9 @@ import static io.github.kloping.mywebsite.config.UserDetailsServiceImpl.EMAIL_TY
 @RestController
 public class UserController {
 
-    @Value("${auth.url}")
+    @Value("${bot.url}")
     String url;
-
-    @Value("${auth.pwd}")
+    @Value("${bot.pwd}")
     String pwd;
 
     @Autowired
@@ -75,6 +75,9 @@ public class UserController {
         return "注册成功";
     }
 
+    @Resource
+    EmailConfig emailConfig;
+
     @GetMapping("/req0")
     public String req0(@RequestParam("eid") String eid) {
         if (eid2cd.containsKey(eid)) {
@@ -83,7 +86,7 @@ public class UserController {
             }
         }
         String code = KaptchaUtils.getNumberCode();
-        boolean k = EmailSender.sendEmail(eid, "您的验证码", "<h1>" + "您的验证码是: " + code + "</h1>");
+        boolean k = emailConfig.sendEmail(eid, "您的验证码", "<h1>" + "您的验证码是: " + code + "</h1>");
         if (k) {
             eid2code.put(eid, code);
             eid2cd.put(eid, System.currentTimeMillis());
