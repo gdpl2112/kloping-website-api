@@ -37,7 +37,7 @@ import java.util.concurrent.TimeUnit;
  */
 @RestController
 public class UtilsController {
-    @Value("${upload.pwd}")
+    @Value("${upload.passwd}")
     private String pwd;
 
     @GetMapping("/exec")
