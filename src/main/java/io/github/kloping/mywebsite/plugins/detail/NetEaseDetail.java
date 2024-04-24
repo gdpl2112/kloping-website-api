@@ -1,9 +1,9 @@
 package io.github.kloping.mywebsite.plugins.detail;
 
-import io.github.kloping.mywebsite.entitys.medias.Song;
-import io.github.kloping.mywebsite.entitys.medias.Songs;
-import io.github.kloping.mywebsite.entitys.webApi.netEaseSongs.Artists;
-import io.github.kloping.mywebsite.entitys.webApi.netEaseSongs.NetEaseSongs;
+import io.github.kloping.mywebsite.domain.bo.netEaseSongs.Songs;
+import io.github.kloping.mywebsite.domain.bo.medias.Song;
+import io.github.kloping.mywebsite.domain.bo.netEaseSongs.Artists;
+import io.github.kloping.mywebsite.domain.bo.netEaseSongs.NetEaseSongs;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ public class NetEaseDetail {
     public static Entry<String, String> TYPE_ENTRY = new AbstractMap.SimpleEntry<>("type", "1");
     public static Entry<String, String> NMTID_ENTRY = new AbstractMap.SimpleEntry<>("NMTID", "00OD6v28qj6pKz_UkWbhj4K8i7ro-8AAAF7zh3LOA");
 
-    public static Songs songs(String keyword, Integer num) {
+    public static io.github.kloping.mywebsite.domain.bo.medias.Songs songs(String keyword, Integer num) {
         NetEaseSongs netEaseSongs = netEaseMusic.songs(
                 new AbstractMap.SimpleEntry<>("s", keyword.trim()),
                 OFFSET_ENTRY,
@@ -30,7 +30,7 @@ public class NetEaseDetail {
                 NMTID_ENTRY
         );
         List<Song> songs = new ArrayList<>();
-        for (io.github.kloping.mywebsite.entitys.webApi.netEaseSongs.Songs song : netEaseSongs.getResult().getSongs()) {
+        for (Songs song : netEaseSongs.getResult().getSongs()) {
             songs.add(new Song()
                     .setSongUrl("http://music.163.com/song/media/outer/url?id=" + song.getId() + ".mp3")
                     .setLyric(netEaseMusic.getLyric(song.getId().intValue()).getLyric())
@@ -40,7 +40,7 @@ public class NetEaseDetail {
                     .setId(song.getId().toString())
             );
         }
-        return new Songs(0, netEaseSongs.getResult().getSongCount().intValue(), System.currentTimeMillis(),
+        return new io.github.kloping.mywebsite.domain.bo.medias.Songs(0, netEaseSongs.getResult().getSongCount().intValue(), System.currentTimeMillis(),
                 keyword, songs.toArray(new Song[0]), "wy");
     }
 

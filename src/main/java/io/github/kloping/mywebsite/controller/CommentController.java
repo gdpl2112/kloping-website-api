@@ -4,9 +4,9 @@ import io.github.kloping.common.Public;
 import io.github.kloping.mywebsite.mapper.CommentMapper;
 import io.github.kloping.mywebsite.mapper.NoticeMapper;
 import io.github.kloping.mywebsite.mapper.UserTempMapper;
-import io.github.kloping.mywebsite.mapper.dao.Comment;
-import io.github.kloping.mywebsite.mapper.dao.Notice;
-import io.github.kloping.mywebsite.mapper.dao.UserTemp;
+import io.github.kloping.mywebsite.domain.po.Comment;
+import io.github.kloping.mywebsite.domain.po.Notice;
+import io.github.kloping.mywebsite.domain.po.UserTemp;
 import io.github.kloping.mywebsite.utils.EmailSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,9 +22,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/comments")
 public class CommentController {
-
     @Autowired
     CommentMapper commentMapper;
+    @Autowired
+    UserTempMapper userTempMapper;
+    @Autowired
+    NoticeMapper noticeMapper;
 
     @GetMapping("/get-comment")
     public List<Comment> comments(@AuthenticationPrincipal UserDetails userDetails, @RequestParam("nid") Integer nid) {
@@ -50,14 +53,8 @@ public class CommentController {
         } else return false;
     }
 
-    @Autowired
-    UserTempMapper userTempMapper;
-    @Autowired
-    NoticeMapper noticeMapper;
-
     @PostMapping("/pcm")
-    public Comment pcm(@RequestParam("nid") Integer nid, @RequestParam("body") String body,
-                       @AuthenticationPrincipal UserDetails userDetails, HttpServletRequest request) {
+    public Comment pcm(@RequestParam("nid") Integer nid, @RequestParam("body") String body, @AuthenticationPrincipal UserDetails userDetails, HttpServletRequest request) {
         UserTemp userTemp = userTempMapper.selectById(userDetails.getUsername());
         Comment comment = new Comment();
         comment.setState(0).setTime(System.currentTimeMillis()).setContent(body)
@@ -69,8 +66,7 @@ public class CommentController {
             String eid = userTempMapper.selectById(notice.getAuthorName()).getEid();
             if (!notice.getAuthorName().equals(userTemp.getNickname())) {
                 EmailSender.sendEmail(eid, "通知来自[若生er,WebSite]",
-                        String.format("<h1>hi! %s</h1><p>%s在您发布的帖子<br>[%s]<br>发布了一条评论</p><br><p>%s</p>",
-                                notice.getAuthorName(), userTemp.getNickname(), notice.getTitle(), body));
+                        String.format("<h1>hi! %s</h1><p>%s在您发布的帖子<br>[%s]<br>发布了一条评论</p><br><p>%s</p>", notice.getAuthorName(), userTemp.getNickname(), notice.getTitle(), body));
             }
         });
         return r > 0 ? comment : null;

@@ -1,12 +1,10 @@
 package io.github.kloping.mywebsite.plugins.interfaces;
 
-import com.alibaba.fastjson.JSONObject;
 import io.github.kloping.MySpringTool.annotations.http.*;
-import io.github.kloping.mywebsite.entitys.webApi.fcgPlaySingleSong.FcgPlaySingleSong;
-import io.github.kloping.mywebsite.entitys.webApi.qqDetail.QQMusicDataList;
-import io.github.kloping.mywebsite.entitys.webApi.qqLyric.QQLyric;
-import io.github.kloping.mywebsite.entitys.webApi.qqMusicSearchNewPlatform.QqMusicSearchNewPlatform;
-import io.github.kloping.mywebsite.entitys.webApi.qqOneSong.QQOneSong;
+import io.github.kloping.mywebsite.domain.bo.fcgPlaySingleSong.FcgPlaySingleSong;
+import io.github.kloping.mywebsite.domain.bo.qqLyric.QQLyric;
+import io.github.kloping.mywebsite.domain.bo.qqMusicSearchNewPlatform.QqMusicSearchNewPlatform;
+import io.github.kloping.mywebsite.domain.bo.qqOneSong.QQOneSong;
 
 import java.util.Map;
 

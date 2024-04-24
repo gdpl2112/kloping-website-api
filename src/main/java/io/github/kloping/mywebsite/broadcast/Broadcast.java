@@ -9,7 +9,7 @@ import java.util.concurrent.Executors;
 /**
  * @author github-kloping
  */
-public abstract class Broadcast<T extends Receiver> {
+public abstract class Broadcast<T extends Broadcast.Receiver> {
     public static final ExecutorService SERVICE = Executors.newFixedThreadPool(10);
     public static final Map<Class<? extends Broadcast>, Broadcast> CLASS_BROADCAST_MAP = new ConcurrentHashMap<>();
     public static final Map<String, Broadcast> ID_2_BROADCASTS = new ConcurrentHashMap<>();
@@ -39,4 +39,17 @@ public abstract class Broadcast<T extends Receiver> {
     public abstract boolean add(T receiver);
 
     public abstract boolean remove(T receiver);
+
+    /**
+     * @author github-kloping
+     */
+    public interface Receiver<T> {
+        /**
+         * on received call method
+         *
+         * @param o
+         */
+        void onReceive(T o);
+    }
+
 }

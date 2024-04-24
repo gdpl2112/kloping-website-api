@@ -1,8 +1,8 @@
 package io.github.kloping.mywebsite.plugins.interfaces;
 
 import io.github.kloping.MySpringTool.annotations.http.*;
-import io.github.kloping.mywebsite.entitys.runcode.CodeEntity;
-import io.github.kloping.mywebsite.entitys.runcode.CodeResponse;
+import io.github.kloping.mywebsite.domain.bo.runcode.CodeEntity;
+import io.github.kloping.mywebsite.domain.bo.runcode.CodeResponse;
 
 /**
  * @author HRS-Computer

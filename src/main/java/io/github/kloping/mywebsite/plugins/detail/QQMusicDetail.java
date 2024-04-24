@@ -1,15 +1,15 @@
 package io.github.kloping.mywebsite.plugins.detail;
 
 import com.alibaba.fastjson.JSON;
-import io.github.kloping.mywebsite.entitys.medias.Song;
-import io.github.kloping.mywebsite.entitys.medias.Songs;
-import io.github.kloping.mywebsite.entitys.webApi.fcgPlaySingleSong.FcgPlaySingleSong;
-import io.github.kloping.mywebsite.entitys.webApi.qqDetail.QQMusicDataList;
-import io.github.kloping.mywebsite.entitys.webApi.qqDetail.Singer;
-import io.github.kloping.mywebsite.entitys.webApi.qqLyric.QQLyric;
-import io.github.kloping.mywebsite.entitys.webApi.qqMusicSearchNewPlatform.QqMusicSearchNewPlatform;
-import io.github.kloping.mywebsite.entitys.webApi.qqOneSong.Data;
-import io.github.kloping.mywebsite.entitys.webApi.qqOneSong.QQOneSong;
+import io.github.kloping.mywebsite.domain.bo.medias.Song;
+import io.github.kloping.mywebsite.domain.bo.medias.Songs;
+import io.github.kloping.mywebsite.domain.bo.fcgPlaySingleSong.FcgPlaySingleSong;
+import io.github.kloping.mywebsite.domain.bo.qqDetail.QQMusicDataList;
+import io.github.kloping.mywebsite.domain.bo.qqDetail.Singer;
+import io.github.kloping.mywebsite.domain.bo.qqLyric.QQLyric;
+import io.github.kloping.mywebsite.domain.bo.qqMusicSearchNewPlatform.QqMusicSearchNewPlatform;
+import io.github.kloping.mywebsite.domain.bo.qqOneSong.Data;
+import io.github.kloping.mywebsite.domain.bo.qqOneSong.QQOneSong;
 import io.github.kloping.mywebsite.plugins.PluginsSource;
 import org.apache.tomcat.util.codec.binary.Base64;
 
@@ -66,7 +66,7 @@ public class QQMusicDetail {
                 num,
                 keyword
         );
-        for (io.github.kloping.mywebsite.entitys.webApi.qqMusicSearchNewPlatform.List list : qm.getData().getSong().getList()) {
+        for (io.github.kloping.mywebsite.domain.bo.qqMusicSearchNewPlatform.List list : qm.getData().getSong().getList()) {
             String[] ss = list.getF().split("\\|");
             Song song = new Song();
             FcgPlaySingleSong singleSong = qqMusic.singleSong(ss[0], null, null, null);
@@ -74,7 +74,7 @@ public class QQMusicDetail {
             String mid = singleSong.getData()[0].getMid();
             dl0.setMedia_mid(mid);
             QQOneSong qqOneSong = qqMusic.oneDetail(dl0.toString(), HEADERS);
-            io.github.kloping.mywebsite.entitys.webApi.qqOneSong.Data data = qqOneSong.getReq_0().getData();
+            Data data = qqOneSong.getReq_0().getData();
             String urlEnd = "http://dl.stream.qqmusic.qq.com/" + data.getMidurlinfo()[0].getPurl();
             String lyric = "";
             try {

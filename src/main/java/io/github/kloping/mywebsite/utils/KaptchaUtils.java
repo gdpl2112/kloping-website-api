@@ -9,7 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
-import static io.github.kloping.mywebsite.controller.ApiToolController.RANDOM;
+import static io.github.kloping.mywebsite.controller.api.ApiToolController.RANDOM;
 
 /**
  * @author github.kloping

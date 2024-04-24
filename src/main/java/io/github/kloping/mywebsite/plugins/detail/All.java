@@ -26,8 +26,7 @@ public class All {
     }
 
     private static final String SINGLE_PATTERN = "[0-9|a-f|A-F]";
-    private static final String PATTERN = SINGLE_PATTERN + SINGLE_PATTERN +
-            SINGLE_PATTERN + SINGLE_PATTERN;
+    private static final String PATTERN = SINGLE_PATTERN + SINGLE_PATTERN + SINGLE_PATTERN + SINGLE_PATTERN;
 
     /**
      * 把 \\u 开头的单字转成汉字，如 \\u6B65 ->　步
@@ -36,8 +35,7 @@ public class All {
      * @return
      */
     private static String ustartToCn(final String str) {
-        StringBuilder sb = new StringBuilder().append("0x")
-                .append(str.substring(2, 6));
+        StringBuilder sb = new StringBuilder().append("0x").append(str.substring(2, 6));
         Integer codeInteger = Integer.decode(sb.toString());
         int code = codeInteger.intValue();
         char c = (char) code;

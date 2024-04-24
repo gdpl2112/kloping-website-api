@@ -2,7 +2,7 @@ package io.github.kloping.mywebsite.services.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import io.github.kloping.mywebsite.entitys.medias.WeatherM;
+import io.github.kloping.mywebsite.domain.bo.medias.WeatherM;
 import io.github.kloping.mywebsite.services.IShortTimeWeather;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;

@@ -1,6 +1,6 @@
 package io.github.kloping.mywebsite.services;
 
-import io.github.kloping.mywebsite.entitys.medias.position.PositionInfo;
+import io.github.kloping.mywebsite.domain.bo.position.PositionInfo;
 
 /**
  * @author github-kloping

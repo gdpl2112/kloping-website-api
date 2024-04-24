@@ -1,6 +1,7 @@
 package io.github.kloping.mywebsite.broadcast;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.sound.midi.Receiver;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.Map;
  */
 public class InterceptorBroadcast extends Broadcast<InterceptorBroadcast.InterceptorReceiver> {
     public InterceptorBroadcast() {
-        super("i0");
+        super("interceptor");
     }
 
     public static final InterceptorBroadcast INSTANCE = new InterceptorBroadcast();

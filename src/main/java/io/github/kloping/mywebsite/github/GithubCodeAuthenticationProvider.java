@@ -1,7 +1,7 @@
 package io.github.kloping.mywebsite.github;
 
 import com.alibaba.fastjson.JSON;
-import io.github.kloping.mywebsite.mapper.dao.UserTemp;
+import io.github.kloping.mywebsite.domain.po.UserTemp;
 import io.github.kloping.mywebsite.github.api.GithubUser;
 import io.github.kloping.mywebsite.mapper.UserTempMapper;
 import org.springframework.security.authentication.AuthenticationProvider;

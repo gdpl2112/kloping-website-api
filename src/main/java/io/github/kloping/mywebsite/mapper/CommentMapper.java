@@ -1,7 +1,7 @@
 package io.github.kloping.mywebsite.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import io.github.kloping.mywebsite.mapper.dao.Comment;
+import io.github.kloping.mywebsite.domain.po.Comment;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -19,5 +19,4 @@ public interface CommentMapper extends BaseMapper<Comment> {
 
     @Update("UPDATE comment SET state=1 WHERE comment_id=#{id}")
     int update(@Param("id") Integer id);
-
 }

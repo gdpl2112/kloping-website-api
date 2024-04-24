@@ -1,7 +1,7 @@
 package io.github.kloping.mywebsite.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import io.github.kloping.mywebsite.mapper.dao.PwdKeyValue;
+import io.github.kloping.mywebsite.domain.po.PwdKeyValue;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;

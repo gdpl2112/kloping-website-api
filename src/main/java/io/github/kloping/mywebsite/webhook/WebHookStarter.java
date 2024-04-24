@@ -1,16 +1,9 @@
 package io.github.kloping.mywebsite.webhook;
 
-import io.github.kloping.mywebsite.KlopingBlogApplication;
-import io.github.kloping.mywebsite.broadcast.WebHookBroadcast;
-import io.github.kloping.mywebsite.webhook.e0.OrderReq;
-import io.github.kloping.url.UrlUtils;
-
-import java.net.URLEncoder;
-
 /**
  * @author github.kloping
  */
-public class WebHookStarter implements Runnable, WebHookBroadcast.OrderReqReceiver {
+public class WebHookStarter implements Runnable {
     @Override
     public void run() {
         try {
@@ -18,16 +11,12 @@ public class WebHookStarter implements Runnable, WebHookBroadcast.OrderReqReceiv
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        WebHookBroadcast.INSTANCE.add(this);
-        System.out.println("add Receiver");
     }
 
-    String url;
-    String pwd;
 
-    @Override
+    /**
     public void onReceive(OrderReq req) {
-        if (req == null) return;
+     if (req == null) return;
         try {
             if (!req.getData().getOrder().getPlan_title().equals("腐竹")) {
                 return;
@@ -76,6 +65,6 @@ public class WebHookStarter implements Runnable, WebHookBroadcast.OrderReqReceiv
         } catch (Exception e) {
             System.err.println("订单信息错误");
             throw new RuntimeException(e);
-        }
-    }
+     }
+     }*/
 }

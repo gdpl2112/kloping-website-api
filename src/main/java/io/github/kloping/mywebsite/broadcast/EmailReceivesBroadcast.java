@@ -40,11 +40,10 @@ public class EmailReceivesBroadcast extends Broadcast<EmailReceivesBroadcast.Ema
         });
     }
 
-    private List<EmailReceivesBroadcast.EmailReceivesReceiver> receivers = new ArrayList<>();
-
+    private final List<EmailReceivesBroadcast.EmailReceivesReceiver> RECEIVES = new ArrayList<>();
 
     public synchronized void broadcast(POP3Message message) {
-        Iterator<EmailReceivesBroadcast.EmailReceivesReceiver> iterator = receivers.iterator();
+        Iterator<EmailReceivesBroadcast.EmailReceivesReceiver> iterator = RECEIVES.iterator();
         while (iterator.hasNext()) {
             try {
                 EmailReceivesBroadcast.EmailReceivesReceiver receiver = iterator.next();
@@ -57,15 +56,16 @@ public class EmailReceivesBroadcast extends Broadcast<EmailReceivesBroadcast.Ema
 
     @Override
     public boolean add(EmailReceivesReceiver receiver) {
-        return receivers.add(receiver);
+        return RECEIVES.add(receiver);
     }
 
     @Override
     public boolean remove(EmailReceivesReceiver receiver) {
-        return receivers.remove(receiver);
+        return RECEIVES.remove(receiver);
     }
 
-    public interface EmailReceivesReceiver extends Receiver {
+    public interface EmailReceivesReceiver extends Receiver<POP3Message> {
+        @Override
         void onReceive(POP3Message message);
     }
 

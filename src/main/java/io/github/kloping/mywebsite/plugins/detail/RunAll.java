@@ -2,8 +2,8 @@ package io.github.kloping.mywebsite.plugins.detail;
 
 import io.github.kloping.MySpringTool.annotations.AutoStand;
 import io.github.kloping.MySpringTool.annotations.Entity;
-import io.github.kloping.mywebsite.entitys.runcode.CodeEntity;
-import io.github.kloping.mywebsite.entitys.runcode.CodeResponse;
+import io.github.kloping.mywebsite.domain.bo.runcode.CodeEntity;
+import io.github.kloping.mywebsite.domain.bo.runcode.CodeResponse;
 import io.github.kloping.mywebsite.plugins.interfaces.RunCode;
 
 import java.io.IOException;

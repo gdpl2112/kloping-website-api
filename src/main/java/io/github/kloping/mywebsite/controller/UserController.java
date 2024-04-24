@@ -3,12 +3,13 @@ package io.github.kloping.mywebsite.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.github.kloping.common.Public;
 import io.github.kloping.judge.Judge;
+import io.github.kloping.mywebsite.controller.api.ApiImageController;
+import io.github.kloping.mywebsite.domain.po.BgImg;
+import io.github.kloping.mywebsite.domain.po.FriendLink;
+import io.github.kloping.mywebsite.domain.po.UserTemp;
 import io.github.kloping.mywebsite.mapper.BgImgMapper;
 import io.github.kloping.mywebsite.mapper.FriendLinkMapper;
 import io.github.kloping.mywebsite.mapper.UserTempMapper;
-import io.github.kloping.mywebsite.mapper.dao.BgImg;
-import io.github.kloping.mywebsite.mapper.dao.FriendLink;
-import io.github.kloping.mywebsite.mapper.dao.UserTemp;
 import io.github.kloping.mywebsite.utils.EmailSender;
 import io.github.kloping.mywebsite.utils.KaptchaUtils;
 import org.jsoup.Jsoup;
@@ -34,10 +35,6 @@ import static io.github.kloping.mywebsite.config.UserDetailsServiceImpl.EMAIL_TY
  */
 @RestController
 public class UserController {
-    public UserController(FriendLinkMapper friendLinkMapper, UserTempMapper userTempMapper) {
-        this.friendLinkMapper = friendLinkMapper;
-        this.userTempMapper = userTempMapper;
-    }
 
     @Value("${auth.url}")
     String url;
@@ -45,13 +42,20 @@ public class UserController {
     @Value("${auth.pwd}")
     String pwd;
 
-    final UserTempMapper userTempMapper;
+    @Autowired
+    FriendLinkMapper friendLinkMapper;
+    @Autowired
+    UserTempMapper userTempMapper;
+    @Autowired
+    BgImgMapper bgImgMapper;
 
     public static final Map<String, Long> eid2cd = new LinkedHashMap<>();
     public static final Map<String, String> eid2code = new LinkedHashMap<>();
 
+
     @RequestMapping("/reg")
-    public String req(@RequestParam("eid") String eid, @RequestParam("qid") String qid, @RequestParam("pwd") String pwd, @RequestParam("name") String name, @RequestParam("code") String code) {
+    public String req(@RequestParam("eid") String eid, @RequestParam("qid") String qid,
+                      @RequestParam("pwd") String pwd, @RequestParam("name") String name, @RequestParam("code") String code) {
         if (Judge.isEmpty(name) || name.length() < 4 || name.length() > 10) return "昵称为空或长度违规";
         if (userTempMapper.selectById(name) != null) return "昵称已注册!";
         QueryWrapper<UserTemp> queryWrapper = new QueryWrapper<>();
@@ -100,10 +104,8 @@ public class UserController {
         userTemp.setPwd("");
         return userTemp;
     }
-
-    final FriendLinkMapper friendLinkMapper;
-
     private List<FriendLink> links = null;
+
 
     @GetMapping("/flinks")
     public List<FriendLink> friendLinkList() {
@@ -118,9 +120,6 @@ public class UserController {
         }
         return links;
     }
-
-    @Autowired
-    BgImgMapper bgImgMapper;
 
     @GetMapping("/user_image_list")
     public Object imageList(HttpServletRequest request, @AuthenticationPrincipal UserDetails userDetails) {
@@ -139,11 +138,8 @@ public class UserController {
     }
 
     @PostMapping("/upload_image0")
-    public String uploadImage0(
-            HttpServletRequest request, HttpServletResponse response,
-            @AuthenticationPrincipal UserDetails userDetails,
-            @RequestParam("img") MultipartFile imageFile,
-            @RequestParam("t") String t) {
+    public String uploadImage0(HttpServletRequest request, HttpServletResponse response, @AuthenticationPrincipal UserDetails userDetails,
+            @RequestParam("img") MultipartFile imageFile, @RequestParam("t") String t) {
         try {
             String path = UtilsController.save(imageFile.getBytes(), false);
             Cookie cookie = new Cookie(ApiImageController.R0_KEY, path);
@@ -183,8 +179,6 @@ public class UserController {
         } catch (Exception e) {
             e.printStackTrace();
             return e.getMessage();
-        } finally {
-
         }
     }
 }

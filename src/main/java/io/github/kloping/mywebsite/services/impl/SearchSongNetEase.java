@@ -1,6 +1,6 @@
 package io.github.kloping.mywebsite.services.impl;
 
-import io.github.kloping.mywebsite.entitys.medias.Songs;
+import io.github.kloping.mywebsite.domain.bo.medias.Songs;
 import io.github.kloping.mywebsite.plugins.detail.NetEaseDetail;
 import io.github.kloping.mywebsite.services.ISearchSong;
 import org.springframework.stereotype.Service;

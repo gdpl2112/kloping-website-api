@@ -43,8 +43,8 @@ public class WebHookBroadcast extends Broadcast<WebHookBroadcast.OrderReqReceive
         return receivers.remove(receiver);
     }
 
-    public interface OrderReqReceiver extends Receiver {
+    public interface OrderReqReceiver extends Receiver<OrderReq> {
+        @Override
         void onReceive(OrderReq req);
     }
-
 }

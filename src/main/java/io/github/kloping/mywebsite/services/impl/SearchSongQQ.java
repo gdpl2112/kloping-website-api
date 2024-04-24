@@ -2,8 +2,8 @@ package io.github.kloping.mywebsite.services.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import io.github.kloping.mywebsite.entitys.medias.Song;
-import io.github.kloping.mywebsite.entitys.medias.Songs;
+import io.github.kloping.mywebsite.domain.bo.medias.Song;
+import io.github.kloping.mywebsite.domain.bo.medias.Songs;
 import io.github.kloping.mywebsite.services.ISearchSong;
 import io.github.kloping.url.UrlUtils;
 import org.springframework.stereotype.Service;

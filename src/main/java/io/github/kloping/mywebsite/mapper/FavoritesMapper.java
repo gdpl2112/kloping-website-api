@@ -1,7 +1,7 @@
 package io.github.kloping.mywebsite.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import io.github.kloping.mywebsite.mapper.dao.Favorites;
+import io.github.kloping.mywebsite.domain.po.Favorites;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

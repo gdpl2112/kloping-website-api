@@ -1,12 +1,12 @@
 package io.github.kloping.mywebsite.utils;
 
 import io.github.kloping.mywebsite.controller.UtilsController;
-import io.github.kloping.mywebsite.entitys.FileWithPath;
-import io.github.kloping.mywebsite.entitys.database.GameGoods;
-import io.github.kloping.mywebsite.entitys.yuanShen.Avatars;
-import io.github.kloping.mywebsite.entitys.yuanShen.Offerings;
-import io.github.kloping.mywebsite.entitys.yuanShen.WorldExplorations;
-import io.github.kloping.mywebsite.entitys.yuanShen.YuanShenPlayerInfo;
+import io.github.kloping.mywebsite.domain.bo.FileWithPath;
+import io.github.kloping.mywebsite.domain.bo.database.GameGoods;
+import io.github.kloping.mywebsite.domain.bo.yuanShen.Avatars;
+import io.github.kloping.mywebsite.domain.bo.yuanShen.Offerings;
+import io.github.kloping.mywebsite.domain.bo.yuanShen.WorldExplorations;
+import io.github.kloping.mywebsite.domain.bo.yuanShen.YuanShenPlayerInfo;
 import io.github.kloping.number.NumberUtils;
 
 import javax.imageio.ImageIO;
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 
-import static io.github.kloping.mywebsite.controller.ApiToolController.RANDOM;
+import static io.github.kloping.mywebsite.controller.api.ApiToolController.RANDOM;
 
 /**
  * @author github.kloping

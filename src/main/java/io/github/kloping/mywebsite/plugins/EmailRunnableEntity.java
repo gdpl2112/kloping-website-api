@@ -34,7 +34,6 @@ public class EmailRunnableEntity implements EmailReceivesBroadcast.EmailReceives
     private String pwd;
 
     public EmailRunnableEntity() {
-        System.out.println(this.getClass().getName() + "=========created");
         EmailReceivesBroadcast.INSTANCE.add(this::onReceive);
     }
 

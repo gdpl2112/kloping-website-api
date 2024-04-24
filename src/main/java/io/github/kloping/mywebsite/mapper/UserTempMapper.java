@@ -1,7 +1,7 @@
 package io.github.kloping.mywebsite.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import io.github.kloping.mywebsite.mapper.dao.UserTemp;
+import io.github.kloping.mywebsite.domain.po.UserTemp;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

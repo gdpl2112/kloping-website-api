@@ -3,7 +3,6 @@ package io.github.kloping.mywebsite.plugins;
 import io.github.kloping.MySpringTool.StarterApplication;
 import io.github.kloping.MySpringTool.annotations.AutoStand;
 import io.github.kloping.MySpringTool.annotations.CommentScan;
-import io.github.kloping.MySpringTool.annotations.Schedule;
 import io.github.kloping.mywebsite.plugins.detail.GetPvpNews;
 import io.github.kloping.mywebsite.plugins.detail.PvpQq;
 import io.github.kloping.mywebsite.plugins.detail.RunAll;
@@ -11,9 +10,7 @@ import io.github.kloping.mywebsite.plugins.interfaces.*;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
-import java.util.AbstractMap;
 import java.util.Base64;
-import java.util.Map;
 
 /**
  * @author github-kloping
@@ -27,37 +24,17 @@ public class PluginsSource {
     }
 
     @AutoStand
-    public static KugouMusic kugou;
-    @AutoStand
     public static NetEaseMusic netEaseMusic;
-
     @AutoStand
     public static QQMusic qqMusic;
-
-    @AutoStand
-    public static BaiduImage baiduImage;
-
     @AutoStand
     public static DuiTangImage duiTangImage;
-
-    @AutoStand
-    public static MyHkw myHkw;
-
-    @AutoStand
-    public static Daidr daidr;
-
-    @AutoStand
-    public static Hamm hamm;
-
     @AutoStand
     public static Empty empty;
-
     @AutoStand
     public static GetPvpNews getPvpNews;
-
     @AutoStand
     public static PvpQq pvpQq;
-
     @AutoStand
     public static RunAll runAll;
 

@@ -3,14 +3,14 @@ package io.github.kloping.mywebsite.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import io.github.kloping.mywebsite.entitys.FileWithPath;
-import io.github.kloping.mywebsite.entitys.NoticePack;
+import io.github.kloping.mywebsite.domain.bo.FileWithPath;
+import io.github.kloping.mywebsite.domain.bo.NoticePack;
 import io.github.kloping.mywebsite.mapper.FavoritesMapper;
 import io.github.kloping.mywebsite.mapper.NoticeMapper;
 import io.github.kloping.mywebsite.mapper.UserTempMapper;
-import io.github.kloping.mywebsite.mapper.dao.Favorites;
-import io.github.kloping.mywebsite.mapper.dao.Notice;
-import io.github.kloping.mywebsite.mapper.dao.UserTemp;
+import io.github.kloping.mywebsite.domain.po.Favorites;
+import io.github.kloping.mywebsite.domain.po.Notice;
+import io.github.kloping.mywebsite.domain.po.UserTemp;
 import io.github.kloping.mywebsite.services.INoticeService;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -30,8 +30,8 @@ import java.util.Base64;
 import java.util.LinkedList;
 import java.util.List;
 
-import static io.github.kloping.mywebsite.services.impl.NoticeServiceImpl.notices;
-import static io.github.kloping.mywebsite.services.impl.NoticeServiceImpl.notices2;
+import static io.github.kloping.mywebsite.services.impl.NoticeService.notices;
+import static io.github.kloping.mywebsite.services.impl.NoticeService.notices2;
 
 /**
  * @author github.kloping

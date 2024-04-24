@@ -7,12 +7,10 @@ import io.github.kloping.date.DateUtils;
 import io.github.kloping.file.FileUtils;
 import io.github.kloping.io.ReadUtils;
 import io.github.kloping.judge.Judge;
-import io.github.kloping.mywebsite.entitys.FileWithPath;
+import io.github.kloping.mywebsite.domain.bo.FileWithPath;
 import io.github.kloping.mywebsite.mapper.PwdKeyValueMapper;
-import io.github.kloping.mywebsite.mapper.dao.PwdKeyValue;
+import io.github.kloping.mywebsite.domain.po.PwdKeyValue;
 import org.jsoup.Connection;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.Nullable;
@@ -24,7 +22,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -180,9 +177,7 @@ public class UtilsController {
     }
 
     @GetMapping("/trans-img")
-    public String proxy(@RequestParam("url") String url,
-                        @Nullable @RequestParam("type") String type
-            , HttpServletResponse response
+    public String uploadImg(@RequestParam("url") String url, @Nullable @RequestParam("type") String type, HttpServletResponse response
             , HttpServletRequest request) {
         try {
             Connection connection = null;
