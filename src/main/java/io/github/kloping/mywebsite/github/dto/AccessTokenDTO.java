@@ -1,4 +1,4 @@
-package io.github.kloping.mywebsite.github.api;
+package io.github.kloping.mywebsite.github.dto;
 
 import lombok.Data;
 import lombok.experimental.Accessors;

@@ -54,7 +54,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.formLogin().loginPage("/login.html").loginProcessingUrl("/login").failureForwardUrl("/fail").failureUrl("/login.html?tips=error").defaultSuccessUrl("/");
+        http.formLogin().loginPage("/login.html")
+                .loginProcessingUrl("/login")
+                .failureForwardUrl("/fail")
+                .failureUrl("/login.html?tips=error")
+                .defaultSuccessUrl("/");
 
         http.logout().logoutUrl("/logout");
 
@@ -96,11 +100,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
-    }
-
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        super.configure(web);
     }
 
     @Bean

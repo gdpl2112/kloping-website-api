@@ -1,6 +1,6 @@
 package io.github.kloping.mywebsite.github;
 
-import io.github.kloping.mywebsite.github.api.GithubUser;
+import io.github.kloping.mywebsite.github.dto.GithubUser;
 import lombok.Getter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -43,8 +43,7 @@ public class GithubCodeAuthenticationToken extends AbstractAuthenticationToken {
 
     @Override
     public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
-        Assert.isTrue(!isAuthenticated,
-                "Cannot set this token to trusted - use constructor which takes a GrantedAuthority list instead");
+        Assert.isTrue(!isAuthenticated, "Cannot set this token to trusted - use constructor which takes a GrantedAuthority list instead");
         super.setAuthenticated(false);
     }
 

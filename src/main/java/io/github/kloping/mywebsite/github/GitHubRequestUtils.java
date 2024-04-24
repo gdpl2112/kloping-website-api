@@ -1,8 +1,8 @@
 package io.github.kloping.mywebsite.github;
 
 import com.alibaba.fastjson.JSON;
-import io.github.kloping.mywebsite.github.api.AccessTokenDTO;
-import io.github.kloping.mywebsite.github.api.GithubUser;
+import io.github.kloping.mywebsite.github.dto.AccessTokenDTO;
+import io.github.kloping.mywebsite.github.dto.GithubUser;
 import io.github.kloping.mywebsite.utils.BlogCodeUtils;
 import io.github.kloping.mywebsite.utils.SSLSocketClientUtil;
 import org.jsoup.Connection;
@@ -19,6 +19,7 @@ import java.io.IOException;
 @Component
 public class GitHubRequestUtils {
     public static final String ACCESS_URL = "https://github.com/login/oauth/access_token";
+    public static final String USER_URL = "https://api.github.com/user?access_token=%s";
 
     @Value("${proxy.url}")
     public String url;
@@ -58,7 +59,7 @@ public class GitHubRequestUtils {
     }
 
     public GithubUser getUser(String accessToken) {
-        Connection con = getConnection().url("https://api.github.com/user?access_token=" + accessToken)
+        Connection con = getConnection().url(String.format(USER_URL, accessToken))
                 .header("accept", "application/json")
                 .header("Authorization", "token " + accessToken);
         try {

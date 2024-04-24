@@ -10,8 +10,7 @@ import java.io.IOException;
 
 public class GithubCodeAuthenticationFailureHandler implements AuthenticationFailureHandler {
     @Override
-    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
-                                        AuthenticationException exception) throws IOException, ServletException {
+    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         response.setContentType("text/plain;charset=UTF-8");
         response.getWriter().write("认证失败\n" + exception.getMessage());
     }
