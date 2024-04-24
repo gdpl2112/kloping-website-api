@@ -138,7 +138,12 @@ public class ApiSearchController {
         engine.eval("var window={\"M\":{}};");
         engine.eval("var M={}");
 
-        engine.eval(js);
+        try {
+            engine.eval(js);
+        } catch (ScriptException e) {
+            e.printStackTrace();
+            return new JSONArray();
+        }
         engine.eval("var out = JSON.stringify(window.cardData)");
         String jsonData = engine.get("out").toString();
         JSONArray array = JSON.parseArray(jsonData);

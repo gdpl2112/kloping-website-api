@@ -9,6 +9,7 @@ import io.github.kloping.mywebsite.plugins.dto.pvpQqCom.Response0;
 import io.github.kloping.mywebsite.plugins.dto.pvpSkin.Pcblzlby_c6;
 import io.github.kloping.mywebsite.plugins.dto.pvpSkin.PvpSkin;
 import io.github.kloping.url.UrlUtils;
+import org.jetbrains.annotations.NotNull;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -20,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -36,13 +39,14 @@ import static io.github.kloping.mywebsite.plugins.PluginsSource.pvpQq;
 @RequestMapping("/api/get")
 public class ApiGameAnnouncementController {
     @GetMapping("/pvpqq")
-    public Object pvpqq(@RequestParam("n") Integer n) {
+    public Object pvpqq(@RequestParam("n") Integer n) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         Response0 r0 = getPvpNews.m1();
         Long newsId = r0.getData().getItems()[n].getINewsId().longValue();
         return getPvpNews.getNews(newsId);
     }
 
     private PvpSkin pvpSkin;
+
     @GetMapping("/pvpSkin")
     public Object pvpSkin(@RequestParam("n") Integer n) {
         if (pvpSkin == null) pvpSkin = pvpQq.pvpQq.getSkins();
@@ -77,6 +81,12 @@ public class ApiGameAnnouncementController {
         String url0 = String.format("https://pvp.qq.com/web201605/herodetail/%s.shtml", nid);
         Document doc0 = Jsoup.connect(url0).get();
         Elements es = doc0.getElementsByClass("pic-pf-list3");
+        List<JSONObject> list = getJsonObjects(name, es, nid);
+        return list;
+    }
+
+    @NotNull
+    private static List<JSONObject> getJsonObjects(String name, Elements es, Integer nid) {
         Element element = es.get(0);
         String data0 = element.attr("data-imgname");
         List<JSONObject> list = new LinkedList<>();

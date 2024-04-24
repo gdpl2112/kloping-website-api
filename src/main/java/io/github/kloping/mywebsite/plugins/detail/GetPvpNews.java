@@ -24,7 +24,7 @@ public class GetPvpNews {
     @AutoStand
     private GetPvpQq getPvpQQ;
 
-    public Response0 m1() {
+    public Response0 m1() throws UnsupportedEncodingException, NoSuchAlgorithmException {
         String urlStr = UrlUtils.getStringFromHttpUrl("https://game.gtimg.cn/images/yxzj/web201706/js/newsindex.js");
         String[] sss = urlStr.split("\r|\n");
         String source = "web_pc";
@@ -53,30 +53,20 @@ public class GetPvpNews {
     }
 
 
-    public String makeSign(String source, int serviceId, int id, String token) {
+    public String makeSign(String source, int serviceId, int id, String token) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         long timestamp = System.currentTimeMillis() / 1000;
         String sign = md5(token + source + serviceId + timestamp);
         return sign;
     }
 
-    public String md5(String data) {
-        try {
-            byte[] md5 = md5(data.getBytes("utf-8"));
-            return toHexString(md5);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return "";
+    public String md5(String data) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+        byte[] md5 = md5(data.getBytes("utf-8"));
+        return toHexString(md5);
     }
 
-    public byte[] md5(byte[] data) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("md5");
-            return md.digest(data);
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        return new byte[]{};
+    public byte[] md5(byte[] data) throws NoSuchAlgorithmException {
+        MessageDigest md = MessageDigest.getInstance("md5");
+        return md.digest(data);
     }
 
     private String toHexString(byte[] md5) {
