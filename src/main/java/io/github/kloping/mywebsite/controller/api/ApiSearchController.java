@@ -141,7 +141,7 @@ public class ApiSearchController {
         try {
             engine.eval(js);
         } catch (ScriptException e) {
-            e.printStackTrace();
+            System.err.format(e.getMessage() + " for [%s] No results\n", source);
             return new JSONArray();
         }
         engine.eval("var out = JSON.stringify(window.cardData)");
