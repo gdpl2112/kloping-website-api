@@ -30,6 +30,7 @@ public class NoticeService implements INoticeService {
         QueryWrapper<Notice> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("state", 0);
         queryWrapper.select("id", "views", "title", "icon", "date", "time", "author_name", "author_id");
+        queryWrapper.orderByDesc("time");
         Notice[] notices = mapper.selectList(queryWrapper).toArray(new Notice[0]);
         return notices;
     }
