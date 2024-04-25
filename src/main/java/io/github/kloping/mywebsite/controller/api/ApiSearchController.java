@@ -9,6 +9,7 @@ import io.github.kloping.mywebsite.domain.bo.medias.Songs;
 import io.github.kloping.mywebsite.services.ISearchPic;
 import io.github.kloping.mywebsite.services.ISearchSong;
 import io.github.kloping.url.UrlUtils;
+import jakarta.servlet.http.HttpServletRequest;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.helper.HttpConnection;
@@ -23,7 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 /**

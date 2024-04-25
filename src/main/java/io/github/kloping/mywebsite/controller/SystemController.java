@@ -1,12 +1,11 @@
 package io.github.kloping.mywebsite.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 
 /**
@@ -15,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 @Slf4j
 public class SystemController {
-
 
     @GetMapping({"/", "/#"})
     public String index(HttpServletRequest request, HttpServletResponse response, @RequestHeader(value = "User-Agent") String userAgent) {

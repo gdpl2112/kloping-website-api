@@ -7,8 +7,11 @@ import io.github.kloping.mywebsite.domain.bo.FileWithPath;
 import io.github.kloping.mywebsite.domain.bo.ImageE0;
 import io.github.kloping.mywebsite.domain.po.BgImg;
 import io.github.kloping.mywebsite.mapper.BgImgMapper;
-import io.github.kloping.mywebsite.utils.ImageDrawerUtils;
 import io.github.kloping.mywebsite.utils.BlogCodeUtils;
+import io.github.kloping.mywebsite.utils.ImageDrawerUtils;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
@@ -18,9 +21,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.imageio.ImageIO;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -30,9 +30,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 
-import static io.github.kloping.mywebsite.controller.api.ApiShowDetailController.HTTP_FORMAT1;
 import static io.github.kloping.mywebsite.controller.UtilsController.requestFile;
 import static io.github.kloping.mywebsite.controller.UtilsController.save;
+import static io.github.kloping.mywebsite.controller.api.ApiShowDetailController.HTTP_FORMAT1;
 import static io.github.kloping.mywebsite.utils.ImageDrawerUtils.TONG_BASE_BYTES;
 
 /**

@@ -8,13 +8,12 @@ import io.github.kloping.mywebsite.mapper.CommentMapper;
 import io.github.kloping.mywebsite.mapper.NoticeMapper;
 import io.github.kloping.mywebsite.mapper.UserTempMapper;
 import io.github.kloping.mywebsite.utils.EmailConfig;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -29,7 +28,7 @@ public class CommentController {
     UserTempMapper userTempMapper;
     @Autowired
     NoticeMapper noticeMapper;
-    @Resource
+    @Autowired
     EmailConfig emailConfig;
 
     @GetMapping("/get-comment")

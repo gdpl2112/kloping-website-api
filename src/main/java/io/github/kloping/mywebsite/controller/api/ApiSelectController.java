@@ -6,11 +6,10 @@ import io.github.kloping.mywebsite.domain.bo.position.PositionInfo;
 import io.github.kloping.mywebsite.services.IShortTimeWeather;
 import io.github.kloping.mywebsite.services.IWeather;
 import io.github.kloping.mywebsite.services.IgetLngLat;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author github-kloping

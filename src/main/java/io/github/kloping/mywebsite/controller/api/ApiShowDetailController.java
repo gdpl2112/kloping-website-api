@@ -3,11 +3,11 @@ package io.github.kloping.mywebsite.controller.api;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.github.kloping.mywebsite.domain.po.ApiDetail;
 import io.github.kloping.mywebsite.mapper.ApiDetailMapper;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
 import java.net.URLDecoder;
 import java.util.LinkedHashMap;
 import java.util.List;

@@ -12,6 +12,9 @@ import io.github.kloping.mywebsite.mapper.FriendLinkMapper;
 import io.github.kloping.mywebsite.mapper.UserTempMapper;
 import io.github.kloping.mywebsite.utils.EmailConfig;
 import io.github.kloping.mywebsite.utils.KaptchaUtils;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,10 +23,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.Resource;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -75,7 +74,7 @@ public class UserController {
         return "注册成功";
     }
 
-    @Resource
+    @Autowired
     EmailConfig emailConfig;
 
     @GetMapping("/req0")

@@ -5,15 +5,13 @@ import com.alibaba.fastjson.JSONObject;
 import io.github.kloping.judge.Judge;
 import io.github.kloping.mywebsite.github.dto.AccessTokenDTO;
 import io.github.kloping.mywebsite.github.dto.GithubUser;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import static io.github.kloping.mywebsite.github.GithubCodeAuthenticationProvider.*;
@@ -35,8 +33,21 @@ public class GithubCodeAuthenticationProcessingFilter extends AbstractAuthentica
         this.utils = utils;
     }
 
+
+    private String obtainCode(HttpServletRequest request) {
+        return request.getParameter(FORM_CODE_KEY);
+    }
+
+    private String obtainState(HttpServletRequest request) {
+        return request.getParameter(FORM_STATE_KEY);
+    }
+
+    protected void setDetails(HttpServletRequest request, GithubCodeAuthenticationToken authRequest) {
+        authRequest.setDetails(this.authenticationDetailsSource.buildDetails(request));
+    }
+
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
+    public Authentication attemptAuthentication(jakarta.servlet.http.HttpServletRequest request, jakarta.servlet.http.HttpServletResponse response) throws AuthenticationException, IOException, jakarta.servlet.ServletException {
         if (!request.getMethod().equals("GET")) {
             throw new AuthenticationServiceException("Authentication method not supported: " + request.getMethod());
         }
@@ -80,17 +91,5 @@ public class GithubCodeAuthenticationProcessingFilter extends AbstractAuthentica
         }
         setDetails(request, atoken);
         return this.getAuthenticationManager().authenticate(atoken);
-    }
-
-    private String obtainCode(HttpServletRequest request) {
-        return request.getParameter(FORM_CODE_KEY);
-    }
-
-    private String obtainState(HttpServletRequest request) {
-        return request.getParameter(FORM_STATE_KEY);
-    }
-
-    protected void setDetails(HttpServletRequest request, GithubCodeAuthenticationToken authRequest) {
-        authRequest.setDetails(this.authenticationDetailsSource.buildDetails(request));
     }
 }

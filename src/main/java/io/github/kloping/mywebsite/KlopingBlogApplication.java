@@ -13,6 +13,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
@@ -28,6 +29,7 @@ import java.util.concurrent.TimeUnit;
 @Import({TomcatUtil.class})
 @CrossOrigin
 @EnableWebSecurity
+@PropertySource(value = {"file:application.yml"})
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class KlopingBlogApplication {
 

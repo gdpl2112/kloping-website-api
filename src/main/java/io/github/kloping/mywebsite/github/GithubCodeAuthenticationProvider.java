@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import io.github.kloping.mywebsite.domain.po.UserTemp;
 import io.github.kloping.mywebsite.github.dto.GithubUser;
 import io.github.kloping.mywebsite.mapper.UserTempMapper;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -12,7 +13,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;

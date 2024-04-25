@@ -6,15 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.session.SessionRegistryImpl;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.SecurityFilterChain;
 
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
@@ -23,7 +20,8 @@ import java.util.concurrent.CopyOnWriteArraySet;
  * @author github-kloping
  */
 @Configuration
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+@EnableWebSecurity
+public class SecurityConfig {
     private static final Set<String> NEED_AUTH_PAGES = new CopyOnWriteArraySet<>();
 
     static {
@@ -52,54 +50,48 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     UserTempMapper userTempMapper;
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.formLogin().loginPage("/login.html")
-                .loginProcessingUrl("/login")
-                .failureForwardUrl("/fail")
-                .failureUrl("/login.html?tips=error")
-                .defaultSuccessUrl("/");
-
-        http.logout().logoutUrl("/logout");
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.formLogin((forLogin) -> {
+            forLogin.loginPage("/login.html")
+                    .loginProcessingUrl("/login")
+                    .failureForwardUrl("/fail")
+                    .failureUrl("/login.html?tips=error")
+                    .defaultSuccessUrl("/");
+        }).logout((logout) -> {
+            logout.logoutUrl("/logout");
+        });
 
         http.authorizeRequests()
                 //匹配这些地址
-                .mvcMatchers(NEED_AUTH_PAGES.toArray(new String[0]))
+                .requestMatchers(NEED_AUTH_PAGES.toArray(new String[0]))
                 //需要认证
                 .authenticated()
                 //其他的
                 .anyRequest()
                 //全部放行
-                .permitAll();
-
-        http.csrf().disable();
+                .permitAll()
+                .and()
+                .csrf((csrf) -> csrf.disable());
 
         GithubCodeAuthenticationProcessingFilter githubCodeAuthenticationFilter =
                 new GithubCodeAuthenticationProcessingFilter(clientId, clientSecret, redirectUri, utils);
 
-        githubCodeAuthenticationFilter.setAuthenticationManager(authenticationManagerBean());
+//        githubCodeAuthenticationFilter.setAuthenticationManager(authenticationManagerBean());
         githubCodeAuthenticationFilter.setAuthenticationSuccessHandler(new GithubCodeAuthenticationSuccessHandler());
         githubCodeAuthenticationFilter.setAuthenticationFailureHandler(new GithubCodeAuthenticationFailureHandler());
 
         GithubCodeAuthenticationProvider githubCodeAuthenticationProvider =
                 new GithubCodeAuthenticationProvider(userDetailsService, userTempMapper);
 
-        http.authenticationProvider(githubCodeAuthenticationProvider)
-                .addFilterAfter(githubCodeAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        return http.build();
     }
 
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
-    }
-
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
     }
 
     @Bean
