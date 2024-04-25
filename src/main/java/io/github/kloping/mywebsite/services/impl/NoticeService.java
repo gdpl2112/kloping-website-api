@@ -2,7 +2,6 @@ package io.github.kloping.mywebsite.services.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import io.github.kloping.mywebsite.domain.bo.NoticePack;
 import io.github.kloping.mywebsite.domain.po.Notice;
 import io.github.kloping.mywebsite.domain.po.UserTemp;
 import io.github.kloping.mywebsite.mapper.NoticeMapper;
@@ -17,8 +16,6 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * @author github.kloping
@@ -28,69 +25,15 @@ public class NoticeService implements INoticeService {
     @Autowired
     NoticeMapper mapper;
 
-    private static final int MAX = 5;
-
-    public static List<Notice> notices = new LinkedList<>();
-    public static List<Notice> notices2 = new LinkedList<>();
-
     @Override
-    public NoticePack get(int pn) {
-        List<Notice> list = new LinkedList<>();
-        if (notices != null && !notices.isEmpty()) {
-            list.addAll(notices);
-        } else {
-            QueryWrapper<Notice> queryWrapper = new QueryWrapper<>();
-            queryWrapper.eq("state", 0);
-            queryWrapper.orderByDesc("time");
-            list = mapper.selectList(queryWrapper);
-            notices = list;
-        }
-        return exportPack(list, --pn);
+    public Notice[] gets() {
+        QueryWrapper<Notice> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("state", 0);
+        queryWrapper.select("id", "views", "title", "icon", "date", "time", "author_name", "author_id");
+        Notice[] notices = mapper.selectList(queryWrapper).toArray(new Notice[0]);
+        return notices;
     }
 
-    @Override
-    public NoticePack get1(Integer pn) {
-        List<Notice> list = new LinkedList<>();
-        if (notices2 != null && !notices2.isEmpty()) {
-            list.addAll(notices2);
-        } else {
-            QueryWrapper<Notice> queryWrapper = new QueryWrapper<>();
-            queryWrapper.eq("state", 0);
-            queryWrapper.orderByDesc("time");
-            list = mapper.selectList(queryWrapper);
-            notices2 = list;
-        }
-        return exportPack(list, --pn, true);
-    }
-
-    public NoticePack exportPack(List<Notice> list, int pn) {
-        return exportPack(list, pn, false);
-    }
-
-    /**
-     * 清空内容
-     *
-     * @param list
-     * @param pn
-     * @param k
-     * @return
-     */
-    public NoticePack exportPack(List<Notice> list, int pn, boolean k) {
-        List<Notice> list0 = new LinkedList<>();
-        int i = pn * MAX;
-        while (true) {
-            if (i >= list.size() || list0.size() >= MAX) break;
-            Notice notice = list.get(i);
-            if (k) notice.setHtml("");
-            list0.add(notice);
-            i++;
-        }
-        NoticePack noticePack = new NoticePack();
-        noticePack.setNotices(list0);
-        noticePack.setPn(++pn);
-        noticePack.setMax(list.size() / 5 + (list.size() % 5 > 0 ? 1 : 0));
-        return noticePack;
-    }
 
     final SimpleDateFormat sf_0 = new SimpleDateFormat("yyyy-MM-dd:HH:mm:ss");
 
@@ -118,8 +61,6 @@ public class NoticeService implements INoticeService {
                     .setIcon(img);
             mapper.insert(notice);
             tips();
-            notices.clear();
-            notices2.clear();
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -138,24 +79,16 @@ public class NoticeService implements INoticeService {
     }
 
     @Override
-    public Notice get0(Integer id) {
+    public Notice getOne(Integer id) {
         QueryWrapper<Notice> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("id", id);
         queryWrapper.eq("state", 0);
         Notice notice = mapper.selectOne(queryWrapper);
-        notice.setViews(notice.getViews() + 1);
-        for (Notice n0 : notices) {
-            if (n0.getId().intValue() == notice.getId().intValue()) {
-                n0.setViews(notice.getViews());
-            }
-        }
-        for (Notice n0 : notices2) {
-            if (n0.getId().intValue() == notice.getId().intValue()) {
-                n0.setViews(notice.getViews());
-            }
-        }
-        mapper.updateById(notice);
-        return notice;
+        if (notice != null) {
+            notice.setViews(notice.getViews() + 1);
+            mapper.updateById(notice);
+            return notice;
+        } else return null;
     }
 
     @Override

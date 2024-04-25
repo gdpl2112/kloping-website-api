@@ -4,13 +4,12 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.github.kloping.mywebsite.domain.bo.FileWithPath;
-import io.github.kloping.mywebsite.domain.bo.NoticePack;
-import io.github.kloping.mywebsite.mapper.FavoritesMapper;
-import io.github.kloping.mywebsite.mapper.NoticeMapper;
-import io.github.kloping.mywebsite.mapper.UserTempMapper;
 import io.github.kloping.mywebsite.domain.po.Favorites;
 import io.github.kloping.mywebsite.domain.po.Notice;
 import io.github.kloping.mywebsite.domain.po.UserTemp;
+import io.github.kloping.mywebsite.mapper.FavoritesMapper;
+import io.github.kloping.mywebsite.mapper.NoticeMapper;
+import io.github.kloping.mywebsite.mapper.UserTempMapper;
 import io.github.kloping.mywebsite.services.INoticeService;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -30,9 +29,6 @@ import java.util.Base64;
 import java.util.LinkedList;
 import java.util.List;
 
-import static io.github.kloping.mywebsite.services.impl.NoticeService.notices;
-import static io.github.kloping.mywebsite.services.impl.NoticeService.notices2;
-
 /**
  * @author github.kloping
  */
@@ -42,21 +38,14 @@ public class NoticeController {
     @Autowired
     INoticeService service;
 
-    @GetMapping("/get-notice")
-    public NoticePack get0(@RequestParam @Nullable Integer pn) {
-        if (pn == null) pn = 1;
-        return service.get(pn);
-    }
-
-    @GetMapping("/get-notice0")
-    public NoticePack get2(@RequestParam @Nullable Integer pn) {
-        if (pn == null) pn = 1;
-        return service.get1(pn);
+    @GetMapping("/gets")
+    public Notice[] gets() {
+        return service.gets();
     }
 
     @GetMapping("/get-notice-id")
-    public Object get1(@RequestParam Integer id, @AuthenticationPrincipal UserDetails userDetails) {
-        return service.get0(id);
+    public Object getOne(@RequestParam Integer id, @AuthenticationPrincipal UserDetails userDetails) {
+        return service.getOne(id);
     }
 
     @GetMapping("/deletable")
@@ -73,8 +62,6 @@ public class NoticeController {
         if (notice.getAuthorName().equals(userDetails.getUsername())) {
             notice.setState(1);
             mapper.updateById(notice);
-            notices.clear();
-            notices2.clear();
             return "OK";
         } else return "Insufficient permissions!";
     }
@@ -87,8 +74,7 @@ public class NoticeController {
             @AuthenticationPrincipal UserDetails userDetails,
             @RequestParam("file") @Nullable MultipartFile imageFile,
             @RequestParam("title") @Nullable String title,
-            @RequestParam("code") String body
-    ) {
+            @RequestParam("code") String body) {
         if (userDetails == null) return "login state false";
         body = uploadImg(body);
         try {
@@ -214,8 +200,6 @@ public class NoticeController {
             Notice notice = mapper.selectById(id);
             notice.setState(0);
             mapper.updateById(notice);
-            notices.clear();
-            notices2.clear();
             return "ok";
         } catch (Exception e) {
             e.printStackTrace();

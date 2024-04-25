@@ -15,12 +15,12 @@ import lombok.experimental.Accessors;
 public class Notice {
     @TableId(type = IdType.AUTO)
     private Long id;
-    private Integer state;
+    private Integer state = 1;
     private Integer views;
     private String title;
     private String icon;
     private String date;
-    private String html;
+    private String html = "";
     private Long time;
     private String authorName;
     private Long authorId;

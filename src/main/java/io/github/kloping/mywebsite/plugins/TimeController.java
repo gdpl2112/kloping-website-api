@@ -13,7 +13,5 @@ public class TimeController {
 
     @Schedule("00:00:00")
     public void m0() {
-        NoticeService.notices.clear();
-        NoticeService.notices2.clear();
     }
 }

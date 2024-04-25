@@ -1,6 +1,5 @@
 package io.github.kloping.mywebsite.services;
 
-import io.github.kloping.mywebsite.domain.bo.NoticePack;
 import io.github.kloping.mywebsite.domain.po.Notice;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -14,7 +13,7 @@ public interface INoticeService {
      * @param pn
      * @return
      */
-    NoticePack get(int pn);
+    Notice[] gets();
 
     /**
      * save a notice
@@ -34,15 +33,7 @@ public interface INoticeService {
      * @param id
      * @return
      */
-    Notice get0(Integer id);
-
-    /**
-     * simple
-     *
-     * @param pn
-     * @return
-     */
-    NoticePack get1(Integer pn);
+    Notice getOne(Integer id);
 
     /**
      * 修改内容
