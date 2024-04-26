@@ -103,8 +103,8 @@ $("body").append(`
 <style>
     #hn0{
         transition: all 1s ease !important;
-        border: 1.5px solid transparent;
-        background-color: rgba(255,255,255,.0);
+        border: 3px solid transparent;
+        background-color: rgba(183,229,223,0.1);
         border-radius: 7px;
         animation: normal1 .3s linear forwards;
     }
