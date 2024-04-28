@@ -1,5 +1,4 @@
 $("body").append(`
-
 <div class="modal fade" id="agreement-tips" tabindex="-1" role="dialog" aria-labelledby="agreement-tips-title"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -31,12 +30,10 @@ $("body").append(`
         </div>
     </div>
 </div>
-
 <nav id="hn0" class="fixed-top navbar navbar-expand-lg navbar-light">
     <div class="navbar-brand navbar-header">
         <a href="/">
-            <img style="opacity: 0.86;max-width: 50px; border-radius: 999px"
-                 class="navbar-brand" src="/icon.jpg" alt="qq"> kloping's web
+            <img style="opacity: 0.86;max-width: 50px; border-radius: 999px" class="navbar-brand" src="/icon.jpg" alt="qq"> kloping's web
         </a>
     </div>
      <button class="navbar-toggler" type="button" data-toggle="collapse" 
@@ -82,24 +79,21 @@ $("body").append(`
                 data-toggle="modal" data-target="#agreement-tips">使用协议</a>
             </li>
         </ul>
-        <div class="form-inline my-2 my-lg-0">
-            <a href="/v0.html" class="mr-sm-2 my-2 my-sm-0" style="margin-right: 8px">
+        <div id="hn1" v-show="user.state" class="mr-3">
+            {{user.nickname}}
+            <img style="opacity: 0.86;max-width: 50px; border-radius: 999px" class="navbar-brand mr-0" :src="user.icon" alt="icon">
+            <a class="btn btn-outline-danger btn-sm font-weight-light" href="/logout">点击登出</a>
+        </div>
+        <div  class="form-inline mr-sm-2 my-2">
+            <a href="/v0.html" class="mr-2">
                 <button class="btn btn-outline-success" type="button">个人中心</button>
             </a>
-            <a href="/upload.html" class=" my-2 my-sm-0">
+            <a href="/upload.html" class="mr-2">
                 <button class="btn btn-outline-success" type="button">发布帖子</button>
             </a>
         </div>
     </div>
 </nav>
-
-<script>
-    $("#jump-fl").click(function (){
-        $("html, body").animate({
-            scrollTop: $("#f-link-d0").offset().top }, {duration: 500,easing: "swing"});
-            return false;
-    })
-</script>
 <style>
     #hn0{
         transition: all 1s ease !important;
@@ -112,8 +106,6 @@ $("body").append(`
         animation: hover1 .3s linear forwards;
         background-color: rgba(255,255,255, .9)
     }
-    
-        
     @keyframes normal1 {
         0% {
             transform: scale(1);
@@ -132,10 +124,25 @@ $("body").append(`
             transform: scale(1.00);
         }
     }
-    
 </style>
-
 `
 );
 
 
+$("#jump-fl").click(function () {
+    $("html, body").animate({
+        scrollTop: $("#f-link-d0").offset().top
+    }, {duration: 500, easing: "swing"});
+    return false;
+});
+let vmh = new Vue({
+    el: "#hn1", created: function () {
+        axios.get("/user0").then(function (response) {
+            vmh.user = response.data
+        }).catch(function (err) {
+            alert(err);
+        })
+    }, data: {
+        user: null
+    }
+});

@@ -36,7 +36,6 @@ import static io.github.kloping.mywebsite.config.UserDetailsServiceImpl.EMAIL_TY
  */
 @RestController
 public class UserController {
-
     @Value("${bot.url}")
     String url;
     @Value("${bot.pwd}")
@@ -51,7 +50,6 @@ public class UserController {
 
     public static final Map<String, Long> eid2cd = new LinkedHashMap<>();
     public static final Map<String, String> eid2code = new LinkedHashMap<>();
-
 
     @RequestMapping("/reg")
     public String req(@RequestParam("eid") String eid, @RequestParam("qid") String qid,
@@ -107,8 +105,17 @@ public class UserController {
         userTemp.setPwd("");
         return userTemp;
     }
-    private List<FriendLink> links = null;
 
+    @GetMapping("/user0")
+    public UserTemp user0(@AuthenticationPrincipal UserDetails userDetails) {
+        if (userDetails == null) {
+            UserTemp temp = new UserTemp();
+            temp.setState(false);
+            return temp;
+        } else return user(userDetails);
+    }
+
+    private List<FriendLink> links = null;
 
     @GetMapping("/flinks")
     public List<FriendLink> friendLinkList() {

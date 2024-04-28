@@ -1,5 +1,6 @@
 package io.github.kloping.mywebsite.domain.po;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -20,4 +21,7 @@ public class UserTemp {
     private Long regt;
     private String type;
     private String annex;
+
+    @TableField(exist = false)
+    private Boolean state = true;
 }
