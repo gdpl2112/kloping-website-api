@@ -91,7 +91,11 @@
             <div class="collapse" id="collapseA">
                 <div class="card card-body">
                     <ul class="list-group" v-for="e in ilist">
-                        <li class="list-group-item">{{e.u0}}
+                        <li class="list-group-item">
+                            <button type="button" class="btn btn-outline-success" v-on:click="enableImg(e.url)">
+                                使用
+                            </button>
+                            {{e.u0}}
                             <button type="button" class="btn btn-outline-danger btn-sm" v-on:click="delImg(e.url)">
                                 删除
                             </button>
@@ -218,6 +222,11 @@
                 }).catch(function (err) {
                     alert(err);
                 })
+            },
+            enableImg: function (url) {
+                setCookie("randUrl", url)
+                let bodyStyle = document.body.style
+                bodyStyle.backgroundImage = `url(${url})`
             }
         }
     });

@@ -74,4 +74,12 @@ public class ApiTempController {
     public void delTemp() {
         sortSongs.delete();
     }
+
+    @RequestMapping("/test")
+    public String test() {
+        return "{\n" +
+                "  \"success\": true,\n" +
+                "  \"message\": \"Message sent successfully\"\n" +
+                "}";
+    }
 }

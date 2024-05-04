@@ -152,14 +152,17 @@ public class UserController {
             @RequestParam("img") MultipartFile imageFile, @RequestParam("t") String t) {
         try {
             String path = UtilsController.save(imageFile.getBytes(), false);
+
             Cookie cookie = new Cookie(ApiImageController.R0_KEY, path);
             cookie.setMaxAge(120 * 60);
             cookie.setPath("/");
             response.addCookie(cookie);
+
             BgImg bgImg = new BgImg();
             bgImg.setEid(userDetails.getUsername());
             bgImg.setType(Integer.valueOf(t));
             bgImg.setUrl(path);
+
             boolean k = bgImgMapper.insert(bgImg) > 0;
             if (k) Public.EXECUTOR_SERVICE.submit(() -> {
                 try {
