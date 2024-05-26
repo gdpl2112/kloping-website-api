@@ -73,10 +73,10 @@ public class EmailRunnableEntity implements EmailReceivesBroadcast.EmailReceives
                     sb.append(content.toString());
                 }
                 if (url == null) {
-                    url = KlopingBlogApplication.applicationContext.getEnvironment().getProperty("auth.url").toString();
+                    url = KlopingBlogApplication.applicationContext.getEnvironment().getProperty("bot.url").toString();
                 }
                 if (pwd == null) {
-                    pwd = KlopingBlogApplication.applicationContext.getEnvironment().getProperty("auth.pwd").toString();
+                    pwd = KlopingBlogApplication.applicationContext.getEnvironment().getProperty("bot.pwd").toString();
                 }
                 if (Judge.isNotEmpty(uhref)) {
                     sb.append("\n===========\n").append(uhref);

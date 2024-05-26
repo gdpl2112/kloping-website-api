@@ -5,6 +5,8 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import io.github.kloping.file.FileUtils;
 import io.github.kloping.url.UrlUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,7 +29,29 @@ public class ApiTempController {
     public void getUrlById(@RequestParam String id, HttpServletResponse response) throws IOException {
         String s1 = UrlUtils.getStringFromHttpUrl("https://api.linhun.vip/api/NetEaseCloud?apiKey=c01dd92d2a1245643840d43833bde8df&id=" + id);
         JSONObject d1 = JSON.parseObject(s1);
-        response.sendRedirect(d1.getString("MusicLink"));
+        Object o = d1.get("MusicLink");
+        if (o instanceof JSONArray) {
+            response.sendRedirect(getUrlByIdFromVip(id));
+        } else response.sendRedirect(d1.getString("MusicLink"));
+    }
+
+    private String getUrlByIdFromVip(String id) throws IOException {
+        Document doc0 = Jsoup.connect("https://tools.qzxdp.cn/api/wyy_vip/parse")
+                .ignoreContentType(true)
+                .header("Accept", "application/json, text/javascript, */*; q=0.01")
+                .header("Accept-Encoding", "gzip, deflate, br")
+                .header("Accept-Language", "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6")
+                .header("Connection", "keep-alive")
+                .header("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
+                .header("Host", "tools.qzxdp.cn")
+                .header("Origin", "https://tools.qzxdp.cn")
+                .header("Referer", "https://tools.qzxdp.cn/wyy_vip")
+                .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.67")
+                .header("X-Requested-With", "XMLHttpRequest")
+                .data("url", "https://music.163.com/#/song?id=" + id)
+                .data("musicType", "lossless").post();
+        JSONObject jo = JSON.parseObject(doc0.body().text());
+        return jo.getJSONObject("data").getString("url");
     }
 
     @RequestMapping("/get-cover-by-id")
