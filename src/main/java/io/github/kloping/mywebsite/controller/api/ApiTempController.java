@@ -3,11 +3,12 @@ package io.github.kloping.mywebsite.controller.api;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import io.github.kloping.date.DateUtils;
 import io.github.kloping.file.FileUtils;
-import io.github.kloping.url.UrlUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,16 +25,45 @@ import java.io.IOException;
 @RestController
 public class ApiTempController {
 
+    private String uid;
+    private String udata;
 
     @RequestMapping("/get-url-by-id")
     public void getUrlById(@RequestParam String id, HttpServletResponse response) throws IOException {
-        String s1 = UrlUtils.getStringFromHttpUrl("http://127.0.0.1:5000/Song_V1?level=lossless&type=json&ids=" + id);
-        JSONObject d1 = JSON.parseObject(s1);
-        Object o = d1.get("url");
-        response.sendRedirect(o.toString());
-//        if (o instanceof JSONArray) {
-//            response.sendRedirect(getUrlByIdFromVip(id));
-//        } else response.sendRedirect(d1.getString("MusicLink"));
+        String out = getDataFromId(id);
+        JSONObject jd = JSON.parseObject(out);
+        jd = jd.getJSONObject("url_info");
+        response.sendRedirect(jd.getString("url"));
+    }
+
+    private String getDataFromId(String id) throws IOException {
+        if (id.equals(uid)) return udata;
+        else uid = id;
+        String year = String.valueOf(DateUtils.getYear());
+        String month = String.valueOf(DateUtils.getMonth());
+        String day = String.valueOf(DateUtils.getDay());
+        if (month.length() == 1) month = "0" + month;
+        if (day.length() == 1) day = "0" + day;
+        String url = "https://music.163.com/song?id=" + id;
+        final String end = "losslessmusiccn_v1";
+        String md5o = year + month + day + url + end;
+        String token = DigestUtils.md5DigestAsHex((md5o).getBytes());
+        String body = String.format("{\"url\":\"%s\",\"level\":\"lossless\",\"type\":\"song\",\"token\":\"%s\"}", url, token);
+        Document doc0 = Jsoup.connect("https://api.toubiec.cn/api/music_v1.php")
+                .header("Accept", "application/json, text/plain, */*")
+                .header("Accept-Encoding", "gzip, deflate, br")
+                .header("Accept-Language", "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6")
+                .header("Content-Length", String.valueOf(body.length()))
+                .header("Content-Type", "application/json")
+                .header("Origin", "https://api.toubiec.cn")
+                .header("Referer", "https://api.toubiec.cn/wyapi.html")
+                .header("Timestamp", String.valueOf(System.currentTimeMillis()))
+                .header("Token", token)
+                .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.67 ")
+                .requestBody(body).ignoreContentType(true).ignoreHttpErrors(true).post();
+        String out = doc0.wholeText();
+        udata = out;
+        return out;
     }
 
     private String getUrlByIdFromVip(String id) throws IOException {
@@ -57,10 +87,10 @@ public class ApiTempController {
 
     @RequestMapping("/get-cover-by-id")
     public void getCoverUrlById(@RequestParam String id, HttpServletResponse response) throws IOException {
-        String s1 = UrlUtils.getStringFromHttpUrl("http://127.0.0.1:5000/Song_V1?level=lossless&type=json&ids=" + id);
-        JSONObject d1 = JSON.parseObject(s1);
-        Object o = d1.get("pic");
-        response.sendRedirect(o.toString());
+        String out = getDataFromId(id);
+        JSONObject jd = JSON.parseObject(out);
+        jd = jd.getJSONObject("song_info");
+        response.sendRedirect(jd.getString("cover"));
     }
 
     private File sortSongs = new File("./files/sort-sons.json");
