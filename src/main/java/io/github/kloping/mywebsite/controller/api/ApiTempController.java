@@ -18,6 +18,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author github.kloping
@@ -25,8 +27,7 @@ import java.io.IOException;
 @RestController
 public class ApiTempController {
 
-    private String uid;
-    private String udata;
+    private Map<String, String> datamap = new HashMap<>();
 
     @RequestMapping("/get-url-by-id")
     public void getUrlById(@RequestParam String id, HttpServletResponse response) throws IOException {
@@ -37,8 +38,7 @@ public class ApiTempController {
     }
 
     private String getDataFromId(String id) throws IOException {
-        if (id.equals(uid)) return udata;
-        else uid = id;
+        if (datamap.containsKey(id)) return datamap.get(id);
         String year = String.valueOf(DateUtils.getYear());
         String month = String.valueOf(DateUtils.getMonth());
         String day = String.valueOf(DateUtils.getDay());
@@ -62,7 +62,7 @@ public class ApiTempController {
                 .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.67 ")
                 .requestBody(body).ignoreContentType(true).ignoreHttpErrors(true).post();
         String out = doc0.wholeText();
-        udata = out;
+        datamap.put(id, out);
         return out;
     }
 
@@ -131,6 +131,10 @@ public class ApiTempController {
         sortSongs.delete();
     }
 
+    @Scheduled(cron = "0 0/30 * * * ?")
+    public void m30() {
+        datamap.clear();
+    }
     @RequestMapping("/test")
     public String test() {
         return "{\n" +
