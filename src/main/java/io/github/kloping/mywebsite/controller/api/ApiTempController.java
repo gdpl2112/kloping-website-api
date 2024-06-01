@@ -27,12 +27,13 @@ public class ApiTempController {
 
     @RequestMapping("/get-url-by-id")
     public void getUrlById(@RequestParam String id, HttpServletResponse response) throws IOException {
-        String s1 = UrlUtils.getStringFromHttpUrl("https://api.linhun.vip/api/NetEaseCloud?apiKey=c01dd92d2a1245643840d43833bde8df&id=" + id);
+        String s1 = UrlUtils.getStringFromHttpUrl("http://127.0.0.1:5000/Song_V1?level=lossless&type=json&ids=" + id);
         JSONObject d1 = JSON.parseObject(s1);
-        Object o = d1.get("MusicLink");
-        if (o instanceof JSONArray) {
-            response.sendRedirect(getUrlByIdFromVip(id));
-        } else response.sendRedirect(d1.getString("MusicLink"));
+        Object o = d1.get("url");
+        response.sendRedirect(o.toString());
+//        if (o instanceof JSONArray) {
+//            response.sendRedirect(getUrlByIdFromVip(id));
+//        } else response.sendRedirect(d1.getString("MusicLink"));
     }
 
     private String getUrlByIdFromVip(String id) throws IOException {
@@ -56,9 +57,10 @@ public class ApiTempController {
 
     @RequestMapping("/get-cover-by-id")
     public void getCoverUrlById(@RequestParam String id, HttpServletResponse response) throws IOException {
-        String s1 = UrlUtils.getStringFromHttpUrl("https://api.linhun.vip/api/NetEaseCloud?apiKey=c01dd92d2a1245643840d43833bde8df&id=" + id);
+        String s1 = UrlUtils.getStringFromHttpUrl("http://127.0.0.1:5000/Song_V1?level=lossless&type=json&ids=" + id);
         JSONObject d1 = JSON.parseObject(s1);
-        response.sendRedirect(d1.getString("Picture"));
+        Object o = d1.get("pic");
+        response.sendRedirect(o.toString());
     }
 
     private File sortSongs = new File("./files/sort-sons.json");
