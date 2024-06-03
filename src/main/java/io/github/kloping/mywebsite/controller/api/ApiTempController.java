@@ -131,7 +131,7 @@ public class ApiTempController {
         sortSongs.delete();
     }
 
-    @Scheduled(cron = "0 0/30 * * * ?")
+    @Scheduled(fixedRate = 1800000)
     public void m30() {
         datamap.clear();
     }
