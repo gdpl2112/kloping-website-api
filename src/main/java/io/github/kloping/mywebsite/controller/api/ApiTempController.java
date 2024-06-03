@@ -134,6 +134,7 @@ public class ApiTempController {
     @Scheduled(fixedRate = 1800000)
     public void m30() {
         datamap.clear();
+        System.out.println("clear datamap [" + System.currentTimeMillis() + "]");
     }
     @RequestMapping("/test")
     public String test() {
