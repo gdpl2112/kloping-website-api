@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.AbstractMap;
 import java.util.Map;
 
 /**
@@ -27,7 +27,6 @@ import java.util.Map;
 @RestController
 public class ApiTempController {
 
-    private Map<String, String> datamap = new HashMap<>();
 
     @RequestMapping("/get-url-by-id")
     public void getUrlById(@RequestParam String id, HttpServletResponse response) throws IOException {
@@ -37,8 +36,16 @@ public class ApiTempController {
         response.sendRedirect(jd.getString("url"));
     }
 
+    private Map.Entry<String, String> cache = null;
+
     private String getDataFromId(String id) throws IOException {
-        if (datamap.containsKey(id)) return datamap.get(id);
+        if (cache != null) {
+            if (cache.getKey().equals(id)) {
+                String out = cache.getValue();
+                cache = null;
+                return out;
+            }
+        }
         String year = String.valueOf(DateUtils.getYear());
         String month = String.valueOf(DateUtils.getMonth());
         String day = String.valueOf(DateUtils.getDay());
@@ -62,7 +69,7 @@ public class ApiTempController {
                 .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.67 ")
                 .requestBody(body).ignoreContentType(true).ignoreHttpErrors(true).post();
         String out = doc0.wholeText();
-        datamap.put(id, out);
+        cache = new AbstractMap.SimpleEntry<>(id, out);
         return out;
     }
 
@@ -131,11 +138,6 @@ public class ApiTempController {
         sortSongs.delete();
     }
 
-    @Scheduled(fixedRate = 1800000)
-    public void m30() {
-        datamap.clear();
-        System.out.println("clear datamap [" + System.currentTimeMillis() + "]");
-    }
     @RequestMapping("/test")
     public String test() {
         return "{\n" +
