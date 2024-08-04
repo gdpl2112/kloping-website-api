@@ -1,12 +1,13 @@
 package io.github.kloping.mywebsite.services;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import io.github.kloping.mywebsite.domain.po.Notice;
 import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  * @author github.kloping
  */
-public interface INoticeService {
+public interface INoticeService extends IService<Notice> {
     /**
      * get pn page notices
      *

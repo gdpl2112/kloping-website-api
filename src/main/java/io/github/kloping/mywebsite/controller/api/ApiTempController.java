@@ -100,13 +100,14 @@ public class ApiTempController {
     }
 
     private File sortSongs = new File("./files/sort-sons.json");
+    private boolean k0 = false;
     RestTemplate template = new RestTemplate();
 
     @RequestMapping("/get-music")
     public Object getMusic(HttpServletRequest request) {
-        if (!sortSongs.exists()) {
+        if (!k0) {
+            k0 = true;
             String json = template.getForObject("http://localhost/api/get/163host", String.class);
-//                    UrlUtils.getStringFromHttpUrl("https://api.wer.plus/api/wytop?t=4");
             JSONArray dar = JSON.parseArray(json);
             JSONArray array = new JSONArray();
             for (Object data : dar) {
@@ -129,12 +130,11 @@ public class ApiTempController {
             }
         }
         return FileUtils.getStringFromFile(sortSongs.getAbsolutePath());
-//        return FileUtils.getStringFromFile("./files/songs.json");
     }
 
     @Scheduled(cron = "52 1 0 * * ?")
     public void delTemp() {
-        sortSongs.delete();
+        k0 = true;
     }
 
     @RequestMapping("/test")

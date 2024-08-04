@@ -76,7 +76,7 @@ public class NoticeController {
             @RequestParam("title") @Nullable String title,
             @RequestParam("code") String body) {
         if (userDetails == null) return "login state false";
-        body = uploadImg(body);
+//        body = uploadImg(body);
         try {
             String img = "";
             if (imageFile != null && !imageFile.isEmpty()) {
@@ -90,34 +90,33 @@ public class NoticeController {
                 img = userTemp.getIcon();
             }
             title = title == null ? "未定义的标题" : title;
-            body += "<br><hr>";
             return service.save(img, title, body, userDetails) ? "上传成功,管理员审核后上线" : "上传失败";
         } catch (Throwable e) {
             e.printStackTrace();
             return e.getMessage();
         }
     }
-
-    public String uploadImg(String body) {
-        Document document = Jsoup.parse(body);
-        Elements es = document.getElementsByTag("img");
-        for (Element e : es) {
-            try {
-                String base64 = e.attr("src");
-                base64 = base64.substring(base64.indexOf("base64,") + 7);
-                byte[] bytes = Base64.getDecoder().decode(base64);
-                FileWithPath fwp = UtilsController.requestFile(false, "jpg");
-                FileOutputStream fos = new FileOutputStream(fwp.getFile());
-                fos.write(bytes);
-                fos.close();
-                e.attr("src", "/" + fwp.getName());
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
-        }
-        body = document.body().html();
-        return body;
-    }
+//
+//    public String uploadImg(String body) {
+//        Document document = Jsoup.parse(body);
+//        Elements es = document.getElementsByTag("img");
+//        for (Element e : es) {
+//            try {
+//                String base64 = e.attr("src");
+//                base64 = base64.substring(base64.indexOf("base64,") + 7);
+//                byte[] bytes = Base64.getDecoder().decode(base64);
+//                FileWithPath fwp = UtilsController.requestFile(false, "jpg");
+//                FileOutputStream fos = new FileOutputStream(fwp.getFile());
+//                fos.write(bytes);
+//                fos.close();
+//                e.attr("src", "/" + fwp.getName());
+//            } catch (IOException ex) {
+//                throw new RuntimeException(ex);
+//            }
+//        }
+//        body = document.body().html();
+//        return body;
+//    }
 
     @PostMapping("/modify")
     public String modify(@RequestBody String text) {

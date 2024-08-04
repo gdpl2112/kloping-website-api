@@ -28,14 +28,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author github-kloping
  */
 @RestController
+@CrossOrigin
 public class UtilsController {
     @Value("${upload.passwd}")
     private String pwd;
@@ -188,6 +186,25 @@ public class UtilsController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @PostMapping("/editormd-image-file")
+    public String uploadEd(HttpServletResponse response, @RequestParam(value = "editormd-image-file", required = false) MultipartFile imageFile) throws Exception {
+        JSONObject jsonObject = new JSONObject();
+        if (imageFile != null && !imageFile.isEmpty()) {
+            FileWithPath fwp = UtilsController.requestFile(true, "jpg");
+            FileOutputStream fos = new FileOutputStream(fwp.getFile());
+            fos.write(imageFile.getBytes());
+            fos.close();
+            String url = fwp.getName();
+            jsonObject.put("success", 1);
+            jsonObject.put("message", "OK");
+            jsonObject.put("url", url);
+            System.out.println("md上传:" + url);
+        } else {
+            jsonObject.put("success", 0);
+        }
+        return jsonObject.toString();
     }
 
     @GetMapping("/trans-img")

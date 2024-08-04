@@ -67,5 +67,4 @@ public class KaptchaUtils {
             return new Object[]{e.getMessage()};
         }
     }
-
 }

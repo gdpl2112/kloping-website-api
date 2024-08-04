@@ -21,6 +21,12 @@
         <java.version>11</java.version>
     </properties>
     <dependencies>
+        <!-- pagehelper 分页插件 -->
+        <dependency>
+            <groupId>com.github.aidensuen</groupId>
+            <artifactId>pagehelper-spring-boot-starter</artifactId>
+            <version>1.1.2</version>
+        </dependency>
         <dependency>
             <groupId>io.github.Kloping</groupId>
             <artifactId>SpringTool</artifactId>

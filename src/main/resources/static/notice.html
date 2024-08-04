@@ -52,7 +52,7 @@
     <br>
     <br>
     <div class="row">
-        <div class="col-12" v-html="data.html">
+        <div id="content0" class="col-12">
         </div>
     </div>
 </div>
@@ -125,6 +125,11 @@
 
 <script src="/js/utils.js"></script>
 <script src="/js/lib/yinghua.js"></script>
+
+<link rel="stylesheet" href="/editor.md/css/editormd.preview.css"/>
+<script src="/editor.md/editormd.js"></script>
+<script src="/editor.md/lib/marked.min.js"></script>
+<script src="/editor.md/lib/prettify.min.js"></script>
 <script>
     let input0 = null
     const paramsStr = window.location.search
@@ -147,7 +152,16 @@
             input0 = $("#tips-input")
             axios.get("/notice/get-notice-id?id=" + id).then(function (response) {
                 vm1.data = response.data
+                if (vm1.data.type === "md") {
+                    let c00 = editormd.markdownToHTML("content0", {
+                        markdown: vm1.data.html,
+                        htmlDecode: true
+                    });
+                } else {
+                    $("#content0").html(vm1.data.html)
+                }
                 document.getElementsByTagName("title")[0].innerText = vm1.data.title
+
             }).catch(function (err) {
                 alert(err);
             })

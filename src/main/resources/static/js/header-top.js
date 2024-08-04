@@ -47,7 +47,7 @@ $("body").append(`
                 <a class="nav-link" href="/api">API</a>
             </li>
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#"
+                <a class="nav-link dropdown-toggle" href=""
                  id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false">
                     关于
                 </a>
@@ -71,7 +71,7 @@ $("body").append(`
                 </div>
             </li>
              <li class="nav-item mr-sm-2" style="margin-right: 8px">
-                <a href="" id="jump-fl" class="nav-link">友链</a>
+                <a id="jump-fl" class="nav-link">友链</a>
             </li>
             <li class="nav-item">
                 <a style="color: #91f5c3" type="button" 

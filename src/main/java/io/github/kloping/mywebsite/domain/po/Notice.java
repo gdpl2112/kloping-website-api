@@ -24,4 +24,5 @@ public class Notice {
     private Long time;
     private String authorName;
     private Long authorId;
+    private String type;
 }

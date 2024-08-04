@@ -2,8 +2,6 @@ package io.github.kloping.mywebsite.plugins;
 
 import io.github.kloping.MySpringTool.annotations.Controller;
 import io.github.kloping.MySpringTool.annotations.Schedule;
-import io.github.kloping.mywebsite.controller.api.ApiSearchController;
-import io.github.kloping.mywebsite.services.impl.NoticeService;
 
 /**
  * @author github.kloping
