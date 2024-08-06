@@ -246,7 +246,7 @@ public class UtilsController {
     }
 
     public static FileWithPath requestFile(boolean isTemp, String format) {
-        String name = "/" + DateUtils.getYear() + "/" + DateUtils.getMonth() + "/" + DateUtils.getDay() + "/" + UUID.randomUUID().toString() + "." + format;
+        String name = "/" + DateUtils.getYear() + "/" + DateUtils.getMonth() + "/" + DateUtils.getDay() + "-" + UUID.randomUUID().toString() + "." + format;
         name = isTemp ? "/temp" + name : name;
         File file = new File("./files/" + name);
         file.getParentFile().mkdirs();
