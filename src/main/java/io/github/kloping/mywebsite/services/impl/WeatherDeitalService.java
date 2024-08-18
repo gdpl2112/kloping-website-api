@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import io.github.kloping.mywebsite.domain.bo.medias.WeatherDetail;
 import io.github.kloping.mywebsite.services.IWeather;
+import net.sourceforge.pinyin4j.PinyinHelper;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -17,7 +18,7 @@ import org.springframework.stereotype.Service;
 public class WeatherDeitalService implements IWeather {
     @Override
     public WeatherDetail get(String keyword) throws Exception {
-        String urlStr = String.format("https://www.tianqi.com/tianqi/ctiy?keyword=%s", keyword);
+        String urlStr = String.format("https://www.tianqi.com/tianqi/ctiy?keyword                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       =%s", keyword);
         Connection connection;
         Document doc;
         connection = Jsoup.connect(urlStr)
