@@ -2,6 +2,7 @@ package io.github.kloping.mywebsite.utils;
 
 import com.google.code.kaptcha.impl.DefaultKaptcha;
 import io.github.kloping.mywebsite.KlopingBlogApplication;
+import io.github.kloping.rand.RandomUtils;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -9,7 +10,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
-import static io.github.kloping.mywebsite.controller.api.ApiToolController.RANDOM;
 
 /**
  * @author github.kloping
@@ -30,7 +30,7 @@ public class KaptchaUtils {
     public static String getCode() {
         char[] chars = new char[4];
         for (int i = 0; i < chars.length; i++) {
-            chars[i] = cs[RANDOM.nextInt(cs.length)];
+            chars[i] = cs[RandomUtils.RANDOM.nextInt(cs.length)];
         }
         String caps = new String(chars);
         return caps;
@@ -39,7 +39,7 @@ public class KaptchaUtils {
     public static String getNumberCode(int w) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < w; i++) {
-            sb.append(RANDOM.nextInt(10));
+            sb.append(RandomUtils.RANDOM.nextInt(10));
         }
         return sb.toString();
     }

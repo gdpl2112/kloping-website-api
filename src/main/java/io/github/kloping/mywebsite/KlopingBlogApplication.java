@@ -7,7 +7,6 @@ import io.github.kloping.common.Public;
 import io.github.kloping.date.FrameUtils;
 import io.github.kloping.file.FileUtils;
 import io.github.kloping.mywebsite.broadcast.EmailReceivesBroadcast;
-import io.github.kloping.mywebsite.plugins.PluginsSource;
 import io.github.kloping.mywebsite.webhook.WebHookStarter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -35,7 +34,6 @@ public class KlopingBlogApplication {
 
     public static void main(String[] args) {
         applicationContext = SpringApplication.run(KlopingBlogApplication.class, args);
-        PluginsSource.before();
 
         String name = ManagementFactory.getRuntimeMXBean().getName();
         String pid = name.split("@")[0];
