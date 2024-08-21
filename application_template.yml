@@ -1,3 +1,4 @@
+##配置模板 敏感信息 x 或 0 代替
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/mydb1?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&rewriteBatchedStatements=true
@@ -5,23 +6,47 @@ spring:
     password: root
   web:
     resources:
-      static-locations: classpath:/static,file:./files,file:./temp
+      static-locations: classpath:/static,file:./files
+  resources:
+    static-locations: classpath:/static,file:./files,file:./temp
   mvc:
   servlet:
     multipart:
-      max-file-size: 3MB        # 设置单个文件最大大小为10MB
-      max-request-size: 30MB    # 设置多个文件大小为100MB
-
+      max-file-size: 20MB        # 设置单个文件最大大小为10MB
+      max-request-size: 100MB    # 设置多个文件大小为100MB
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            clientId: xxx
+            clientSecret: xxx
+            redirectUri: xx
+http:
+  port: 80
 server:
-  additionalPorts: 80
+  port: 443
+#  servlet:
+#    context-path: /be
+
+email:
+  account: hrs3474006766@outlook.com
+  pwd: xxxx
+  host: smtp.office365.com
+  port: 587
 
 upload:
-  passwd: 123456
+  passwd: xxxx
 
 bottle:
   max:
     pickup: 5
 
-auth:
+bot:
   url: http://localhost:20049
-  pwd: 123456
+  pwd: xxx
+
+proxy:
+  url: x.x.x.x
+  port: 000
+  auth_url: https://api.vvhan.com/api/ipInfo
