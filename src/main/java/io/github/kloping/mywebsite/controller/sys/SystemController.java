@@ -1,4 +1,4 @@
-package io.github.kloping.mywebsite.controller;
+package io.github.kloping.mywebsite.controller.sys;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;

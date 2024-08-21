@@ -58,7 +58,7 @@
         created: function () {
             let data1 = new FormData();
             data1.set("name", name)
-            axios.post("/apid", data1).then(function (response) {
+            axios.post("/api/d", data1).then(function (response) {
                 vm1.en = response.data;
                 vm1.init_();
             }).catch(function (err) {

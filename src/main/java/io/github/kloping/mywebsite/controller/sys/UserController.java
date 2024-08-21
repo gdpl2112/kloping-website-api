@@ -1,8 +1,9 @@
-package io.github.kloping.mywebsite.controller;
+package io.github.kloping.mywebsite.controller.sys;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.github.kloping.common.Public;
 import io.github.kloping.judge.Judge;
+import io.github.kloping.mywebsite.controller.UtilsController;
 import io.github.kloping.mywebsite.controller.api.ApiImageController;
 import io.github.kloping.mywebsite.domain.po.BgImg;
 import io.github.kloping.mywebsite.domain.po.FriendLink;

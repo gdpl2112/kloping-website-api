@@ -1,4 +1,4 @@
-package io.github.kloping.mywebsite.controller.api;
+package io.github.kloping.mywebsite.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -19,7 +19,7 @@ import java.io.IOException;
  */
 @RestController
 @RequestMapping("/api/group")
-public class ApiGroupController {
+public class ApiTencentGroupPayController {
     @PostMapping("/pay")
     public PayOut pay(@RequestParam("skey") String skey, @RequestParam("pskey") String pskey, @RequestParam("uin") Long uin, @RequestParam("qq") Long qq, @RequestParam("select") Integer select, @RequestParam("jie") Float jie, @RequestParam("title") String title, @RequestParam("payId") String payId, @RequestParam("gid") Long gid) {
         switch (select) {

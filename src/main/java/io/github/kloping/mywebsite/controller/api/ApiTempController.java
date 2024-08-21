@@ -30,17 +30,10 @@ import java.util.Map;
 @RestController
 public class ApiTempController {
 
-    @RequestMapping("/get-url-by-id")
-    public void getUrlById(@RequestParam String id, HttpServletResponse response) throws Exception {
-        String out = getDataFromId(id);
-        JSONObject jd = JSON.parseObject(out);
-        jd = jd.getJSONObject("url_info");
-        response.sendRedirect(jd.getString("url"));
-    }
-
     private Map.Entry<String, String> cache = null;
 
     //https://api.toubiec.cn/wyapi.html
+
     private String getDataFromId(String id) throws Exception {
         if (cache != null) {
             if (cache.getKey().equals(id)) {
@@ -86,7 +79,6 @@ public class ApiTempController {
         return out;
     }
 
-
     public static final HttpClient HTTP_CLIENT = HttpClient.newHttpClient();
 
     private String getToken() throws Exception {
@@ -105,6 +97,14 @@ public class ApiTempController {
         HttpResponse<String> response = HTTP_CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
         JSONObject json = JSON.parseObject(response.body());
         return json.getString("token");
+    }
+
+    @RequestMapping("/get-url-by-id")
+    public void getUrlById(@RequestParam String id, HttpServletResponse response) throws Exception {
+        String out = getDataFromId(id);
+        JSONObject jd = JSON.parseObject(out);
+        jd = jd.getJSONObject("url_info");
+        response.sendRedirect(jd.getString("url"));
     }
 
     @RequestMapping("/get-cover-by-id")

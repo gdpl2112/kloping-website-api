@@ -1,17 +1,12 @@
 package io.github.kloping.mywebsite.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import io.github.kloping.date.DateUtils;
 import io.github.kloping.file.FileUtils;
 import io.github.kloping.io.ReadUtils;
 import io.github.kloping.judge.Judge;
 import io.github.kloping.mywebsite.domain.bo.FileWithPath;
-import io.github.kloping.mywebsite.domain.po.PwdKeyValue;
-import io.github.kloping.mywebsite.mapper.PwdKeyValueMapper;
 import org.jsoup.Connection;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
@@ -77,98 +72,6 @@ public class UtilsController {
             e.printStackTrace();
         }
         return host;
-    }
-
-    @Autowired
-    PwdKeyValueMapper pkvMapper;
-
-    @GetMapping("/put")
-    public String put(@RequestParam("key") String key, @RequestParam("value") String value, @RequestParam("pwd") String pwd) {
-        String oldValue = "";
-        QueryWrapper<PwdKeyValue> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("pwd", pwd);
-        queryWrapper.eq("k", key);
-        PwdKeyValue pkv = pkvMapper.selectOne(queryWrapper);
-        if (pkv == null) {
-            pkv = new PwdKeyValue();
-            pkv.setPwd(pwd);
-            pkv.setValue(value);
-            pkv.setK(key);
-            return pkvMapper.insert(pkv) > 0 ? "OK" : oldValue;
-        } else {
-            oldValue = pkv.getValue();
-            pkv.setPwd(pwd);
-            pkv.setValue(value);
-            pkv.setK(key);
-            UpdateWrapper<PwdKeyValue> updateWrapper = new UpdateWrapper<>();
-            updateWrapper.eq("k", key);
-            updateWrapper.eq("pwd", pwd);
-            return pkvMapper.update(pkv, updateWrapper) > 0 ? oldValue : "ERROR";
-        }
-    }
-
-    @GetMapping("/get")
-    public String get(@RequestParam("key") String key, @RequestParam("pwd") String pwd) {
-        QueryWrapper<PwdKeyValue> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("pwd", pwd);
-        queryWrapper.eq("k", key);
-        PwdKeyValue pkv = pkvMapper.selectOne(queryWrapper);
-        if (pkv == null) {
-            return "";
-        } else {
-            return pkv.getValue();
-        }
-    }
-
-    @RequestMapping("/list")
-    public Object get(@RequestParam("pwd") String pwd) {
-        return pkvMapper.selectKeys(pwd);
-    }
-
-    @GetMapping("/del")
-    public String del(@RequestParam("key") @Nullable String key, @RequestParam("pwd") String pwd) {
-        QueryWrapper<PwdKeyValue> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("pwd", pwd);
-        if (key != null && !key.isEmpty()) {
-            queryWrapper.eq("k", key);
-        }
-        return pkvMapper.delete(queryWrapper) > 0 ? "OK" : "ERROR";
-    }
-
-    @GetMapping("/contains-keys")
-    public Integer contains(@RequestParam("keys") String[] keys, @RequestParam("pwd") String pwd, @RequestParam("value") @Nullable String value) {
-        Integer c = 0;
-        for (String key : keys) {
-            c = getContainsCount(pwd, value, c, key);
-            continue;
-        }
-        return c;
-    }
-
-    @GetMapping("/contains-pwds")
-    public Integer containsPwds(@RequestParam("key") String key, @RequestParam("pwds") String[] pwds, @RequestParam("value") @Nullable String value) {
-        Integer c = 0;
-        for (String pwd : pwds) {
-            c = getContainsCount(pwd, value, c, key);
-            continue;
-        }
-        return c;
-    }
-
-    private Integer getContainsCount(String pwd, String value, Integer c, String key) {
-        QueryWrapper<PwdKeyValue> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("pwd", pwd);
-        queryWrapper.eq("k", key);
-        PwdKeyValue pkv = pkvMapper.selectOne(queryWrapper);
-        if (pkv == null) return c;
-        if (value != null && !value.isEmpty()) {
-            if (pkv.getValue().equalsIgnoreCase(value)) {
-                c++;
-            }
-        } else {
-            c++;
-        }
-        return c;
     }
 
     @PostMapping("/upload-img")

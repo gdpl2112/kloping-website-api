@@ -1,4 +1,4 @@
-package io.github.kloping.mywebsite.controller;
+package io.github.kloping.mywebsite.controller.sys;
 
 import io.github.kloping.common.Public;
 import io.github.kloping.mywebsite.domain.po.Comment;

@@ -1,4 +1,4 @@
-package io.github.kloping.mywebsite.controller;
+package io.github.kloping.mywebsite.controller.sys;
 
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.web.bind.annotation.RequestMapping;

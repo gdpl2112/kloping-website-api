@@ -2,7 +2,6 @@ package io.github.kloping.mywebsite.utils;
 
 import io.github.kloping.mywebsite.controller.UtilsController;
 import io.github.kloping.mywebsite.domain.bo.FileWithPath;
-import io.github.kloping.mywebsite.domain.bo.database.GameGoods;
 import io.github.kloping.mywebsite.domain.bo.yuanShen.Avatars;
 import io.github.kloping.mywebsite.domain.bo.yuanShen.Offerings;
 import io.github.kloping.mywebsite.domain.bo.yuanShen.WorldExplorations;
@@ -15,7 +14,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
 
 import static io.github.kloping.mywebsite.controller.api.ApiToolController.RANDOM;
 
@@ -30,40 +28,40 @@ public class ImageDrawer {
     private static final Font FONT30 = new Font("宋体", Font.BOLD, 30);
     private static final Color C0 = new Color(250, 253, 255);
 
-    public static String drawer(String desc, List<GameGoods> goods, String end) throws Exception {
-        int width = 600;
-        int height = 500;
-        BufferedImage outputImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-        Graphics2D g2d = outputImage.createGraphics();
-        g2d.setClip(0, 0, width, height);
-        g2d.setColor(C0);
-        g2d.fillRect(0, 0, width, height);
-        g2d.setFont(FONT20);
-        g2d.setColor(Color.RED);
-        g2d.drawString(desc, 40, 60);
-        g2d.setFont(FONT16);
-        g2d.setColor(PURPLE);
-        g2d.setColor(Color.BLACK);
-        int x = 30, y = 130;
-        int i = -1;
-        for (GameGoods good : goods) {
-            i++;
-            if (i % 2 == 0) {
-                x = 30;
-                y += 50;
-            } else {
-                x += 250;
-            }
-            g2d.drawString(String.format("| %s 价格:%s 数量:%s |", good.getName(), good.getPrice1(), good.getNum()), x, y);
-        }
-        g2d.setFont(FONT20);
-        g2d.setColor(Color.CYAN);
-        g2d.drawString(end, 20, 430);
-        g2d.dispose();
-        FileWithPath fwp = UtilsController.requestFile(true);
-        ImageIO.write(outputImage, "jpg", fwp.getFile());
-        return fwp.getName();
-    }
+//    public static String drawer(String desc, List<GameGoods> goods, String end) throws Exception {
+//        int width = 600;
+//        int height = 500;
+//        BufferedImage outputImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+//        Graphics2D g2d = outputImage.createGraphics();
+//        g2d.setClip(0, 0, width, height);
+//        g2d.setColor(C0);
+//        g2d.fillRect(0, 0, width, height);
+//        g2d.setFont(FONT20);
+//        g2d.setColor(Color.RED);
+//        g2d.drawString(desc, 40, 60);
+//        g2d.setFont(FONT16);
+//        g2d.setColor(PURPLE);
+//        g2d.setColor(Color.BLACK);
+//        int x = 30, y = 130;
+//        int i = -1;
+//        for (GameGoods good : goods) {
+//            i++;
+//            if (i % 2 == 0) {
+//                x = 30;
+//                y += 50;
+//            } else {
+//                x += 250;
+//            }
+//            g2d.drawString(String.format("| %s 价格:%s 数量:%s |", good.getName(), good.getPrice1(), good.getNum()), x, y);
+//        }
+//        g2d.setFont(FONT20);
+//        g2d.setColor(Color.CYAN);
+//        g2d.drawString(end, 20, 430);
+//        g2d.dispose();
+//        FileWithPath fwp = UtilsController.requestFile(true);
+//        ImageIO.write(outputImage, "jpg", fwp.getFile());
+//        return fwp.getName();
+//    }
 
     public static String createImage(String... sss) throws IOException {
         int width = 500;

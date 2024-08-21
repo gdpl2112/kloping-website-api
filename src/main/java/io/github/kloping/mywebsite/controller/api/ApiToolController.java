@@ -1,30 +1,19 @@
 package io.github.kloping.mywebsite.controller.api;
 
-import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.github.kloping.file.FileUtils;
 import io.github.kloping.judge.Judge;
 import io.github.kloping.mywebsite.controller.UtilsController;
 import io.github.kloping.mywebsite.domain.bo.FileWithPath;
 import io.github.kloping.mywebsite.domain.bo.position.PositionInfo;
-import io.github.kloping.mywebsite.domain.bo.runcode.CodeContent;
-import io.github.kloping.mywebsite.domain.bo.runcode.CodeEntity;
-import io.github.kloping.mywebsite.mapper.AddressCodeMapper;
-import io.github.kloping.mywebsite.mapper.BottleMessageMapper;
-import io.github.kloping.mywebsite.mapper.IllegalMapper;
 import io.github.kloping.mywebsite.domain.po.AddressCode;
-import io.github.kloping.mywebsite.domain.po.BottleMessage;
-import io.github.kloping.mywebsite.domain.po.Illegal;
-import io.github.kloping.mywebsite.plugins.PluginsSource;
+import io.github.kloping.mywebsite.mapper.AddressCodeMapper;
 import io.github.kloping.mywebsite.services.IgetLngLat;
-import io.github.kloping.mywebsite.utils.BlogCodeUtils;
 import io.github.kloping.url.UrlUtils;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.Nullable;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,9 +25,8 @@ import ws.schild.jave.encode.EncodingAttributes;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.security.SecureRandom;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author github.kloping
@@ -46,6 +34,9 @@ import java.util.*;
 @RestController
 @RequestMapping("/api")
 public class ApiToolController {
+
+    public static final String HTTP_FORMAT = "http://%s%s";
+    public static final String HTTP_FORMAT1 = "http://%s/%s";
 
     @RequestMapping("/ocr")
     public Object ocr(@RequestParam("url") @Nullable String url, @RequestParam("file") @Nullable MultipartFile imageFile) {
@@ -70,74 +61,6 @@ public class ApiToolController {
     }
 
     @Autowired
-    BottleMessageMapper bottleMessageMapper;
-
-    @Autowired
-    IllegalMapper illegalMapper;
-
-    @GetMapping("/throwBottle")
-    public Object throwBottle(@RequestParam("gid") String gid, @RequestParam("sid") String sid, @RequestParam("message") String message, @RequestParam("name") @Nullable String name) {
-        if (gid == null || sid == null || message == null || message.isEmpty()) return "参数不能为空";
-        BottleMessage bottle = new BottleMessage();
-        bottle.setGid(gid).setSid(sid).setMessage(message).setName(name).setTime(System.currentTimeMillis()).setState(0);
-        for (Illegal illegal : illegalMapper.selectAll()) {
-            if (message.contains(illegal.getContent())) return "经系统检测该内容存在敏感字符,不得扔入大海";
-        }
-        bottleMessageMapper.insert(bottle);
-        return "您的漂流瓶已扔入大海,等待有缘人的拾取";
-    }
-
-    @Value("${bottle.max.pickup}")
-    Integer max;
-
-    public static Random RANDOM = new SecureRandom();
-
-    @GetMapping("/pickUpBottle")
-    public Object throwBottle() {
-        BottleMessage bottle = null;
-        QueryWrapper<BottleMessage> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lt("state", max);
-        System.out.println(max);
-        List<BottleMessage> list = bottleMessageMapper.selectList(queryWrapper);
-        if (list.isEmpty()) {
-            bottle = new BottleMessage();
-            bottle.setName("默认昵称").setId(0).setGid("0").setSid("0").setTime(System.currentTimeMillis()).setState(0).setId(-1).setMessage("空瓶子");
-            return bottle;
-        }
-        Integer r = RANDOM.nextInt(list.size());
-        bottle = list.get(r);
-        try {
-            return bottle;
-        } finally {
-            bottle.setState(bottle.getState() + 1);
-            bottleMessageMapper.updateById(bottle);
-        }
-    }
-
-    @GetMapping("/runCode")
-    public Object run(@RequestParam("l") String l, @RequestParam("file") String f, @RequestParam("content") String c, @RequestParam("version") String v, @RequestParam("stdin") String i) {
-        CodeContent content = new CodeContent();
-        content.setContent(c);
-        content.setName(f);
-        CodeEntity entity = new CodeEntity();
-        entity.setFiles(new CodeContent[]{content});
-        entity.setCommand("");
-        entity.setStdin(i);
-        Object o = null;
-        try {
-            if (v == null || v.trim().isEmpty()) {
-                o = PluginsSource.runAll.runAny(entity, l);
-            } else {
-                o = PluginsSource.runAll.runAny(entity, l, v);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return o;
-    }
-
-
-    @Autowired
     AddressCodeMapper acMapper;
 
     @Autowired
@@ -158,37 +81,6 @@ public class ApiToolController {
                 return "{}";
             }
         }
-    }
-
-    @Autowired
-    UtilsController utilsController;
-
-    private static final String SLEEP_KEY = "sleep0";
-
-    @RequestMapping("/sleep/start")
-    public Object sleepStart(@RequestParam("id") String id) {
-        JSONObject jo = new JSONObject();
-        String out = utilsController.put(id, String.valueOf(System.currentTimeMillis()), SLEEP_KEY);
-        if ("OK".equals(out)) {
-            jo.put("start", 1);
-            jo.put("desc", "已记录开始时间!");
-        } else {
-            jo.put("start", 2);
-            jo.put("desc", "已重新记录开始时间!");
-        }
-        jo.put("state", 200);
-        return jo;
-    }
-
-    @RequestMapping("/sleep/end")
-    public String sleepEnd(@RequestParam("id") String id) {
-        JSONObject jo = new JSONObject();
-        String time0 = utilsController.get(id, SLEEP_KEY);
-        if (Judge.isEmpty(time0)) return "未记录开始时间,无法计算!";
-        utilsController.del(id, SLEEP_KEY);
-        Long time = Long.parseLong(time0);
-        String end = BlogCodeUtils.getTimeFormat0(System.currentTimeMillis() - time);
-        return end;
     }
 
     @RequestMapping("/mp32amr")

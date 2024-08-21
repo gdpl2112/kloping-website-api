@@ -1,15 +1,13 @@
 package io.github.kloping.mywebsite.controller.api;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.madgag.gif.fmsware.AnimatedGifEncoder;
 import io.github.kloping.judge.Judge;
 import io.github.kloping.mywebsite.domain.bo.FileWithPath;
-import io.github.kloping.mywebsite.domain.bo.ImageE0;
 import io.github.kloping.mywebsite.domain.po.BgImg;
 import io.github.kloping.mywebsite.mapper.BgImgMapper;
-import io.github.kloping.mywebsite.utils.ImageDrawerUtils;
 import io.github.kloping.mywebsite.utils.BlogCodeUtils;
-import org.jetbrains.annotations.NotNull;
+import io.github.kloping.mywebsite.utils.ImageDrawerUtils;
+import io.github.kloping.rand.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +19,6 @@ import javax.imageio.ImageIO;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -30,7 +27,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 
-import static io.github.kloping.mywebsite.controller.api.ApiShowDetailController.HTTP_FORMAT1;
 import static io.github.kloping.mywebsite.controller.UtilsController.requestFile;
 import static io.github.kloping.mywebsite.controller.UtilsController.save;
 import static io.github.kloping.mywebsite.utils.ImageDrawerUtils.TONG_BASE_BYTES;
@@ -55,7 +51,7 @@ public class ApiImageController {
                 QueryWrapper<BgImg> bgImgQueryWrapper = new QueryWrapper<>();
                 bgImgQueryWrapper.eq("type", p);
                 List<BgImg> bgImgList = bgImgMapper.selectList(bgImgQueryWrapper);
-                BgImg bgImg = bgImgList.get(ApiToolController.RANDOM.nextInt(bgImgList.size()));
+                BgImg bgImg = bgImgList.get(RandomUtils.RANDOM.nextInt(bgImgList.size()));
                 url = bgImg.getUrl();
                 Cookie cookie = new Cookie(R0_KEY, url);
                 cookie.setMaxAge(120 * 60);
@@ -87,13 +83,14 @@ public class ApiImageController {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ImageIO.write(image, "jpg", baos);
             String name = save(baos.toByteArray(), true);
-            return String.format(HTTP_FORMAT1, host, name);
+            return String.format(ApiToolController.HTTP_FORMAT1, host, name);
         } catch (IOException e) {
             e.printStackTrace();
         }
         return "失败";
     }
 
+/*
     @RequestMapping("/yao2yao")
     public String yao2yao(HttpServletRequest request, @RequestParam("qid") @Nullable String q1, @RequestParam("u1") @Nullable String u1, HttpServletResponse response) throws Exception {
         if (Judge.isEmpty(u1)) {
@@ -191,7 +188,7 @@ public class ApiImageController {
         int y1 = (int) (36 + (end * 0.6));
 
         return new ImageE0(i1, x1, y1);
-    }
+    }*/
 
     public static final File[] PA = new File("./files/pa1").listFiles();
 
@@ -202,13 +199,13 @@ public class ApiImageController {
         }
         String host = request.getHeader("Host");
         FileWithPath outFile = requestFile(true, "jpg");
-        BufferedImage bImage = ImageIO.read(PA[ApiToolController.RANDOM.nextInt(PA.length)]);
+        BufferedImage bImage = ImageIO.read(PA[RandomUtils.RANDOM.nextInt(PA.length)]);
         BufferedImage oImage = ImageIO.read(new URL(u1).openStream());
         oImage = (BufferedImage) ImageDrawerUtils.image2Size(oImage, bImage.getWidth() / 6, bImage.getWidth() / 6);
         oImage = (BufferedImage) ImageDrawerUtils.roundImage(oImage, 999);
         bImage = ImageDrawerUtils.putImage(bImage, oImage, 10, bImage.getHeight() - oImage.getHeight() - 10);
         ImageIO.write(bImage, "jpg", outFile.getFile());
-        return String.format(HTTP_FORMAT1, host, outFile.getName());
+        return String.format(ApiToolController.HTTP_FORMAT1, host, outFile.getName());
     }
 
 }

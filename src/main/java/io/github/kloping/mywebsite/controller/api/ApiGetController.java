@@ -26,16 +26,13 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/get")
-public class ApiSelectController {
+public class ApiGetController {
 
     @Autowired
     IgetLngLat getLngLat;
 
     @Autowired
     IShortTimeWeather shortTimeWeather;
-
-    @Autowired
-    IWeather weather;
 
     @RequestMapping("/shortWeather")
     public WeatherM shortWea(HttpServletRequest request, String address) {
@@ -52,6 +49,9 @@ public class ApiSelectController {
         }
         return null;
     }
+
+    @Autowired
+    IWeather weather;
 
     @RequestMapping("/weather")
     public WeatherDetail weather(HttpServletRequest request, String address) {

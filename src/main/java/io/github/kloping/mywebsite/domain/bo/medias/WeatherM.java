@@ -3,8 +3,6 @@ package io.github.kloping.mywebsite.domain.bo.medias;
 public class WeatherM {
     private String level;
     private String intro;
-//    @Nullable
-//    private String[] imgs;
     private String name;
     private String lng;
     private String lat;
@@ -40,14 +38,6 @@ public class WeatherM {
     public void setIntro(String intro) {
         this.intro = intro;
     }
-
-//    public String[] getImgs() {
-//        return imgs;
-//    }
-//
-//    public void setImgs(String[] imgs) {
-//        this.imgs = imgs;
-//    }
 
     public String getName() {
         return name;

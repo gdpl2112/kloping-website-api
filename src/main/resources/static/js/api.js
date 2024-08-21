@@ -1,7 +1,7 @@
 let vm1 = new Vue({
     el: "#api_list",
     created: function () {
-        axios.get("/api/getApiList").then(function (response) {
+        axios.get("/api/list").then(function (response) {
             vm1.list = response.data;
             load()
         }).catch(function (err) {
@@ -11,7 +11,7 @@ let vm1 = new Vue({
         list: []
     }, methods: {
         mDetail: function (i) {
-            window.open("ApiDetail.html?name=" + i)
+            window.open("apid.html?name=" + i)
         }
     }, mounted() {
         load();
