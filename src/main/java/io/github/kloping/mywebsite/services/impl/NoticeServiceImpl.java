@@ -2,6 +2,7 @@ package io.github.kloping.mywebsite.services.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import io.github.kloping.mywebsite.domain.po.Notice;
 import io.github.kloping.mywebsite.domain.po.UserTemp;
@@ -27,15 +28,15 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeMapper, Notice> impleme
     NoticeMapper mapper;
 
     @Override
-    public Notice[] gets() {
+    public Page<Notice> gets(Integer pageNum) {
         QueryWrapper<Notice> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("state", 0);
         queryWrapper.select("id", "views", "title", "icon", "date", "time", "author_name", "author_id");
         queryWrapper.orderByDesc("time");
-        Notice[] notices = mapper.selectList(queryWrapper).toArray(new Notice[0]);
-        return notices;
+        Page<Notice> page = new Page<>(pageNum, 5);
+        mapper.selectPage(page, queryWrapper);
+        return page;
     }
-
 
     final SimpleDateFormat sf_0 = new SimpleDateFormat("yyyy-MM-dd:HH:mm:ss");
 

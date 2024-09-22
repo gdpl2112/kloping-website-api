@@ -34,8 +34,8 @@ public class NoticeController {
     INoticeService service;
 
     @GetMapping("/gets")
-    public Notice[] gets() {
-        return service.gets();
+    public Object gets(@RequestParam(value = "pageNum",defaultValue = "1") Integer pageNum) {
+        return service.gets(pageNum);
     }
 
     @GetMapping("/get-notice-id")

@@ -1,5 +1,6 @@
 package io.github.kloping.mywebsite.services;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import io.github.kloping.mywebsite.domain.po.Notice;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,9 +13,10 @@ public interface INoticeService extends IService<Notice> {
      * get pn page notices
      *
      * @param pn
+     * @param pageNum
      * @return
      */
-    Notice[] gets();
+    Page<Notice> gets(Integer pageNum);
 
     /**
      * save a notice

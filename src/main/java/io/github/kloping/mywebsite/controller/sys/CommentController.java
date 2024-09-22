@@ -1,13 +1,13 @@
 package io.github.kloping.mywebsite.controller.sys;
 
 import io.github.kloping.common.Public;
+import io.github.kloping.mywebsite.config.EmailConfig;
 import io.github.kloping.mywebsite.domain.po.Comment;
 import io.github.kloping.mywebsite.domain.po.Notice;
 import io.github.kloping.mywebsite.domain.po.UserTemp;
 import io.github.kloping.mywebsite.mapper.CommentMapper;
 import io.github.kloping.mywebsite.mapper.NoticeMapper;
 import io.github.kloping.mywebsite.mapper.UserTempMapper;
-import io.github.kloping.mywebsite.utils.EmailConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;

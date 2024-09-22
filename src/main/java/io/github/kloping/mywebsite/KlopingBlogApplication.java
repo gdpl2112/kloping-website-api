@@ -1,5 +1,8 @@
 package io.github.kloping.mywebsite;
 
+import com.baomidou.mybatisplus.annotation.DbType;
+import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import com.google.code.kaptcha.impl.DefaultKaptcha;
 import com.google.code.kaptcha.util.Config;
 import io.github.kloping.MySpringTool.annotations.Bean;
@@ -7,9 +10,11 @@ import io.github.kloping.common.Public;
 import io.github.kloping.date.FrameUtils;
 import io.github.kloping.file.FileUtils;
 import io.github.kloping.mywebsite.broadcast.EmailReceivesBroadcast;
+import io.github.kloping.mywebsite.config.EmailConfig;
 import io.github.kloping.mywebsite.webhook.WebHookStarter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -27,6 +32,7 @@ import java.util.concurrent.TimeUnit;
 @Import({TomcatUtil.class})
 @CrossOrigin
 @EnableWebSecurity
+@EnableConfigurationProperties({EmailConfig.class})
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class KlopingBlogApplication {
 
@@ -92,4 +98,15 @@ public class KlopingBlogApplication {
     public PasswordEncoder passwordEncoder() {
         return NoOpPasswordEncoder.getInstance();
     }
+
+    /**
+     * 添加分页插件
+     */
+    @org.springframework.context.annotation.Bean
+    public MybatisPlusInterceptor mybatisPlusInterceptor() {
+        MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
+        interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL)); // 如果配置多个插件, 切记分页最后添加
+        return interceptor;
+    }
+
 }

@@ -18,10 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import ws.schild.jave.Encoder;
-import ws.schild.jave.MultimediaObject;
-import ws.schild.jave.encode.AudioAttributes;
-import ws.schild.jave.encode.EncodingAttributes;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
@@ -80,32 +76,6 @@ public class ApiToolController {
                 e.printStackTrace();
                 return "{}";
             }
-        }
-    }
-
-    @RequestMapping("/mp32amr")
-    public Object mp32amr(@RequestParam("url") String url, HttpServletResponse response) {
-        try {
-            FileWithPath source = UtilsController.requestFile(true, "mp3");
-            FileUtils.writeBytesToFile(UrlUtils.getBytesFromHttpUrl(url), source.getFile());
-            FileWithPath target = UtilsController.requestFile(true, "amr");
-            AudioAttributes audioAttributes = new AudioAttributes();
-            audioAttributes.setChannels(1);
-            audioAttributes.setBitRate(24000);
-            audioAttributes.setSamplingRate(8000);
-            EncodingAttributes encodingAttributes = new EncodingAttributes();
-            encodingAttributes.setOutputFormat("amr");
-            encodingAttributes.setAudioAttributes(audioAttributes);
-            Encoder encoder = new Encoder();
-            encoder.encode(new MultimediaObject(source.getFile()), target.getFile(), encodingAttributes);
-            response.addHeader("Content-type", "audio/amr-wb");
-            response.getOutputStream().write(FileUtils.getBytesFromFile(target.getFile().getAbsolutePath()));
-            source.getFile().delete();
-            target.getFile().delete();
-            return null;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "转换失败!\n" + e.getMessage();
         }
     }
 }

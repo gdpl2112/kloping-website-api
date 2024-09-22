@@ -33,19 +33,9 @@
             <version>0.6.2-R3</version>
         </dependency>
         <dependency>
-            <groupId>ws.schild</groupId>
-            <artifactId>jave-all-deps</artifactId>
-            <version>3.3.1</version>
-        </dependency>
-        <dependency>
             <groupId>org.java-websocket</groupId>
             <artifactId>Java-WebSocket</artifactId>
             <version>1.5.3</version>
-        </dependency>
-        <dependency>
-            <groupId>ws.schild</groupId>
-            <artifactId>jave-core</artifactId>
-            <version>3.3.1</version>
         </dependency>
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>

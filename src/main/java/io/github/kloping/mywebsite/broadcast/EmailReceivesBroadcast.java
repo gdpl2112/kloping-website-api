@@ -3,9 +3,10 @@ package io.github.kloping.mywebsite.broadcast;
 import com.sun.mail.pop3.POP3Message;
 import io.github.kloping.file.FileUtils;
 import io.github.kloping.judge.Judge;
-import io.github.kloping.mywebsite.utils.EmailConfig;
+import io.github.kloping.mywebsite.config.EmailConfig;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import javax.mail.*;
 import java.io.File;
 import java.util.ArrayList;
@@ -19,28 +20,17 @@ import java.util.Properties;
 @Component
 public class EmailReceivesBroadcast extends Broadcast<EmailReceivesBroadcast.EmailReceivesReceiver> implements Runnable {
     public static EmailReceivesBroadcast INSTANCE;
-    public static final String HOST = "outlook.office365.com";
     public static final String EMAIL_ID = "./email.id";
-    private Session session;
-    private EmailConfig config;
 
-    public EmailReceivesBroadcast(EmailConfig email) {
+    @Resource
+    public EmailConfig email;
+
+    public EmailReceivesBroadcast() {
         super("email broadcast");
         INSTANCE = this;
-        this.config = email;
-        Properties props = new Properties();
-        props.put("mail.pop3.host", email.host);
-        props.put("mail.pop3.auth", "true");
-        props.put("mail.transport.protocol", "pop3");
-        session = Session.getDefaultInstance(props, new Authenticator() {
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(email.account, email.pwd);
-            }
-        });
     }
 
     private final List<EmailReceivesBroadcast.EmailReceivesReceiver> RECEIVES = new ArrayList<>();
-
     public synchronized void broadcast(POP3Message message) {
         Iterator<EmailReceivesBroadcast.EmailReceivesReceiver> iterator = RECEIVES.iterator();
         while (iterator.hasNext()) {
@@ -64,23 +54,26 @@ public class EmailReceivesBroadcast extends Broadcast<EmailReceivesBroadcast.Ema
     }
 
     public interface EmailReceivesReceiver extends Receiver<POP3Message> {
+
         @Override
         void onReceive(POP3Message message);
     }
 
     private Integer id;
+    private Session session;
 
     @Override
     public void run() {
         try {
+            getSession0();
             if (id == null) {
                 String ids = FileUtils.getStringFromFile(EMAIL_ID).trim();
                 if (Judge.isNotEmpty(ids)) {
                     id = Integer.valueOf(ids);
                 }
             }
-            Store store = session.getStore("pop3s");
-            store.connect(config.host, config.account, config.pwd);
+            Store store = session.getStore(email.protocol);
+            store.connect(email.host, email.account, email.pwd);
             Folder folder = store.getFolder("INBOX");
             folder.open(Folder.READ_ONLY);
             if (id == null) {
@@ -108,5 +101,18 @@ public class EmailReceivesBroadcast extends Broadcast<EmailReceivesBroadcast.Ema
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private synchronized void getSession0() {
+        if (session != null) return;
+        Properties props = new Properties();
+        props.put("mail.pop3.host", email.host);
+        props.put("mail.pop3.auth", "true");
+        props.put("mail.transport.protocol", "pop3");
+        session = Session.getDefaultInstance(props, new Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(email.account, email.pwd);
+            }
+        });
     }
 }
