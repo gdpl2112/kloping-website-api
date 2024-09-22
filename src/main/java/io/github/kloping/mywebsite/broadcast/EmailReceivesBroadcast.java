@@ -31,6 +31,7 @@ public class EmailReceivesBroadcast extends Broadcast<EmailReceivesBroadcast.Ema
     }
 
     private final List<EmailReceivesBroadcast.EmailReceivesReceiver> RECEIVES = new ArrayList<>();
+
     public synchronized void broadcast(POP3Message message) {
         Iterator<EmailReceivesBroadcast.EmailReceivesReceiver> iterator = RECEIVES.iterator();
         while (iterator.hasNext()) {
