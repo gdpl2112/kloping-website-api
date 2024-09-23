@@ -57,7 +57,9 @@ public class ApiTempController {
         String body = String.format("{\"url\":\"%s\",\"level\":\"standard\",\"type\":\"song\",\"token\":\"%s\"}", url, token);
 
         Document doc0 = null;
-        Connection.Response response = Jsoup.connect(requ).header("Accept", "application/json, text/javascript, */*; q=0.01")
+        Connection.Response response = Jsoup.connect(requ)
+                .header("Authorization", "Bearer 804aa17f09349bc77e9ca26679734225")
+                .header("Accept", "application/json, text/javascript, */*; q=0.01")
                 .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.67")
                 .header("Accept", "application/json, text/plain, */*")
                 .header("Accept-Encoding", "gzip, deflate, br")
@@ -68,7 +70,6 @@ public class ApiTempController {
                 .header("Origin", "https://api.toubiec.cn")
                 .header("Referer", "https://api.toubiec.cn/wyapi.html")
                 .header("Timestamp", String.valueOf(System.currentTimeMillis()))
-                .header("Token", token)
                 .requestBody(body)
                 .ignoreContentType(true)
                 .ignoreHttpErrors(true)
@@ -82,21 +83,22 @@ public class ApiTempController {
     public static final HttpClient HTTP_CLIENT = HttpClient.newHttpClient();
 
     private String getToken() throws Exception {
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("https://api.toubiec.cn/api/get-token.php"))
-                .POST(HttpRequest.BodyPublishers.ofString("{\"type\":\"tokens\"}"))
-                .setHeader("Accept", "application/json, text/plain, */*")
-                .setHeader("Accept-Language", "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6")
-                .setHeader("Cache-Control", "no-cache")
-                .setHeader("Content-Type", "application/json")
-                .setHeader("Origin", "https://api.toubiec.cn")
-                .setHeader("Referer", "https://api.toubiec.cn/wyapi.html")
-                .setHeader("Timestamp", String.valueOf(System.currentTimeMillis()))
-                .setHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.67")
-                .build();
-        HttpResponse<String> response = HTTP_CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
-        JSONObject json = JSON.parseObject(response.body());
-        return json.getString("token");
+        return "e8296be2d752447e821fb17facf8f805";
+//        HttpRequest request = HttpRequest.newBuilder()
+//                .uri(URI.create("https://api.toubiec.cn/api/get-token.php"))
+//                .POST(HttpRequest.BodyPublishers.ofString("{\"type\":\"tokens\"}"))
+//                .setHeader("Accept", "application/json, text/plain, */*")
+//                .setHeader("Accept-Language", "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6")
+//                .setHeader("Cache-Control", "no-cache")
+//                .setHeader("Content-Type", "application/json")
+//                .setHeader("Origin", "https://api.toubiec.cn")
+//                .setHeader("Referer", "https://api.toubiec.cn/wyapi.html")
+//                .setHeader("Timestamp", String.valueOf(System.currentTimeMillis()))
+//                .setHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.67")
+//                .build();
+//        HttpResponse<String> response = HTTP_CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
+//        JSONObject json = JSON.parseObject(response.body());
+//        return json.getString("token");
     }
 
     @RequestMapping("/get-url-by-id")
