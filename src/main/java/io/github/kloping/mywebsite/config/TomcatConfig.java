@@ -22,7 +22,6 @@ public class TomcatConfig {
     @Bean
     public WebServerFactoryCustomizer<ConfigurableWebServerFactory> webServerFactoryCustomizer() {
         return new WebServerFactoryCustomizer<ConfigurableWebServerFactory>() {
-
             @Override
             public void customize(ConfigurableWebServerFactory factory) {
                 if (factory instanceof TomcatServletWebServerFactory) {

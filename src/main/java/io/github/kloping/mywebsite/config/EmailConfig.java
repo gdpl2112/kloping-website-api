@@ -33,7 +33,6 @@ public class EmailConfig {
     public String port1;
     public String protocol1;
 
-
     /**
      * 发送邮件
      *

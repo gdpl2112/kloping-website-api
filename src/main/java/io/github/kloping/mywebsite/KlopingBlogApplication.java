@@ -46,7 +46,7 @@ public class KlopingBlogApplication {
         FileUtils.putStringInFile(pid, new File("./web.pid"));
 
         Public.EXECUTOR_SERVICE.submit(new WebHookStarter());
-        FrameUtils.SERVICE.scheduleAtFixedRate(EmailReceivesBroadcast.INSTANCE, 1, 8, TimeUnit.MINUTES);
+        FrameUtils.SERVICE.scheduleAtFixedRate(EmailReceivesBroadcast.INSTANCE, 1, 5, TimeUnit.MINUTES);
     }
 
     @Bean
