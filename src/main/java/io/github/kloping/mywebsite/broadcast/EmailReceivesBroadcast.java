@@ -66,6 +66,7 @@ public class EmailReceivesBroadcast extends Broadcast<EmailReceivesBroadcast.Ema
     @Override
     public void run() {
         try {
+            System.out.println("email broadcast start");
             getSession0();
             if (id == null) {
                 String ids = FileUtils.getStringFromFile(EMAIL_ID).trim();
