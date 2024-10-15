@@ -50,16 +50,23 @@ public class ApiCreeperController {
 
     private String getDataFromWeb1(Document doc0) {
         Elements elements = doc0.body().getElementsByTag("script");
-        Element element = elements.get(1);
-        String data = element.data();
-        int start = data.indexOf("{");
-        int end = data.lastIndexOf("}") + 1;
-        data = data.substring(start, end);
-        JSONObject jo = JSON.parseObject(data);
-        for (Object value : jo.values()) {
-            JSONObject v0 = (JSONObject) value;
-            if (v0.containsKey("fid")) {
-                return v0.toString();
+        for (Element element : elements) {
+            try {
+                String data = element.data();
+                int start = data.indexOf("{");
+                int end = data.lastIndexOf("}") + 1;
+                if (start <= 0 && end <= 0) continue;
+                data = data.substring(start, end);
+                JSONObject jo = JSON.parseObject(data);
+                for (Object value : jo.values()) {
+                    JSONObject v0 = (JSONObject) value;
+                    if (v0.containsKey("fid")) {
+                        return v0.toString();
+                    }
+                }
+            } catch (Exception e) {
+                System.err.print("continue...");
+                System.err.println(e.getMessage());
             }
         }
         return null;
