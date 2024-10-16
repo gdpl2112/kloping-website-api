@@ -67,7 +67,7 @@ public class ApiCreeperController {
                         return v0.toString();
                     }
                     for (String s : v0.keySet()) {
-                        if (s.startsWith("VisionVideoDetailPhoto")) return v0.toString();
+                        if (s.startsWith("VisionVideoDetailPhoto")) return v0.get(s).toString();
                     }
                 }
             } catch (Exception e) {
