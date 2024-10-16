@@ -37,7 +37,10 @@ public class ApiCreeperController {
             if (matcher.find()) url = matcher.group();
         }
         if (url.contains(KS_LINK)) {
-            Connection connection = new HttpConnection().url(url).userAgent("AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.67");
+            Connection connection = new HttpConnection().url(url);
+            connection.header("Accept-Encoding", "gzip, deflate, br")
+                    .header("Accept-Language", "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6")
+                    .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.67");
             Document doc0 = connection.get();
             Map<String, Object> argsMap = new HashMap<>();
             String outData;
@@ -62,6 +65,9 @@ public class ApiCreeperController {
                     JSONObject v0 = (JSONObject) value;
                     if (v0.containsKey("fid")) {
                         return v0.toString();
+                    }
+                    for (String s : v0.keySet()) {
+                        if (s.startsWith("VisionVideoDetailPhoto")) return v0.toString();
                     }
                 }
             } catch (Exception e) {
