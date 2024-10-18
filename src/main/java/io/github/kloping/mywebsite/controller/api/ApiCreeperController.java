@@ -42,16 +42,16 @@ public class ApiCreeperController {
                     .header("Accept-Language", "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6")
                     .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.67");
             Document doc0 = connection.get();
-            Map<String, Object> argsMap = new HashMap<>();
             String outData;
-//          outData = getDataFromWeb0(doc0, argsMap);
-            outData = getDataFromWeb1(doc0);
+            outData = getDataFromDocument(doc0);
+            if (outData == null)
+                outData = getDataFromRequest(doc0);
             if (outData != null) return outData;
         }
         return "{\"result\": -1}";
     }
 
-    private String getDataFromWeb1(Document doc0) {
+    private String getDataFromDocument(Document doc0) {
         Elements elements = doc0.body().getElementsByTag("script");
         for (Element element : elements) {
             try {
@@ -63,7 +63,7 @@ public class ApiCreeperController {
                 JSONObject jo = JSON.parseObject(data);
                 for (Object value : jo.values()) {
                     JSONObject v0 = (JSONObject) value;
-                    if (v0.containsKey("fid")) {
+                    if (v0.containsKey("atlas")) {
                         return v0.toString();
                     }
                     for (String s : v0.keySet()) {
@@ -79,8 +79,8 @@ public class ApiCreeperController {
     }
 
     @Nullable
-    private static String getDataFromWeb0(Document doc0, Map<String, Object> argsMap) throws IOException {
-
+    private static String getDataFromRequest(Document doc0) throws IOException {
+        Map<String, Object> argsMap = new HashMap<>();
         String url = doc0.location();
         int index = url.indexOf("?");
         if (index > 0) {
